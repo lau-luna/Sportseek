@@ -1,5 +1,4 @@
 <?php include("template/cabecera.php") ?>
-
 <div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
     <div class="carousel-inner">
         <div class="carousel-item active">

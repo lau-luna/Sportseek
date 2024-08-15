@@ -2,7 +2,7 @@
 try {
     $host="localhost";
     $port = '3307';
-    $bd="deportes";
+    $bd="database";
     $usuario="root";
     $contrasenia="";
 

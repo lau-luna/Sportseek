@@ -1,4 +1,4 @@
-<?php include('template/cabecera.php'); ?>
+<!-- <?php include('template/cabecera.php'); ?> aguante la verga -->
 
 <section class="col-sm-12 seccion-login">
     <div class="col-sm-6 text-black">
@@ -40,6 +40,7 @@
     </div>
 
 </section>
-
+<!--Esa mancha no se borra
+att. Cualquier hincha de riBer-->
 
 <?php include('template/pie.php'); ?>

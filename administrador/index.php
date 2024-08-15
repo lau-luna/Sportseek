@@ -8,41 +8,47 @@ session_start();
 
 
 if ($_POST) {
-    //
+    // Extraer de la bd una lista con todos los usuarios
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios");
     $sentenciaSQL->execute();
     $listaUsuarios = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
     foreach ($listaUsuarios as $usuario) {
-        if ($_POST['usuario'] == $usuario['Nombre_Usuario']) {
+        // Revisar si el usuario está registrado
+        if ($_POST['usuario'] == $usuario['Username_Usuario']) {
+
+            // Revisar si la contraseña es correcta
             if (($_POST['contrasenia'] == $usuario['Contrasenia_Usuario'])) {
 
-                $sentenciaSQL= $conexion->prepare("SELECT * FROM Tipos_de_Usuario WHERE ID_Usuario=:id");
-                $sentenciaSQL->bindParam(':id',$usuario['ID_Usuario']);
+                // Revisar si tiene cuenta de administrador
+                $sentenciaSQL= $conexion->prepare("SELECT usuarios.Username_Usuario, tipos_de_usuario.Tipo_de_Usuario
+                    FROM Usuarios
+                    INNER JOIN Tipos_de_Usuario ON usuarios.Tipos_de_Usuario_ID_Tipos_de_Usuario = tipos_de_usuario.ID_Tipos_de_Usuario WHERE usuarios.ID_Usuario=:ID;");
+                $sentenciaSQL->bindParam(':ID', $usuario['ID_Usuario']);
                 $sentenciaSQL->execute();
-                $tipoUsuario=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
+                $lista2 = $sentenciaSQL->fetch(PDO::FETCH_LAZY); 
 
-                echo $tipoUsuario['Tipo_de_Usuario'];
+                if($lista2['Tipo_de_Usuario'] == "Administrador") {
 
-                $_SESSION['usuario'] = "ok";
-                $_SESSION['nombreUsuario'] = "Tienda Deportes";
+                    $_SESSION['usuario'] = "ok";
+                    $_SESSION['nombreUsuario'] = "Tienda Deportes";
         
-                header('Location:inicio.php');
+                    header('Location:inicio.php');
+                } else {
+                    $mensaje = "Error: su cuenta no es de tipo administrador.";
+                }
+             
+                
             } else {
-                $mensaje = "Error: El nombre de usuario o contraseña es incorrecto";
+                $mensaje = "Error: El nombre de usuario o contraseña es incorrecto.";
             }
+        
         } else {
             $mensaje = "No se encontró el usuario.";
         }
     }
 
 
-
-
-
-    /*
-    
-    */
 }
 ?>
 
@@ -106,3 +112,4 @@ if ($_POST) {
 </body>
 
 </html>
+<!-- aguante la zaza -->
