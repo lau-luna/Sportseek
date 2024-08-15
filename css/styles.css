@@ -1,0 +1,41 @@
+#formulario-busqueda-productos {
+    display: flex;
+    width: 32%;
+    margin-left: 20%;
+}
+
+#formulario-busqueda-productos input {
+    border-top-right-radius: 0%;
+    border-bottom-right-radius: 0%;
+    width: 90%;
+}
+#formulario-busqueda-productos button {
+    border-top-left-radius: 0%;
+    border-bottom-left-radius: 0%;
+    width: 10%;
+}
+
+#contenedor-botones-registro-carrito{
+    margin-right: 2%;
+    gap: 8px;
+}
+
+#contenedor-botones-registro-carrito button {
+    font-size: small;
+}
+
+#contenedor-botones-registro-carrito a {
+    text-decoration: none;
+}
+
+#container-login {
+    display: flex;
+    justify-content: center;
+}
+
+
+#th-ID, #th-nombre, #th-imagen, #th-acciones {
+    display: flex;
+    justify-content: center;
+    text-align: center;
+}
