@@ -1,3 +1,17 @@
+<?php
+
+include('./administrador/config/bd.php');
+
+if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']){
+    
+} else {
+    $_SERVER['sesionIniciada'] = true;
+    session_start();
+}
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 
@@ -14,14 +28,18 @@
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
+    <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
 
 </head>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
+
 
     <div style="position: fixed; width: 100%; z-index: 999;">
-    <header class="d-flex" style="background-color: white;">
+        <header class="d-flex" style="background-color: white;">
             <a class="nav-link" href="index.php">
                 <img src="./img/solodeportes.png" alt="Deportes" width="125">
                 <span class="sr-only"></span>
@@ -34,13 +52,37 @@
 
             <!-- Contenedor que empuja los botones hacia la derecha -->
             <div class="ml-auto d-flex" id="contenedor-botones-registro-carrito">
-                <a class="form-inline my-2 my-lg-0" href="loginUsuario.php">
-                    <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">INGRESÁ O REGISTRATE ></button>
-                </a>
+                <!-- Mostar sólo si no se inció la sessión-->
+                <?php if (!isset($_SESSION['usuario'])) { ?>
+                    <a class="form-inline my-2 my-lg-0" href="loginUsuario.php">
+                        <button class="btn btn-outline-secondary my-2 my-sm-0" type="submit">INGRESÁ O REGISTRATE</button>
+                    </a>
+                <?php } ?>
 
-                <a class="form-inline my-2 my-lg-0" href="index.php">
-                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">🛒 MI CARRITO</button>
-                </a>
+                <!-- Mostar sólo se se inció la sessión-->
+                <?php if (isset($_SESSION['usuario'])) { ?>
+                    <a class="form-inline my-2 my-lg-0" href="./carrito.php">
+                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">🛒 MI CARRITO</button>
+                    </a>
+                <?php } ?>
+
+                <!-- Mostar sólo se se inció la sessión-->
+                <?php if (isset($_SESSION['usuario'])) { ?>
+                    <!-- Example single danger button -->
+                    <div class="form-inline my-2 my-lg-0">
+                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                            MI CUENTA
+                        </button>
+                        <div class="dropdown-menu">
+                            <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
+                            <a class="dropdown-item" href="#">Another action</a>
+                            <a class="dropdown-item" href="#">Something else here</a>
+                            <div class="dropdown-divider"></div>
+                            <a class="dropdown-item text-danger" href="./config/procesar.php?accion=cerrarsesion">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                <?php } ?>
+
             </div>
 
         </header>
@@ -65,8 +107,6 @@
         </nav>
     </div>
 
+    <div class="contenedor">
 
-
-    <div class="container">
-        <br> <br> <br>
-        <div class="row" style="margin-top: 6%;">
+        <br> <br> <br> <br> <br> <br>

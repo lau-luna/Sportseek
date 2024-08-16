@@ -1,25 +1,17 @@
 <?php include("template/cabecera.php") ?>
-<div id="carouselExampleControls" class="carousel slide" data-ride="carousel">
-    <div class="carousel-inner">
-        <div class="carousel-item active">
-            <img class="d-block w-100" src="./img/messi-banner.jpg" alt="First slide">
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="./img/zapatillas.jpg" alt="Second slide">
-        </div>
-        <div class="carousel-item">
-            <img class="d-block w-100" src="./img/cortado.png" alt="Third slide">
-        </div>
+
+<div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style="z-index: -999">
+  <div class="carousel-inner">
+    <div class="carousel-item active">
+      <img src="./img/messi-banner.jpg" class=" w-100" style="z-index: -999; max-height: 400px; object-fit:cover;" alt="...">
     </div>
-    <a class="carousel-control-prev" href="#carouselExampleControls" role="button" data-slide="prev">
-        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-    </a>
-    <a class="carousel-control-next" href="#carouselExampleControls" role="button" data-slide="next">
-        <span class="carousel-control-next-icon" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-    </a>
+    <div class="carousel-item">
+      <img src="./img/lionel-messi.2183aef8.jpg" class="w-100" style="z-index: -999; max-height: 400px; object-fit:cover;" alt="...">
+    </div>
+    
+  </div>
 </div>
+
 <div class="jumbotron">
 
     <h1 class="display-3">Tienda de deportes online</h1>

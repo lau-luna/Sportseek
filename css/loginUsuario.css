@@ -14,6 +14,13 @@
 
 .seccion-login {
     display: flex;
-    
+    height: 100vh;
 }
 
+.div-imagen-login {
+    float: right;
+}
+
+.div-imagen-login img {
+    height: 100px;
+}
