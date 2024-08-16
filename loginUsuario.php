@@ -50,7 +50,7 @@ if ($_POST) {
     <div>
         <div class="d-flex align-items-center">
 
-            <form method="POST">
+            <form method="POST" id="iniciarSesionForm">
                 <h3 class="fw-normal " style="letter-spacing: 1px;">Iniciar Sesión</h3>
                 <hr class="mb-2">
                 <p class="mb-4 text-muted" style="font-size:smaller;">Si tiene una cuenta, inicie sesión con su dirección de correo electrónico.</p>
@@ -81,12 +81,34 @@ if ($_POST) {
         </div>
 
     </div>
-    <div class="ml-auto d-flex div-imagen-login">
+</section>
+<div class="imgIniciarSesion">
         <img src="./img/lionel-messi.2183aef8.jpg"
             alt="Login image" style="object-fit: cover; object-position: left;">
     </div>
-
-</section>
-
-
-<?php include('template/pie.php'); ?>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <br>
+    <?php include("template/pie.php") ?>

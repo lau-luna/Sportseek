@@ -109,7 +109,7 @@ if ($_POST) {
                         </select>
                     </div>
                 </div>
-                <div id="informacion-personal">
+                <div id="informacion-inicio-sesion">
                     <h3 class="fw-normal " style="font-size:small;">Informacion de Inicio de Sesion</h3>
                     <hr class="mb-2">
                     <div data-mdb-input-init class="form-outline mb-2">
@@ -133,12 +133,12 @@ if ($_POST) {
 
 
 
-            <div class="pt-1 mb-2">
+            <div id="btn-registro">
                 <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Ingresar</button>
             </div>
 
             <p class="small mb-3 pb-lg-2"><a class="text-muted" href="#!">Olvidé mi contraseña</a></p>
-            <p>No tiene una cuenta? <a href="./registroUsuario.php" class="link-info">Regístrese aquí</a></p>
+            <p>Ya tiene una cuenta? <a href="./loginUsuario.php" class="link-info">Inicie sesión aquí</a></p>
         </form>
     </div>
 </section>

@@ -2,3 +2,19 @@
 .registroUsuario {
     width: 85%;
 }
+.seccion-registro-usuario{
+    display: flex;
+    height: 80vh;
+    margin-left: 5%;
+    margin-top: 2%;
+}
+#informacion-personal{
+    padding-top: 2.5%;
+}
+#informacion-inicio-sesion{
+    padding-left: 5%;
+    padding-top: 2.5%;
+}
+#btn-registro{
+    margin-right: 75%;
+}

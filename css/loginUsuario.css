@@ -13,14 +13,13 @@
     }
 
 .seccion-login {
+    position: absolute;
     display: flex;
-    height: 100vh;
+    height: 80vh;
+    margin-left: 5%;
+    margin-top: 5%;
 }
 
-.div-imagen-login {
+.imgIniciarSesion{
     float: right;
-}
-
-.div-imagen-login img {
-    height: 100px;
 }
