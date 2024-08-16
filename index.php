@@ -24,7 +24,7 @@
 </div>
 <div class="jumbotron">
 
-  <h1 class="display-3">Tienda de deportes online</h1>
+  <h1 class="display-3">Tienda de deportes online    fijate whatsapp</h1>
   <p class="lead">ayuda</p>
   <hr class="my-2">
   <p>More info</p>
