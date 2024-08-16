@@ -1,10 +1,10 @@
 <?php 
 try {
-    $host="localhost";
-    $port = '3307';
-    $bd="database";
-    $usuario="root";
-    $contrasenia="";
+    $host="lautaro-luna-lautaroluna906-b4ca.h.aivencloud.com";
+    $port = '17205';
+    $bd="defaultdb";
+    $usuario="avnadmin";
+    $contrasenia="AVNS_aOVthXr6XdGle8n0350";
 
     // Conexion PDO con la base de datos
     $conexion=new PDO("mysql:host=$host;port=$port;dbname=$bd",$usuario,$contrasenia);

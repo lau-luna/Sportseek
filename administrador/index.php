@@ -6,7 +6,6 @@ include('config/bd.php');
 session_start();
 
 
-
 if ($_POST) {
     // Extraer de la bd una lista con todos los usuarios
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios");
@@ -17,13 +16,14 @@ if ($_POST) {
         // Revisar si el usuario está registrado
         if ($_POST['usuario'] == $usuario['Username_Usuario']) {
 
+
             // Revisar si la contraseña es correcta
             if (($_POST['contrasenia'] == $usuario['Contrasenia_Usuario'])) {
 
                 // Revisar si tiene cuenta de administrador
-                $sentenciaSQL= $conexion->prepare("SELECT usuarios.Username_Usuario, tipos_de_usuario.Tipo_de_Usuario
+                $sentenciaSQL= $conexion->prepare("SELECT Usuarios.Username_Usuario, Tipos_de_Usuario.Tipo_de_Usuario
                     FROM Usuarios
-                    INNER JOIN Tipos_de_Usuario ON usuarios.Tipos_de_Usuario_ID_Tipos_de_Usuario = tipos_de_usuario.ID_Tipos_de_Usuario WHERE usuarios.ID_Usuario=:ID;");
+                    INNER JOIN Tipos_de_Usuario ON Usuarios.Tipos_de_Usuario_ID_Tipos_de_Usuario = Tipos_de_Usuario.ID_Tipos_de_Usuario WHERE Usuarios.ID_Usuario=:ID;");
                 $sentenciaSQL->bindParam(':ID', $usuario['ID_Usuario']);
                 $sentenciaSQL->execute();
                 $lista2 = $sentenciaSQL->fetch(PDO::FETCH_LAZY); 
@@ -31,7 +31,7 @@ if ($_POST) {
                 if($lista2['Tipo_de_Usuario'] == "Administrador") {
 
                     $_SESSION['usuario'] = "ok";
-                    $_SESSION['nombreUsuario'] = "Tienda Deportes";
+                    $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
         
                     header('Location:inicio.php');
                 } else {
