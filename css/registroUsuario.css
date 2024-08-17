@@ -1,4 +1,67 @@
 
 .registroUsuario {
     width: 85%;
+    margin-left: 4%;
+    height: 100%;
+}
+.seccion-registro-usuario{
+    display: flex;
+    margin-left: 5%;
+    margin-top: 2%;
+}
+#informacion-personal{
+    padding-top: 2.5%;
+    width: 60%;
+}
+
+#div-dni-telefono {
+    display: flex;
+    width: 100%;
+}
+
+.DNI {
+    width: 100%;
+}
+
+.DNI input, .DNI label {
+    width: 95%;
+}
+
+.Telefono {
+    width: 100%;
+}
+
+.Telefono input, .Telefono label {
+    width: 100%;
+}
+
+#div-provincia-localidad {
+    display: flex;
+    width: 100%;
+}
+
+.Provincia {
+    width: 65%;
+}
+
+.Provincia select, .Provincia label, .Provincia option {
+    width: 95%;
+}
+
+.Localidad{
+    width: 100%;
+}
+
+.Localidad select, .Localidad label, .Localidad option{
+    width: 100%;
+}
+
+#informacion-inicio-sesion{
+    padding-left: 5%;
+    padding-top: 2.5%;
+    width: 40%;
+}
+#btn-registro{
+    width: 50%;
+    margin-top: 12%;
 }

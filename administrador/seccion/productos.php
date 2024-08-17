@@ -13,7 +13,7 @@ switch ($accion) {
     case "Agregar":
         // INSERT INTO `productos` (`ID`, `Nombre_Producto`, `Imagen_Producto`) VALUES (NULL, 'Zapatillas deportivas', 'imagen.jpg');
         // Insertar datos a tabla Productos
-        $sentenciaSQL= $conexion->prepare("INSERT INTO productos (Nombre_Producto, Imagen_Producto) VALUES (:nombre, :imagen);");
+        $sentenciaSQL= $conexion->prepare("INSERT INTO Productos (Nombre_Producto, Imagen_Producto) VALUES (:nombre, :imagen);");
         $sentenciaSQL->bindParam(':nombre',$txtNombre);
        
         $fecha = new DateTime();
@@ -31,7 +31,7 @@ switch ($accion) {
         header('Location:productos.php');
         break;
     case "Modificar":
-        $sentenciaSQL= $conexion->prepare("UPDATE productos SET Nombre_Producto=:nombre WHERE id=:id");
+        $sentenciaSQL= $conexion->prepare("UPDATE Productos SET Nombre_Producto=:nombre WHERE id=:id");
         $sentenciaSQL->bindParam(':nombre',$txtNombre);
         $sentenciaSQL->bindParam(':id',$txtID);
         $sentenciaSQL->execute();
@@ -41,24 +41,24 @@ switch ($accion) {
 
             // Subir nueva imagen
             $fecha = new DateTime();
-            $nombreArchivo=($txtImagen!="")?$fecha->getTimestamp()."_".$_FILES["txtImagen"]["name"]:"imafen.jpg";
+            $nombreArchivo=($txtImagen!="")?$fecha->getTimestamp()."_".$_FILES["txtImagen"]["name"]:"imagen.jpg";
             
             $tmpImagen=$_FILES["txtImagen"]["tmp_name"];
             move_uploaded_file($tmpImagen,"../../imgProductos/".$nombreArchivo);
 
              // Borrar Imagen anterior
-             $sentenciaSQL= $conexion->prepare("SELECT Imagen_producto FROM productos WHERE id=:id");
+             $sentenciaSQL= $conexion->prepare("SELECT Imagen_Producto FROM Productos WHERE id=:id");
              $sentenciaSQL->bindParam(':id',$txtID);
              $sentenciaSQL->execute();
              $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
  
-             if( isset($producto['Imagen_producto']) && ($producto['Imagen_producto']!="imagen.jpg")){
-                 if(file_exists("../../imgProductos/".$producto['Imagen_producto'])){
-                     unlink("../../imgProductos/".$producto['Imagen_producto']);
+             if( isset($producto['Imagen_Producto']) && ($producto['Imagen_Producto']!="imagen.jpg")){
+                 if(file_exists("../../imgProductos/".$producto['Imagen_Producto'])){
+                     unlink("../../imgProductos/".$producto['Imagen_Producto']);
                  }
              }
 
-            $sentenciaSQL= $conexion->prepare("UPDATE productos SET Imagen_Producto=:imagen WHERE id=:id");
+            $sentenciaSQL= $conexion->prepare("UPDATE Productos SET Imagen_Producto=:imagen WHERE id=:id");
             $sentenciaSQL->bindParam(':imagen',$nombreArchivo);
             $sentenciaSQL->bindParam(':id',$txtID);
             $sentenciaSQL->execute();
@@ -70,7 +70,7 @@ switch ($accion) {
         header('Location:productos.php');
         break;
     case 'Seleccionar':
-        $sentenciaSQL= $conexion->prepare("SELECT * FROM productos WHERE id=:id");
+        $sentenciaSQL= $conexion->prepare("SELECT * FROM Productos WHERE id=:id");
         $sentenciaSQL->bindParam(':id',$txtID);
         $sentenciaSQL->execute();
         $producto=$sentenciaSQL->fetch(PDO::FETCH_LAZY);
@@ -92,7 +92,7 @@ switch ($accion) {
         }
 
         // Borrar resto de datos
-        $sentenciaSQL= $conexion->prepare("DELETE FROM productos WHERE id=:id");
+        $sentenciaSQL= $conexion->prepare("DELETE FROM Productos WHERE id=:id");
         $sentenciaSQL->bindParam(':id',$txtID);
         $sentenciaSQL->execute();
 
@@ -101,13 +101,13 @@ switch ($accion) {
 
 }
 
-$sentenciaSQL= $conexion->prepare("SELECT * FROM productos");
+$sentenciaSQL= $conexion->prepare("SELECT * FROM Productos");
 $sentenciaSQL->execute();
 $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
 
-<div class="col-md-5">
+<div class="col-md-12">
     <div class="card">
         <div class="card-header">
             Datos del producto
@@ -153,13 +153,21 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 </div>
 
-<div class="col-md-7">
+<br>
+
+<div class="col-md-12">
     <table class="table table-bordered">
         <thead>
             <tr>
                 <th id="th-ID">ID</th>
                 <th id="th-nombre">Nombre</th>
+                <th id="th-nombre">Precio</th>
                 <th id="th-imagen">Imagen</th>
+                <th id="th-nombre">Descripción</th>
+                <th id="th-nombre">Fecha Registro</th>
+                <th id="th-nombre">Stock</th>
+                <th id="th-nombre">Especificaciones</th>
+                <th id="th-nombre">Categoria</th>
                 <th id="th-acciones">Acciones</th>
             </tr>
         </thead>
@@ -174,7 +182,7 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 
                 <td>
                 <form method="POST">
-                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID']; ?>">
+                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>">
                 
                     <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary">
 

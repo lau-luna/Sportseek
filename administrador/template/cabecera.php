@@ -37,11 +37,10 @@ if(!isset($_SESSION['usuario'])) {
             <a class="nav-item nav-link active" href="#">Administrador del sitio web <span class="sr-only"></span></a>
             <a class="nav-item nav-link" href="<?php echo $url."/administrador/inicio.php"; ?>">Inicio</a>
             <a class="nav-item nav-link" href="<?php echo $url."/administrador/seccion/productos.php"; ?>">Productos</a>
+            <a class="nav-item nav-link" href="<?php echo $url."/administrador/seccion/categorias.php"; ?>">Categorias</a>
             <a class="nav-item nav-link" href="<?php echo $url."/administrador/seccion/cerrar.php"; ?>">Cerrar sesión</a>
             <a class="nav-item nav-link" href="<?php echo $url; ?>">Ver sitio web</a>
         </div>
     </nav>
 
-    <div class="container">
         <br>
-        <div class="row">
