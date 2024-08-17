@@ -31,7 +31,14 @@ if ($_POST) {
 
                     header('Location:index.php');
                 } else {
-                    $mensaje = "Su cuenta no es de tipo Cliente.";
+                    $_SESSION['usuario'] = "ok";
+                    $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
+                    $_SESSION['Apellido_Usuario'] = $usuario['Apellido_Usuario'];
+                    $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
+                    $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
+
+
+                    header('Location:administrador/inicio.php');
                 }
             } else {
                 $mensaje = "El nombre de usuario o contraseña es incorrecto.";
