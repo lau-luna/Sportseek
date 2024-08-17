@@ -28,6 +28,7 @@ if ($_POST) {
                     $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
                     $_SESSION['Apellido_Usuario'] = $usuario['Apellido_Usuario'];
                     $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
+                    $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
                     header('Location:index.php');
                 } else {
