@@ -32,10 +32,3 @@
     display: flex;
     justify-content: center;
 }
-
-
-#th-ID, #th-nombre, #th-imagen, #th-acciones {
-    display: flex;
-    justify-content: center;
-    text-align: center;
-}

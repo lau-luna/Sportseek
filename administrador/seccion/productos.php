@@ -158,16 +158,16 @@ $listaProductos=$sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 <div class="col-md-12">
     <table class="table table-bordered">
         <thead>
-            <tr>
-                <th id="th-ID">ID</th>
-                <th id="th-nombre">Nombre</th>
-                <th id="th-nombre">Precio</th>
-                <th id="th-imagen">Imagen</th>
-                <th id="th-nombre">Descripción</th>
-                <th id="th-nombre">Fecha Registro</th>
-                <th id="th-nombre">Stock</th>
-                <th id="th-nombre">Especificaciones</th>
-                <th id="th-nombre">Categoria</th>
+            <tr style="font-size: small;">
+                <th style="width: 3%;" id="th-ID">ID</th>
+                <th style="width: 14%;" id="th-nombre">Nombre</th>
+                <th style="width: 8%;" id="th-precio">Precio</th>
+                <th style="width: 8%;" id="th-imagen">Imagen</th>
+                <th style="width: 18%;" id="th-descripcion">Descripción</th>
+                <th style="width: 10%;" id="th-fecha">Fecha Registro</th>
+                <th style="width: 6%;" id="th-stock">Stock</th>
+                <th id="th-especificiaciones">Especificaciones</th>
+                <th id="th-categoria">Categoria</th>
                 <th id="th-acciones">Acciones</th>
             </tr>
         </thead>

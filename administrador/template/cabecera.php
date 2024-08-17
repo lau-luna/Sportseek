@@ -25,6 +25,8 @@ if (!isset($_SESSION['usuario'])) {
 
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
+    <link rel="stylesheet" href="../administrador.css" type="text/css">
+
 </head>
 
 <body>
