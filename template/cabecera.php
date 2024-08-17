@@ -29,18 +29,20 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']){
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
+    <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
 </head>
 
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
-    
+    <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
+    <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 
 
     <div style="position: fixed; width: 100%; z-index: 999;">
         <header class="d-flex" style="background-color: white;">
             <a class="nav-link" href="index.php">
-                <img src="./img/solodeportes.png" alt="Deportes" width="125">
+                <img src="./img/LogoTiendaHeader.png" alt="Deportes" width="150">
                 <span class="sr-only"></span>
             </a>
 
@@ -61,7 +63,10 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']){
                 <!-- Mostar sólo se se inció la sessión-->
                 <?php if (isset($_SESSION['usuario'])) { ?>
                     <a class="form-inline my-2 my-lg-0" href="./carrito.php">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">🛒 MI CARRITO</button>
+                    <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
+                        <img src="./img/CarritoIcon.png" alt="Carrito" class="btn-img" style="height: 4vh; vertical-align: middle; margin-right: 5px;">
+                        MI CARRITO
+                    </button>
                     </a>
                 <?php } ?>
 
@@ -70,7 +75,8 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']){
                     <!-- Example single danger button -->
                     <div class="form-inline my-2 my-lg-0">
                         <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
-                            MI CUENTA
+                        <img src="./img/CuentaIcon.png" alt="Cuenta" class="btn-img" style="height: 4vh; vertical-align: middle; margin-right: 5px;">
+                        MI CUENTA
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
@@ -108,4 +114,4 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']){
 
     <div class="contenedor">
 
-        <br> <br> <br> <br> <br> <br>
+        <br> <br> <br> <br> <br>
