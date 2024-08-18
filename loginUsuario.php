@@ -70,13 +70,13 @@ if ($_POST) {
                 <?php } ?>
 
                 <div data-mdb-input-init class="form-outline mb-2">
-                    <input type="email" name="email" id="form2Example18" class="form-control form-control-md" />
                     <label class="form-label" style="font-size:small;" for="form2Example18">Correo electrónico</label>
+                    <input type="email" name="email" id="form2Example18" class="form-control form-control-md" />
                 </div>
 
                 <div data-mdb-input-init class="form-outline mb-2">
+                    <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>   
                     <input type="password" name="contrasenia" id="form2Example28" class="form-control form-control-md" />
-                    <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                 </div>
 
                 <div class="pt-1 mb-2">

@@ -38,6 +38,17 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                         <div class="alert alert-danger" role="alert">
                             Sin stock!
                         </div>
+                    <?php } else { ?>
+
+                        <form id="form" action="carrito.php" method="POST">
+                            <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
+                            <label for="cantidad">Cantidad:</label>
+                            <input type="number" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto">
+
+                            <a href="#" onclick="document.getElementById('form').submit();">
+                                <button type="button" class="btn btn-success mb-4">Agregar al carrito</button>
+                            </a>
+                        </form>
                     <?php } ?>
 
                     <p class=" mb-0" style="font-size:large; font-weight:bold;">Descripción</p>
