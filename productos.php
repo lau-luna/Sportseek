@@ -64,66 +64,75 @@ if (isset($categoriaSeleccionada)) {
 
 <div class="row">
     <!-- Sidebar -->
-<aside class="col-md-2">
+    <aside class="col-md-2">
 
-<form method="POST" action="">
-    <div data-mdb-input-init class="categoria mb-2">
-        <label class="form-label">Filtrar por:</label>
-        <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
-            <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
-            <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
-            <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
-        </select>
-        <!-- Campo oculto para mantener la categoría seleccionada -->
-        <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
-    </div>
-</form>
+        <form method="POST" action="">
+            <div data-mdb-input-init class="categoria mb-2">
+                <label class="form-label">Filtrar por:</label>
+                <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                    <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
+                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
+                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
+                </select>
+                <!-- Campo oculto para mantener la categoría seleccionada -->
+                <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+            </div>
+        </form>
 
-<div class="card">
-    <div class="card-header">
-        Categorías
-    </div>
-    <div>
-    <form method="POST">
-    <!-- Botón para Todas las categorías -->
-    <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
-        Todas las categorías
-    </button>
+        <div class="card">
+            <div class="card-header">
+                Categorías
+            </div>
+            <div>
+                <form method="POST">
+                    <!-- Botón para Todas las categorías -->
+                    <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
+                        Todas las categorías
+                    </button>
 
-    <?php
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
-    $sentenciaSQL->execute();
-    $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-    foreach ($listaCategorias as $categoria) { ?>
-        <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
-            <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
-        </button>
-    <?php } ?>
-</form>
-    </div>
-</div>
+                    <?php
+                    $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
+                    $sentenciaSQL->execute();
+                    $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                    foreach ($listaCategorias as $categoria) { ?>
+                        <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
+                            <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
+                        </button>
+                    <?php } ?>
+                </form>
+            </div>
+        </div>
 
-</aside>
+    </aside>
 
     <!-- Productos -->
     <div class="col-md-10">
         <div class="row">
-            <?php foreach ($listaProductos as $producto) { ?>
+            <?php foreach ($listaProductos as $producto) {
+                // Generar un ID único para cada formulario
+                $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
+            ?>
                 <div class="col-md-3 mb-4">
-                    <div class="card">
-                        <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                        <div class="card-body">
-                            <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                            <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
-                            <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
-                                <p class="text-danger"><?php echo "Sin Stock" ?></p>
-                            <?php } ?>
-                        </div>
-                    </div>
+                    <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="POST">
+                        <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
+                        <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
+                            <div class="card">
+                                <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                                    <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                                    <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
+                                        <p class="text-danger"><?php echo "Sin Stock" ?></p>
+                                    <?php } ?>
+                                </div>
+                            </div>
+                        </a>
+                    </form>
                 </div>
             <?php } ?>
         </div>
     </div>
+
 </div>
 
 

@@ -227,7 +227,7 @@ if (isset($categoriaSeleccionada)) {
 
                                 foreach ($listaCategorias as $categoria) {
                                 ?>
-                                    <option value="<?php echo $categoria['ID_Categoria'] ?>"><?php echo $categoria['Nombre_Categoria'] ?></option>
+                                    <option <?php if(isset($txtCategoria) && $txtCategoria==$categoria['ID_Categoria']) { echo 'selected'; } ?> value="<?php echo $categoria['ID_Categoria'] ?>"><?php echo $categoria['Nombre_Categoria'] ?></option>
                                 <?php } ?>
                             </select>
                         </div>
