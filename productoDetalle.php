@@ -35,7 +35,7 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                     <div class="mb-4"></div>
 
                     <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
-                        <div class="alert alert-danger col-md-4" role="alert">
+                        <div class="alert alert-danger" role="alert">
                             Sin stock!
                         </div>
                     <?php } ?>
