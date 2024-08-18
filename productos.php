@@ -118,7 +118,7 @@ if (isset($categoriaSeleccionada)) {
                         <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
                             <div class="card">
                                 <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                                <div class="card-body">
+                                <div class="card-body h-100">
                                     <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                                     <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
                                     <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>

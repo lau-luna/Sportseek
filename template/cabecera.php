@@ -47,7 +47,9 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
 
             <form class="form-inline " id="formulario-busqueda-productos">
                 <input class="form-control" type="text" placeholder="¿Qué estás buscando?">
-                <button class="btn btn-primary" type="submit">🔎</button>
+                <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
+                    <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                </button>
             </form>
 
             <!-- Contenedor que empuja los botones hacia la derecha -->
@@ -79,11 +81,11 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
-                            <?php if ($_SESSION['Tipo_Usuario']=='Administrador') {?>
+                            <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador') { ?>
                                 <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
-                            <?php }?>
-                            <a class="dropdown-item" href="#">Another action</a>
-                            
+                            <?php } ?>
+                            <a class="dropdown-item" href="factura.php">Facturas</a>
+
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="./config/procesar.php?accion=cerrarsesion">Cerrar Sesión</a>
                         </div>
