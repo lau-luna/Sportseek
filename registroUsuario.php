@@ -164,14 +164,12 @@ if ($_POST) {
                     <div data-mdb-input-init class="mb-4">
                         <div>
                         <label class="form-label" style="font-size:small;">Contraseña</label>
-<<<<<<< Updated upstream
                         <input type="password" name="txtContrasenia" required class="form-control form-control-md" />
-=======
+
                             
                         </div>
                         <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control" />
                         <i class="bx bx-show-alt"></i>
->>>>>>> Stashed changes
                     </div>
 
 

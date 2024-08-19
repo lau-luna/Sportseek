@@ -21,8 +21,11 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
+
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<!-- BoxIcons -->
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Styles -->
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
@@ -83,22 +86,15 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
                             <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador') { ?>
                                 <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
-<<<<<<< Updated upstream
-                            <?php } ?>
-                            <a class="dropdown-item" href="factura.php">Facturas</a>
-
-=======
                                 <?php } ?>
                                 <a class="dropdown-item" href="pedido.php">Pedidos</a>
                                 <a class="dropdown-item" href="factura.php">Facturas</a>
-                                
                             
->>>>>>> Stashed changes
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="./config/procesar.php?accion=cerrarsesion">Cerrar Sesión</a>
                         </div>
                     </div>
-                <?php ?>
+                <?php } ?>
 
             </div>
 
@@ -111,7 +107,7 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="./index.php">Incio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="./productos.php">Productos</a>
