@@ -24,49 +24,49 @@ $sentenciaSQL->execute();
 $localidadProvincia = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
 if ($_POST) {
-        // Verificar si el correo electrónico ya está registrado
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
-        $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
-        $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
+    // Verificar si el correo electrónico ya está registrado
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
+    $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
+    $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
+    $sentenciaSQL->execute();
+    $emailResgistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+
+    if ($emailResgistrado) {
+        $mensaje = "Este correo ya está registrado.";
+    } else {
+
+        // Recibir los datos del formulario y guardarlo en variables
+        $txtUsername = $_POST['txtUsername'];
+        $txtNombreUsuario = $_POST['txtNombre'];
+        $txtApellidosUsuario = $_POST['txtApellidos'];
+        $txtDni = $_POST['txtDni'];
+        $txtEmail = $_POST['txtEmail'];
+        $txtContrasenia = $_POST['txtContrasenia'];
+        $txtDireccion = $_POST['txtDireccion'];
+        $txtTelefono = $_POST['txtTelefono'];
+        $txtIdProvincia = $_POST['txtProvincia'];
+        $txtLocalidad = $_POST['txtLocalidad'];
+
+        // Verificar la localidad
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
+        $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+        $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
         $sentenciaSQL->execute();
-        $emailResgistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+        $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-        if ($emailResgistrado) {
-            $mensaje = "Este correo ya está registrado.";
+        if ($localidad) {
+            $txtIdLocalidad = $localidad['ID_Localidades'];
         } else {
-
-            // Recibir los datos del formulario y guardarlo en variables
-            $txtUsername = $_POST['txtUsername'];
-            $txtNombreUsuario = $_POST['txtNombre'];
-            $txtApellidosUsuario = $_POST['txtApellidos'];
-            $txtDni = $_POST['txtDni'];
-            $txtEmail = $_POST['txtEmail'];
-            $txtContrasenia = $_POST['txtContrasenia'];
-            $txtDireccion = $_POST['txtDireccion'];
-            $txtTelefono = $_POST['txtTelefono'];
-            $txtIdProvincia = $_POST['txtProvincia'];
-            $txtLocalidad = $_POST['txtLocalidad'];
-
-            // Verificar la localidad
-            $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
+            // Insertar nueva localidad
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
+            $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
             $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-            $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
             $sentenciaSQL->execute();
-            $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+            $txtIdLocalidad = $conexion->lastInsertId();
+        }
 
-            if ($localidad) {
-                $txtIdLocalidad = $localidad['ID_Localidades'];
-            } else {
-                // Insertar nueva localidad
-                $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
-                $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
-                $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-                $sentenciaSQL->execute();
-                $txtIdLocalidad = $conexion->lastInsertId();
-            }
-
-            // Actualizar datos del usuario
-            $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
+        // Actualizar datos del usuario
+        $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
                 Username_Usuario = :username, 
                 Nombre_Usuario = :nombre_usuario, 
                 Apellidos_Usuario = :apellidos_usuario, 
@@ -78,21 +78,19 @@ if ($_POST) {
                 Localidades_ID_Localidades = :id_localidad 
                 WHERE ID_Usuario = :id_usuario");
 
-            $sentenciaSQL->execute([
-                ':username' => $txtUsername,
-                ':nombre_usuario' => $txtNombreUsuario,
-                ':apellidos_usuario' => $txtApellidosUsuario,
-                ':dni' => $txtDni,
-                ':email' => $txtEmail,
-                ':contrasenia' => $txtContrasenia,
-                ':direccion' => $txtDireccion,
-                ':telefono' => $txtTelefono,
-                ':id_localidad' => $txtIdLocalidad,
-                ':id_usuario' => $_SESSION['ID_Usuario']
-            ]);
-
-            
-        }
+        $sentenciaSQL->execute([
+            ':username' => $txtUsername,
+            ':nombre_usuario' => $txtNombreUsuario,
+            ':apellidos_usuario' => $txtApellidosUsuario,
+            ':dni' => $txtDni,
+            ':email' => $txtEmail,
+            ':contrasenia' => $txtContrasenia,
+            ':direccion' => $txtDireccion,
+            ':telefono' => $txtTelefono,
+            ':id_localidad' => $txtIdLocalidad,
+            ':id_usuario' => $_SESSION['ID_Usuario']
+        ]);
+    }
 }
 
 ?>
@@ -184,11 +182,16 @@ if ($_POST) {
                         <input type="email" value="<?php echo htmlspecialchars($txtEmail); ?>" name="txtEmail" required class="form-control form-control-md" />
                     </div>
 
+
                     <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia"  id="contrasenia" class="form-control form-control-md" />
-                        <i class="bx bx-show-alt"></i>
+                        <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                        <div class="containerr" style="position: relative;">
+                            <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                        </div>
                     </div>
+
+
 
                     <div id="btn-registro">
                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Guardar cambios</button>

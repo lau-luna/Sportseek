@@ -5,8 +5,8 @@
 
 <?php 
 
-if (isset($_POST['ID_Pedido'])) {
-    $IdPedido = $_POST['ID_Pedido'];
+if (isset($_GET['ID_Pedido'])) {
+    $IdPedido = $_GET['ID_Pedido'];
 } else {
     $IdPedido = intval($_SESSION['ID_Pedido']);
 }

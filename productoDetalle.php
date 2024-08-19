@@ -5,12 +5,12 @@
 <br>
 <?php
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto=:id");
-$sentenciaSQL->bindParam(':id', $_POST['IdProducto']);
+$sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
 $sentenciaSQL->execute();
 $producto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 $sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
 $sentenciaSQL->bindParam(':IdCategoria', $producto['Categorias_ID_Categoria']);
-$sentenciaSQL->bindParam(':id', $_POST['IdProducto']);
+$sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
 $sentenciaSQL->execute();
 $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
@@ -40,7 +40,7 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                         </div>
                     <?php } else { ?>
 
-                        <form id="form" action="carrito.php" method="POST">
+                        <form id="form" action="carrito.php" method="GET">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <label for="cantidad">Cantidad:</label>
                             <input type="number" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto">

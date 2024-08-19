@@ -103,31 +103,31 @@ if ($_POST) {
                 <div id="informacion-personal">
                     <h3 class="fw-normal " style="font-size:small">Informacion Personal</h3>
                     <hr>
-                    
-                        <label class="form-label" style="font-size:small;">Nombre</label>
-                        <input type="text" name="txtNombre" required class="form-control form-control-md" />
-                    
-                        <label class="form-label" style="font-size:small;">Apellidos</label>
-                        <input type="text" name="txtApellidos" required class="form-control form-control-md" />
+
+                    <label class="form-label" style="font-size:small;">Nombre</label>
+                    <input type="text" name="txtNombre" required class="form-control form-control-md" />
+
+                    <label class="form-label" style="font-size:small;">Apellidos</label>
+                    <input type="text" name="txtApellidos" required class="form-control form-control-md" />
 
                     <div id="div-dni-telefono" style="padding-top: 2.5vh;">
-                            <div class="DNI">
-                            <label class="form-label" style="font-size:small; padding-right: 1vh;" >DNI</label>
+                        <div class="DNI">
+                            <label class="form-label" style="font-size:small; padding-right: 1vh;">DNI</label>
                             <input type="text" name="txtDni" required class="form-control" />
-                            </div>
-                            <div class="Telefono">
+                        </div>
+                        <div class="Telefono">
                             <label class="form-label" style="font-size:small; padding-right: 1vh;">Telefono</label>
                             <input type="text" name="txtTelefono" required class="form-control" />
-                            </div>
-                        
-                            
-                        
+                        </div>
+
+
+
                     </div>
-                        <label class="form-label" style="font-size:small;">Dirección</label>
-                        <input type="text" name="txtDireccion" required class="form-control form-control-md" style="margin-bottom: 2.5vh;"/>
+                    <label class="form-label" style="font-size:small;">Dirección</label>
+                    <input type="text" name="txtDireccion" required class="form-control form-control-md" style="margin-bottom: 2.5vh;" />
                     <div id="div-provincia-localidad">
                         <div class="Provincia">
-                        <label class="form-label" style="font-size:small; padding-right: 1vh;">Provincia</label>
+                            <label class="form-label" style="font-size:small; padding-right: 1vh;">Provincia</label>
                             <select name="txtProvincia" id="provincia" class="form-control" required>
                                 <?php
                                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Provincias");
@@ -141,11 +141,11 @@ if ($_POST) {
                             </select>
                         </div>
                         <div class="Localidad">
-                        <label class="form-label" style="font-size:small; padding-right: 1vh;">Localidad</label>
-                        <input type="text" name="txtLocalidad" required class="form-control" />
+                            <label class="form-label" style="font-size:small; padding-right: 1vh;">Localidad</label>
+                            <input type="text" name="txtLocalidad" required class="form-control" />
                         </div>
-                            
-                        
+
+
                     </div>
 
                 </div>
@@ -161,13 +161,12 @@ if ($_POST) {
                     <label class="form-label" style="font-size:small;">Correo electrónico</label>
                     <input type="email" name="txtEmail" required class="form-control form-control-md" />
 
-                    <div data-mdb-input-init class="mb-4">
-                        <div>
-                        <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control" />
-                            
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                        <div class="containerr" style="position: relative;">
+                            <input type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                         </div>
-                        <i class="bx bx-show-alt"></i>
                     </div>
 
 
@@ -185,6 +184,7 @@ if ($_POST) {
         </form>
     </div>
 </section>
+<script src="./js/ContraOcultar.js"></script>
 
 
 

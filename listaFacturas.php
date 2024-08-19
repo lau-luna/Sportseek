@@ -5,7 +5,7 @@
 <?php
 
 // Obtener el filtro seleccionada del formulario
-$filtroSeleccionado = isset($_POST['txtFiltro']) ? $_POST['txtFiltro'] : 'ninguno';
+$filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
 
 if ($filtroSeleccionado == 'ninguno') {
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos WHERE Usuarios_ID_Usuario=:IdUsuario ORDER BY Fecha_Pedido DESC");
@@ -26,7 +26,7 @@ if ($filtroSeleccionado == 'ninguno') {
 <link href="./css/factura.css" rel="stylesheet">
 
 <div class="container">
-    <form method="POST" action="">
+    <form method="GET" action="">
         <div class="col-md-2 mb-2">
             <label class="form-label">Filtrar por estado:</label>
             <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
@@ -68,7 +68,7 @@ if ($filtroSeleccionado == 'ninguno') {
                             break;
                     } ?>
 
-                    <form id="form-pedido-<?php echo htmlspecialchars($pedido['ID_Pedido']); ?>" action="pedido.php" method="POST">
+                    <form id="form-pedido-<?php echo htmlspecialchars($pedido['ID_Pedido']); ?>" action="pedido.php" method="GET">
                         <input type="hidden" name="ID_Pedido" value="<?php echo htmlspecialchars($pedido['ID_Pedido']); ?>">
                         <tr>
                             <td><?php echo htmlspecialchars($pedido['ID_Pedido']); ?></td>

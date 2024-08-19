@@ -129,7 +129,7 @@ switch ($accion) {
 }
 
 // Obtener la categoría seleccionada del formulario
-$categoriaSeleccionada = isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : 'todas';
+$categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
 
 if (isset($categoriaSeleccionada)) {
     if ($categoriaSeleccionada == 'todas') {
@@ -255,7 +255,7 @@ if (isset($categoriaSeleccionada)) {
 
 
 
-<form method="POST" action="">
+<form method="GET" action="">
     <div data-mdb-input-init class="categoria col-md-3 mb-3">
         <label class="form-label">Filtrar por Categoría:</label>
         <select name="txtCategoria" id="categoria" class="form-control" onchange="this.form.submit()">

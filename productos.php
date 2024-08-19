@@ -6,10 +6,10 @@
 
 
 
-// Obtener la categoría seleccionada del formulario
-$categoriaSeleccionada = isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : 'todas';
-// Obtener el filtro seleccionada del formulario
-$filtroSeleccionado = isset($_POST['txtFiltro']) ? $_POST['txtFiltro'] : 'ninguno';
+// Obtener la categoría seleccionada y el filtro desde GET
+$categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
+$filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
+
 
 
 if (isset($categoriaSeleccionada)) {
@@ -66,42 +66,45 @@ if (isset($categoriaSeleccionada)) {
     <!-- Sidebar -->
     <aside class="col-md-2">
 
-        <form method="POST" action="">
-            <div data-mdb-input-init class="categoria mb-2">
-                <label class="form-label">Filtrar por:</label>
-                <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
-                    <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
-                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
-                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
-                </select>
-                <!-- Campo oculto para mantener la categoría seleccionada -->
-                <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
-            </div>
-        </form>
+        <!-- Formulario de filtros -->
+            <form method="GET" action="">
+                <div data-mdb-input-init class="categoria mb-2">
+                    <label class="form-label">Filtrar por:</label>
+                    <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                        <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
+                        <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
+                        <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
+                    </select>
+                    <!-- Campo oculto para mantener la categoría seleccionada -->
+                    <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                </div>
+            </form>
 
-        <div class="card">
-            <div class="card-header">
-                Categorías
-            </div>
-            <div>
-                <form method="POST">
-                    <!-- Botón para Todas las categorías -->
-                    <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
-                        Todas las categorías
-                    </button>
-
-                    <?php
-                    $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
-                    $sentenciaSQL->execute();
-                    $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-                    foreach ($listaCategorias as $categoria) { ?>
-                        <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
-                            <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
+            <div class="card">
+                <div class="card-header">
+                    Categorías
+                </div>
+                <div>
+                    <form method="GET">
+                        <!-- Botón para Todas las categorías -->
+                        <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
+                            Todas las categorías
                         </button>
-                    <?php } ?>
-                </form>
+
+                        <?php
+                        $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
+                        $sentenciaSQL->execute();
+                        $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($listaCategorias as $categoria) { ?>
+                            <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
+                                <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
+                            </button>
+                        <?php } ?>
+                        <!-- Mantener el filtro seleccionado en la URL -->
+                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                    </form>
+                </div>
             </div>
-        </div>
 
     </aside>
 
@@ -113,8 +116,10 @@ if (isset($categoriaSeleccionada)) {
                 $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
             ?>
                 <div class="col-md-3 mb-4">
-                    <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="POST">
+                    <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
                         <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
+                        <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
                         <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
                             <div class="card">
                                 <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
@@ -128,6 +133,7 @@ if (isset($categoriaSeleccionada)) {
                             </div>
                         </a>
                     </form>
+
                 </div>
             <?php } ?>
         </div>
