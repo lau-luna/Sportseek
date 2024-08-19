@@ -22,7 +22,7 @@ if (isset($categoriaSeleccionada)) {
                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY Precio_Producto DESC");
                 break;
             case 'ninguno':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos");
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY ID_Producto DESC");
                 break;
         }
         $sentenciaSQL->execute();
@@ -36,7 +36,7 @@ if (isset($categoriaSeleccionada)) {
                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY Precio_Producto DESC");
                 break;
             case 'ninguno':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria");
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY ID_Producto DESC");
                 break;
         }
 
