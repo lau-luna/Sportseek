@@ -23,3 +23,17 @@
 .imgIniciarSesion{
     float: right;
 }
+
+.form-outline{
+align-items: center;
+display: flex;
+gap: 10px;
+}
+
+.bx{
+    font-size: 30px;
+    transform: translate(-40px);
+    cursor:pointer;
+    
+
+}

@@ -169,7 +169,8 @@ if ($_POST) {
 
                     <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" name="txtContrasenia" required class="form-control form-control-md" />
+                        <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control form-control-md" />
+                        <i class="bx bx-show-alt"></i>
                     </div>
 
                     <div id="btn-registro">
@@ -185,6 +186,7 @@ if ($_POST) {
 
         </form>
     </div>
+    <script src="./js/ContraOcultar.js"></script>
 </section>
 
 

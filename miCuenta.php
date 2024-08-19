@@ -186,7 +186,8 @@ if ($_POST) {
 
                     <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" required class="form-control form-control-md" />
+                        <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia"  id="contrasenia" class="form-control form-control-md" />
+                        <i class="bx bx-show-alt"></i>
                     </div>
 
                     <div id="btn-registro">
@@ -197,5 +198,5 @@ if ($_POST) {
         </div>
     </div>
 </form>
-
+<script src="./js/ContraOcultar.js"></script>
 <?php include('template/pie.php'); ?>
