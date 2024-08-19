@@ -5,14 +5,8 @@
 
 <?php 
 
-if (isset($_POST['ID_Pedido'])) {
-    $IdPedido = $_POST['ID_Pedido'];
-} else {
-    $IdPedido = intval($_SESSION['ID_Pedido']);
-}
-
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos INNER JOIN Facturas_Pedidos_Productos ON Pedidos.ID_Pedido=Facturas_Pedidos_Productos.Pedidos_ID_Pedido WHERE ID_Pedido=:IdPedido");
-$sentenciaSQL->bindParam(":IdPedido", $IdPedido);
+$sentenciaSQL->bindParam(":IdPedido", $_POST['ID_Pedido']);
 $sentenciaSQL->execute();
 $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
@@ -47,7 +41,7 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
                     <?php 
                         $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos INNER JOIN Usuarios ON Pedidos.Usuarios_ID_Usuario=Usuarios.ID_Usuario WHERE ID_Pedido=:IdPedido");
-                        $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
+                        $sentenciaSQL->bindParam(":IdPedido", $_POST['ID_Pedido']);
                         $sentenciaSQL->execute();
                         $usuarioPedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
@@ -71,7 +65,7 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                     <h5>Estado del pedido:</h5>
                     <?php 
                          $sentenciaSQL = $conexion->prepare("SELECT Estado_Pedido FROM Pedidos INNER JOIN Estados_Pedidos ON Pedidos.Estados_Pedidos_ID_Estado_Pedido=Estados_Pedidos.ID_Estado_Pedido WHERE ID_Pedido=:IdPedido");
-                        $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
+                        $sentenciaSQL->bindParam(":IdPedido", $_POST['ID_Pedido']);
                          
                          $sentenciaSQL->execute();
                          $estadoPedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
@@ -84,13 +78,14 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                 <thead class="table-light table-bordered">
                     <tr>
                         <th style="width: 65%;">Producto</th>
-                        <th class="text-end" style="width: 20%;" >Cantidad</th>
+                        <th style="width: 10%;" >Cantidad</th>
+                        <th style="width: 25%;" class="text-end">Precio Unitario</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php 
                         $sentenciaSQL = $conexion->prepare("SELECT Productos.Nombre_Producto, Productos.Precio_Producto, Facturas_Pedidos_Productos.Cantidad_Productos FROM Facturas_Pedidos_Productos INNER JOIN Productos ON Productos.ID_Producto=Facturas_Pedidos_Productos.Productos_ID_Productos WHERE Facturas_Pedidos_Productos.Pedidos_ID_Pedido=:IdPedido");
-                        $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
+                        $sentenciaSQL->bindParam(":IdPedido", $_POST['ID_Pedido']);
                         $sentenciaSQL->execute();
                         $listaProductosCantidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
@@ -101,8 +96,8 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                     ?>
                     <tr>
                         <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Producto']) ?> </td>
-                        <td class="text-end"> <?php echo htmlspecialchars($productoCantidad['Cantidad_Productos']) ?> </td>
-                       
+                        <td> <?php echo htmlspecialchars($productoCantidad['Cantidad_Productos']) ?> </td>
+                        <td class="text-end">$ <?php echo htmlspecialchars($productoCantidad['Precio_Producto']) ?></td>
                     </tr>
                     
                     <?php } ?>
@@ -110,6 +105,7 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                 </tbody>
                 <tfoot>
                     <tr class="total-row">
+                        <td></td>
                         <td>Total</td>
                         <td class="text-end">$ <?php echo htmlspecialchars($_SESSION['Total_Pedido']) ?> </td>
                     </tr>
