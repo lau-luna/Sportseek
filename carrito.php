@@ -81,6 +81,23 @@ switch ($accion) {
         $sentenciaSQL->execute();
 
         break;
+    case 'Continuar con la compra':
+        // Crear Pedido
+        
+
+        // Crear Factura
+
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos_Productos WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
+        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+        $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+        $sentenciaSQL->execute();
+        $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+        foreach ($listaCarritosProductos as $carrritoProducto) {
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas_Productos (Pedidos_ID_Pedido)");
+        }
+        
+        break;
 }
 
 ?>
@@ -123,7 +140,15 @@ switch ($accion) {
             <?php } ?>
         </tbody>
     </table>
+
     <h4>Total: $<span id="total"> <?php echo htmlspecialchars($total); ?> </span></h4>
+
+    <?php if (isset($carrito['ID_Carrito'])) { ?>
+        <form method="POST">
+            <input type="submit" name="accion" value="Continuar con la compra" class="btn btn-success">
+        </form>
+    <?php } ?>
+
 </div>
 
 <?php include("template/pie.php"); ?>

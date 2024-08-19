@@ -87,6 +87,7 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
                             <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador') { ?>
                                 <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
                                 <?php } ?>
+                                <a class="dropdown-item" href="pedido.php">Pedidos</a>
                                 <a class="dropdown-item" href="factura.php">Facturas</a>
                             
                             <div class="dropdown-divider"></div>
@@ -106,7 +107,7 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="./index.php">Incio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="./productos.php">Productos</a>

@@ -8,4 +8,3 @@ icon.addEventListener("click", e => {
         contra.type = "password"
     }
 })
- 

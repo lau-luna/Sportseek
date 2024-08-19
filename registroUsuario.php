@@ -103,38 +103,31 @@ if ($_POST) {
                 <div id="informacion-personal">
                     <h3 class="fw-normal " style="font-size:small">Informacion Personal</h3>
                     <hr>
-                    <div data-mdb-input-init class="form-outline mb-2">
+                    
                         <label class="form-label" style="font-size:small;">Nombre</label>
                         <input type="text" name="txtNombre" required class="form-control form-control-md" />
-                    </div>
-
-                    <div data-mdb-input-init class="form-outline mb-2">
+                    
                         <label class="form-label" style="font-size:small;">Apellidos</label>
                         <input type="text" name="txtApellidos" required class="form-control form-control-md" />
-                    </div>
 
-                    <div id="div-dni-telefono">
-                        <div data-mdb-input-init class="DNI mb-2">
-                            <label class="form-label" style="font-size:small;">DNI</label>
+                    <div id="div-dni-telefono" style="padding-top: 2.5vh;">
+                            <div class="DNI">
+                            <label class="form-label" style="font-size:small; padding-right: 1vh;" >DNI</label>
                             <input type="text" name="txtDni" required class="form-control" />
-                        </div>
-
-                        <div data-mdb-input-init class="Telefono mb-2">
-                            <label class="form-label" style="font-size:small;">Telefono</label>
+                            </div>
+                            <div class="Telefono">
+                            <label class="form-label" style="font-size:small; padding-right: 1vh;">Telefono</label>
                             <input type="text" name="txtTelefono" required class="form-control" />
-                        </div>
+                            </div>
+                        
+                            
+                        
                     </div>
-
-
-                    <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Dirección</label>
-                        <input type="text" name="txtDireccion" required class="form-control form-control-md" />
-                    </div>
-
-
+                        <input type="text" name="txtDireccion" required class="form-control form-control-md" style="margin-bottom: 2.5vh;"/>
                     <div id="div-provincia-localidad">
-                        <div data-mdb-input-init class="Provincia mb-4">
-                            <label class="form-label" style="font-size:small;">Provincia</label>
+                        <div class="Provincia">
+                        <label class="form-label" style="font-size:small; padding-right: 1vh;">Provincia</label>
                             <select name="txtProvincia" id="provincia" class="form-control" required>
                                 <?php
                                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Provincias");
@@ -147,36 +140,43 @@ if ($_POST) {
                                 <?php } ?>
                             </select>
                         </div>
-                        <div data-mdb-input-init class="Localidad mb-4">
-                            <label class="form-label" style="font-size:small;">Localidad</label>
-                            <input type="text" name="txtLocalidad" required class="form-control" />
+                        <div class="Localidad">
+                        <label class="form-label" style="font-size:small; padding-right: 1vh;">Localidad</label>
+                        <input type="text" name="txtLocalidad" required class="form-control" />
                         </div>
+                            
+                        
                     </div>
 
                 </div>
                 <div id="informacion-inicio-sesion">
                     <h3 class="fw-normal " style="font-size:small;">Informacion de Inicio de Sesion</h3>
                     <hr>
-                    <div data-mdb-input-init class="form-outline mb-2">
-                        <label class="form-label" style="font-size:small;">Nombre de Usuario</label>
-                        <input type="text" name="txtUsername" required class="form-control form-control-md" />
-                    </div>
+                    <label class="form-label" style="font-size:small;">Nombre de Usuario</label>
+                    <br>
+                    <input type="text" name="txtUsername" required class="form-control form-control-md" />
 
-                    <div data-mdb-input-init class="form-outline mb-2">
-                        <label class="form-label" style="font-size:small;">Correo electrónico</label>
-                        <input type="email" name="txtEmail" required class="form-control form-control-md" />
-                    </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
+
+                    <label class="form-label" style="font-size:small;">Correo electrónico</label>
+                    <input type="email" name="txtEmail" required class="form-control form-control-md" />
+
+                    <div data-mdb-input-init class="mb-4">
+                        <div>
                         <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control form-control-md" />
+                        <input type="password" name="txtContrasenia" required class="form-control form-control-md" />
+
+                            
+                        </div>
+                        <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control" />
                         <i class="bx bx-show-alt"></i>
                     </div>
+
 
                     <div id="btn-registro">
                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Ingresar</button>
                     </div>
-                                
+
                     <p>Ya tiene una cuenta? <a href="./loginUsuario.php" class="link-info">Inicie sesión aquí</a></p>
                 </div>
 
@@ -186,7 +186,6 @@ if ($_POST) {
 
         </form>
     </div>
-    <script src="./js/ContraOcultar.js"></script>
 </section>
 
 
