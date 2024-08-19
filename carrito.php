@@ -82,21 +82,52 @@ switch ($accion) {
 
         break;
     case 'Continuar con la compra':
+
         // Crear Pedido
-        
+        $fecha = new DateTime();
+        $fechaPedido = date('Y-m-d H:i:s', $fecha->getTimestamp());
+
+        $sentenciaSQL = $conexion->prepare("INSERT INTO Pedidos (Usuarios_ID_Usuario, Estados_Pedidos_ID_Estado_Pedido, Fecha_Pedido) VALUES (:IdUsuario, 1 ,:fecha)");
+        $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
+        $sentenciaSQL->bindParam(":fecha", $fechaPedido);
+        $sentenciaSQL->execute();
+
+        // Obtener el ID del pedido recién creado
+        $IdNuevoPedido = $conexion->lastInsertId();
 
         // Crear Factura
+        $fechaFactura = date('Y-m-d H:i:s', $fecha->getTimestamp());
 
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos_Productos WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
-        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
-        $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+
+        $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas (Fecha_Emision_Factura, Total_Factura, Estados_Facturas_ID_Estados_Factura, Usuarios_ID_Usuario) VALUES (:fecha, :total, 2, :IdUsuario )");
+        $sentenciaSQL->bindParam(":fecha", $fechaFactura);
+        $sentenciaSQL->bindParam(":total", $_SESSION['total']);
+        $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
         $sentenciaSQL->execute();
-        $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
+        // Obtener el ID de la factura recién creada
+        $IdNuevaFactura = $conexion->lastInsertId();
+
+        echo "<br> <br> Factura: ".$IdNuevaFactura;
+        echo "<br> <br> Pedido: ".$IdNuevoPedido;
+
+
+        // Transferir productos del carrito al Pedido y a las Facturas
         foreach ($listaCarritosProductos as $carrritoProducto) {
-            $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas_Productos (Pedidos_ID_Pedido)");
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas_Pedidos_Productos (Facturas_ID_Factura, Pedidos_ID_Pedido, Productos_ID_Productos, Cantidad_Productos) VALUES (:IdFactura, :IdPedido, :IdProducto, :cantidad");
+            $sentenciaSQL->bindParam(":IdFactura", $IdNuevaFactura);
+            $sentenciaSQL->bindParam(":IdPedido", $IdNuevoPedido);
+            $sentenciaSQL->bindParam(":IdProducto", $carrritoProducto['ID_Producto']);
+            $sentenciaSQL->bindParam(":IdProducto", $carrritoProducto['Cantidad_Productos']);
+            $sentenciaSQL->execute();
+
         }
-        
+
+        // Eliminar este carrito
+        $sentenciaSQL = $conexion->prepare("DELETE FROM Carritos WHERE ID_Carrito=:IdCarrito");
+        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+        $sentenciaSQL->execute();
+
         break;
 }
 
@@ -116,9 +147,9 @@ switch ($accion) {
         </thead>
         <tbody>
             <?php
-            $total = 0;
+            $_SESSION['total'] = 0;
             foreach ($listaCarritosProductos as $producto) {
-                $total = $total + ((floatval($producto['Precio_Producto'])) * (floatval($producto['Cantidad_Productos'])));
+                $_SESSION['total'] = $_SESSION['total'] + ((floatval($producto['Precio_Producto'])) * (floatval($producto['Cantidad_Productos'])));
 
             ?>
                 <tr>
@@ -141,7 +172,7 @@ switch ($accion) {
         </tbody>
     </table>
 
-    <h4>Total: $<span id="total"> <?php echo htmlspecialchars($total); ?> </span></h4>
+    <h4>Total: $<span id="total"> <?php echo htmlspecialchars($_SESSION['total']); ?> </span></h4>
 
     <?php if (isset($carrito['ID_Carrito'])) { ?>
         <form method="POST">
