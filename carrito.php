@@ -12,17 +12,34 @@ $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
 $sentenciaSQL->execute();
 $carrito = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
+// Si el usuario tiene un carrito guardado
 if (isset($carrito['ID_Carrito'])) {
 
+    // Si se manda un producto desde productoDetalle.php
     if (isset($_POST['IdProducto'])) {
-        // Insertar productos en el carrito
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos_Productos (Carritos_ID_Carrito, Productos_ID_Producto, Cantidad_Productos) VALUES (:IdCarrito, :IdProducto, :cantidad)");
+        //Comprobar si ya tiene el producto seleccionado para aumentar su cantidad
+        $sentenciaSQL = $conexion->prepare("SELECT Productos_ID_Producto, Cantidad_Productos FROM Carritos_Productos WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
         $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
         $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
-        $sentenciaSQL->bindParam(":cantidad", $_POST['cantidadProducto']);
         $sentenciaSQL->execute();
-    }
+        $IdProducto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
+        if (isset($IdProducto['Productos_ID_Producto'])) {
+            $cantidad = intval($IdProducto['Cantidad_Productos']) + intval($_POST['cantidadProducto']);
+            $sentenciaSQL = $conexion->prepare("UPDATE Carritos_Productos SET Cantidad_Productos=:cantidad WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
+            $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+            $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+            $sentenciaSQL->bindParam(":cantidad", $cantidad);
+            $sentenciaSQL->execute();
+        } else {
+            // Insertar el nuevo producto seleccionado en el carrito
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos_Productos (Carritos_ID_Carrito, Productos_ID_Producto, Cantidad_Productos) VALUES (:IdCarrito, :IdProducto, :cantidad)");
+            $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+            $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+            $sentenciaSQL->bindParam(":cantidad", $_POST['cantidadProducto']);
+            $sentenciaSQL->execute();
+        }
+    }
 } else {
     // Crear nuevo carrito si no existe
     $fecha = new DateTime();
@@ -81,12 +98,12 @@ switch ($accion) {
             </tr>
         </thead>
         <tbody>
-            <?php 
-            $total=0;
-            foreach ($listaCarritosProductos as $producto) { 
-                $total = $total + ( (floatval($producto['Precio_Producto'])) * (floatval($producto['Cantidad_Productos'])) );
-                
-                ?>
+            <?php
+            $total = 0;
+            foreach ($listaCarritosProductos as $producto) {
+                $total = $total + ((floatval($producto['Precio_Producto'])) * (floatval($producto['Cantidad_Productos'])));
+
+            ?>
                 <tr>
                     <td class="text-info">
                         <?php if ($producto['Imagen_Producto'] != 'imagen.jpg') { ?>
