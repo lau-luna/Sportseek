@@ -98,7 +98,7 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
                             <a class="dropdown-item text-danger" href="./config/procesar.php?accion=cerrarsesion">Cerrar Sesión</a>
                         </div>
                     </div>
-                <?php } ?>
+                <?php ?>
 
             </div>
 
