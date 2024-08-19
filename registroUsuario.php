@@ -161,14 +161,14 @@ if ($_POST) {
                     <label class="form-label" style="font-size:small;">Correo electrónico</label>
                     <input type="email" name="txtEmail" required class="form-control form-control-md" />
 
-                    <div data-mdb-input-init class="mb-4">
-                        <div>
-                        <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" name="txtContrasenia" id="contrasenia" required class="form-control" />
-                            
-                        </div>
-                        <i class="bx bx-show-alt"></i>
+                    <div data-mdb-input-init class="form-outline mb-2">
+                <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                <div class="containerr">
+                    <input type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+
+                    <i class="bx bx-show-alt"></i>
                     </div>
+                </div>
 
 
                     <div id="btn-registro">
@@ -185,6 +185,7 @@ if ($_POST) {
         </form>
     </div>
 </section>
+<script src="./js/ContraOcultar.js"></script>
 
 
 

@@ -184,11 +184,17 @@ if ($_POST) {
                         <input type="email" value="<?php echo htmlspecialchars($txtEmail); ?>" name="txtEmail" required class="form-control form-control-md" />
                     </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" style="font-size:small;">Contraseña</label>
-                        <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia"  id="contrasenia" class="form-control form-control-md" />
-                        <i class="bx bx-show-alt"></i>
+                    
+                <div data-mdb-input-init class="form-outline mb-4">
+                <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                <div class="containerr">
+                   
+                    <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia"  id="contrasenia" class="form-control form-control-md" />
+
+                    <i class="bx bx-show-alt"></i>
                     </div>
+                </div>
+
 
                     <div id="btn-registro">
                         <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Guardar cambios</button>

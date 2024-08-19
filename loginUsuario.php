@@ -69,14 +69,24 @@ if ($_POST) {
                     </div>
                 <?php } ?>
 
-                <div data-mdb-input-init class="form-outline mb-2">
-                    <input type="email" name="email" id="form2Example18" class="form-control form-control-md" />
-                    <label class="form-label" style="font-size:small;" for="form2Example18">Correo electrónico</label>
-                </div>
 
                 <div data-mdb-input-init class="form-outline mb-2">
-                    <input type="password" name="contrasenia" id="form2Example28" class="form-control form-control-md" />
-                    <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                <label class="form-label" style="font-size:small;" for="form2Example18">Correo electrónico</label>
+                <div class="containerr">
+                <input type="email" name="email" id="form2Example18" class="form-control form-control-md" />
+
+                    
+                    </div>
+                </div>
+                
+
+                <div data-mdb-input-init class="form-outline mb-2">
+                <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
+                <div class="containerr">
+                    <input type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+
+                    <i class="bx bx-show-alt"></i>
+                    </div>
                 </div>
 
                 <div class="pt-1 mb-2">
@@ -119,4 +129,5 @@ if ($_POST) {
     <br>
     <br>
     <br>
+    <script src="./js/ContraOcultar.js"></script>
     <?php include("template/pie.php") ?>
