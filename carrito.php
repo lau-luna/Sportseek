@@ -80,6 +80,9 @@ switch ($accion) {
         $sentenciaSQL->bindParam(':idCarrito', $carrito['ID_Carrito']);
         $sentenciaSQL->execute();
 
+        echo '<script type="text/javascript">
+        window.location.href = "carrito.php";
+      </script>';
         break;
     case 'Continuar con la compra':
 
