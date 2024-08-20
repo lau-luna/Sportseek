@@ -50,7 +50,7 @@ if ($busqueda) {
     $sentenciaSQLCount->execute();
     $totalProductos = $sentenciaSQLCount->fetchColumn();
     $totalPaginas = ceil($totalProductos / $productosPorPagina);
-}  else {
+} else {
     // Consulta cuando no hay búsqueda
     if ($categoriaSeleccionada == 'todas') {
         switch ($filtroSeleccionado) {
@@ -162,64 +162,68 @@ echo "<script>
         <div class="row">
             <?php if (!empty($listaProductos)) { ?>
                 <?php foreach ($listaProductos as $producto) {
-                // Generar un ID único para cada formulario
-                $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
-            ?>
-                <div class="col-md-3 mb-4">
-                    <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
-                        <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
-                        <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
-                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
-                        <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
-                            <div class="card">
-                                <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                                <div class="card-body h-100">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                                    <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
-                                    <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
-                                        <p class="text-danger"><?php echo "Sin Stock" ?></p>
-                                    <?php } ?>
+                    // Generar un ID único para cada formulario
+                    $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
+                ?>
+                    <div class="col-md-3 mb-4">
+                        <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
+                            <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
+                            <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                            <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                            <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
+                                <div class="cardLista">
+                                    <div class="cardProd">
+                                        <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                                        <div class="card-bodyProd">
+                                            <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                                            <p class="text-infoProd"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                                            <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
+                                                <p class="text-danger stock-labelProd"><?php echo "Sin Stock" ?></p>
+                                            <?php } ?>
+                                        </div>
+                                    </div>
                                 </div>
-                            </div>
-                        </a>
-                    </form>
-                </div>
-            <?php } ?>
+
+
+                            </a>
+                        </form>
+                    </div>
+                <?php } ?>
             <?php } else { ?>
                 <p>No se encontraron productos que coincidan con la búsqueda.</p>
             <?php } ?>
         </div>
 
         <!-- Productos -->
-    <div class="col-md-10">
-        <div class="row">
-            
-        </div>
+        <div class="col-md-10">
+            <div class="row">
 
-        <!-- Navegación de páginas -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
-                <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
-                    <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
-                        <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>">
-                            <?php echo $i; ?>
+            </div>
+
+            <!-- Navegación de páginas -->
+            <nav aria-label="Page navigation">
+                <ul class="pagination">
+                    <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
+                        <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Previous">
+                            <span aria-hidden="true">&laquo;</span>
                         </a>
                     </li>
-                <?php } ?>
-                <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
-            </ul>
-        </nav>
+                    <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
+                        <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
+                            <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                                <?php echo $i; ?>
+                            </a>
+                        </li>
+                    <?php } ?>
+                    <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
+                        <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Next">
+                            <span aria-hidden="true">&raquo;</span>
+                        </a>
+                    </li>
+                </ul>
+            </nav>
 
+        </div>
     </div>
-</div>
 
-<?php include("template/pie.php"); ?>
+    <?php include("template/pie.php"); ?>
