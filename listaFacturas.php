@@ -30,10 +30,10 @@ if ($filtroSeleccionado == 'ninguno') {
         <div class="col-md-2 mb-2">
             <label class="form-label">Filtrar por estado:</label>
             <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
-                <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Todos</option>
-                <option value="1" <?php if ($filtroSeleccionado == 1) echo 'selected'; ?>>Pendientes</option>
-                <option value="2" <?php if ($filtroSeleccionado == 2) echo 'selected'; ?>>Entregados</option>
-                <option value="3" <?php if ($filtroSeleccionado == 3) echo 'selected'; ?>>Cancelados</option>
+                <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Todas</option>
+                <option value="1" <?php if ($filtroSeleccionado == 1) echo 'selected'; ?>>Pagadas</option>
+                <option value="2" <?php if ($filtroSeleccionado == 2) echo 'selected'; ?>>No Pagadas</option>
+                <option value="3" <?php if ($filtroSeleccionado == 3) echo 'selected'; ?>>Canceladas</option>
             </select>
         </div>
     </form>
