@@ -82,8 +82,9 @@ if ($_POST) {
             ':id_localidad' => $txtIdLocalidad
         ]);
 
-
-        header('Location:loginUsuario.php');
+        echo '<script type="text/javascript">
+                    window.location.href = "loginUsuario.php";
+                  </script>';
     }
 }
 
@@ -105,10 +106,10 @@ if ($_POST) {
                     <hr>
 
                     <label class="form-label" style="font-size:small;">Nombre</label>
-                    <input type="text" name="txtNombre" required class="form-control form-control-md" />
+                    <input style="width: 100%;" type="text" name="txtNombre" required class="form-control form-control-md" />
 
                     <label class="form-label" style="font-size:small;">Apellidos</label>
-                    <input type="text" name="txtApellidos" required class="form-control form-control-md" />
+                    <input style="width: 100%;" type="text" name="txtApellidos" required class="form-control form-control-md" />
 
                     <div id="div-dni-telefono" style="padding-top: 2.5vh;">
                         <div class="DNI">
@@ -124,7 +125,7 @@ if ($_POST) {
 
                     </div>
                     <label class="form-label" style="font-size:small;">Dirección</label>
-                    <input type="text" name="txtDireccion" required class="form-control form-control-md" style="margin-bottom: 2.5vh;" />
+                    <input style="width: 100%;" type="text" name="txtDireccion" required class="form-control form-control-md" style="margin-bottom: 2.5vh;" />
                     <div id="div-provincia-localidad">
                         <div class="Provincia">
                             <label class="form-label" style="font-size:small; padding-right: 1vh;">Provincia</label>
@@ -142,7 +143,7 @@ if ($_POST) {
                         </div>
                         <div class="Localidad">
                             <label class="form-label" style="font-size:small; padding-right: 1vh;">Localidad</label>
-                            <input type="text" name="txtLocalidad" required class="form-control" />
+                            <input style="width: 100%;" type="text" name="txtLocalidad" required class="form-control" />
                         </div>
 
 
@@ -154,17 +155,17 @@ if ($_POST) {
                     <hr>
                     <label class="form-label" style="font-size:small;">Nombre de Usuario</label>
                     <br>
-                    <input type="text" name="txtUsername" required class="form-control form-control-md" />
+                    <input style="width: 100%;" type="text" name="txtUsername" required class="form-control form-control-md" />
 
 
 
                     <label class="form-label" style="font-size:small;">Correo electrónico</label>
-                    <input type="email" name="txtEmail" required class="form-control form-control-md" />
+                    <input style="width: 100%;" type="email" name="txtEmail" required class="form-control form-control-md" />
 
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                         <div class="containerr" style="position: relative;">
-                            <input type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <input style="width: 100%;" type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
                             <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                         </div>
                     </div>

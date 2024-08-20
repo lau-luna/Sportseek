@@ -37,6 +37,10 @@ ini_set('max_execution_time', '60');
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
     <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
+
+
 </head>
 
 <body>

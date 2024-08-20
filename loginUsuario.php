@@ -26,20 +26,26 @@ if ($_POST) {
 
                     $_SESSION['usuario'] = "ok";
                     $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
-                    $_SESSION['Apellido_Usuario'] = $usuario['Apellido_Usuario'];
+                    $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
                     $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
                     $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
-                    header('Location:index.php');
+                    echo '<script type="text/javascript">
+                    window.location.href = "index.php";
+                  </script>';
+
                 } else {
+
+                    echo "entro";
                     $_SESSION['usuario'] = "ok";
                     $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
-                    $_SESSION['Apellido_Usuario'] = $usuario['Apellido_Usuario'];
+                    $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
                     $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
                     $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
-
-                    header('Location:administrador/inicio.php');
+                    echo '<script type="text/javascript">
+                    window.location.href = "administrador/inicio.php";
+                  </script>';
                 }
             } else {
                 $mensaje = "El nombre de usuario o contraseña es incorrecto.";
@@ -73,7 +79,7 @@ if ($_POST) {
                 <div data-mdb-input-init class="form-outline mb-2">
                     <label class="form-label" style="font-size:small;" for="form2Example18">Correo electrónico</label>
                     <div class="containerr">
-                        <input type="email" name="email" id="form2Example18" class="form-control form-control-md" />
+                        <input style="width: 100%;" type="email" name="email" id="form2Example18" class="form-control form-control-md" />
 
 
                     </div>
@@ -83,7 +89,7 @@ if ($_POST) {
                 <div data-mdb-input-init class="form-outline mb-2">
                     <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                     <div class="containerr" style="position: relative;">
-                        <input type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+                        <input style="width: 100%;" type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
                         <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                     </div>
                 </div>

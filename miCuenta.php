@@ -116,12 +116,12 @@ if ($_POST) {
                     <hr>
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Nombre</label>
-                        <input type="text" value="<?php echo htmlspecialchars($txtNombreUsuario); ?>" name="txtNombre" required class="form-control form-control-md" />
+                        <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtNombreUsuario); ?>" name="txtNombre" required class="form-control form-control-md" />
                     </div>
 
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Apellidos</label>
-                        <input type="text" value="<?php echo htmlspecialchars($txtApellidosUsuario); ?>" name="txtApellidos" required class="form-control form-control-md" />
+                        <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtApellidosUsuario); ?>" name="txtApellidos" required class="form-control form-control-md" />
                     </div>
 
                     <div id="div-dni-telefono">
@@ -138,7 +138,7 @@ if ($_POST) {
 
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Dirección</label>
-                        <input type="text" value="<?php echo htmlspecialchars($txtDireccion); ?>" name="txtDireccion" required class="form-control form-control-md" />
+                        <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtDireccion); ?>" name="txtDireccion" required class="form-control form-control-md" />
                     </div>
 
                     <div id="div-provincia-localidad">
@@ -159,7 +159,7 @@ if ($_POST) {
                         </div>
                         <div data-mdb-input-init class="Localidad mb-4">
                             <label class="form-label" style="font-size:small;">Localidad</label>
-                            <input type="text" value="<?php echo htmlspecialchars($localidadProvincia['Nombre_Localidad']); ?>" name="txtLocalidad" required class="form-control" />
+                            <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($localidadProvincia['Nombre_Localidad']); ?>" name="txtLocalidad" required class="form-control" />
                         </div>
                     </div>
                 </div>
@@ -174,19 +174,19 @@ if ($_POST) {
 
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Nombre de Usuario</label>
-                        <input type="text" value="<?php echo htmlspecialchars($txtUsername); ?>" name="txtUsername" required class="form-control form-control-md" />
+                        <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtUsername); ?>" name="txtUsername" required class="form-control form-control-md" />
                     </div>
 
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Correo electrónico</label>
-                        <input type="email" value="<?php echo htmlspecialchars($txtEmail); ?>" name="txtEmail" required class="form-control form-control-md" />
+                        <input style="width: 100%;" type="email" value="<?php echo htmlspecialchars($txtEmail); ?>" name="txtEmail" required class="form-control form-control-md" />
                     </div>
 
 
                     <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                         <div class="containerr" style="position: relative;">
-                            <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <input style="width: 100%;" type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="contrasenia" class="form-control form-control-md" />
                             <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                         </div>
                     </div>
