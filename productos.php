@@ -161,20 +161,39 @@ echo "<script>
     <div class="col-md-10">
         <div class="row">
             <?php if (!empty($listaProductos)) { ?>
-                <?php foreach ($listaProductos as $producto) { ?>
-                    <div class="col-md-3 mb-4">
-                        <div class="card">
-                            <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                            <div class="card-body">
-                                <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                                <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                <?php foreach ($listaProductos as $producto) {
+                // Generar un ID único para cada formulario
+                $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
+            ?>
+                <div class="col-md-3 mb-4">
+                    <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
+                        <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
+                        <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                        <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
+                            <div class="card">
+                                <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                                <div class="card-body h-100">
+                                    <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                                    <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                                    <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
+                                        <p class="text-danger"><?php echo "Sin Stock" ?></p>
+                                    <?php } ?>
+                                </div>
                             </div>
-                        </div>
-                    </div>
-                <?php } ?>
+                        </a>
+                    </form>
+                </div>
+            <?php } ?>
             <?php } else { ?>
                 <p>No se encontraron productos que coincidan con la búsqueda.</p>
             <?php } ?>
+        </div>
+
+        <!-- Productos -->
+    <div class="col-md-10">
+        <div class="row">
+            
         </div>
 
         <!-- Navegación de páginas -->
