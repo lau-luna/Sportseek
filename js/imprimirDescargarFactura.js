@@ -1,7 +1,7 @@
 function imprimirPedido() {
-    var contenido = document.getElementById('pedido').outerHTML;
+    var contenido = document.getElementById('factura').outerHTML;
     var printWindow = window.open('', '', 'height=600,width=800');
-    printWindow.document.write('<html><head><title>Pedido de Sportseek</title>');
+    printWindow.document.write('<html><head><title>Factura de Sportseek</title>');
     printWindow.document.write('<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">');
     printWindow.document.write('<style>');
     printWindow.document.write(`
@@ -54,7 +54,7 @@ function imprimirPedido() {
 
 function descargarPDF() {
     var { jsPDF } = window.jspdf; // Acceder a jsPDF desde el objeto window
-    var contenido = document.getElementById('pedido');
+    var contenido = document.getElementById('factura');
     html2canvas(contenido).then(function(canvas) { // Asegúrate de que .then() es soportado
         var imgData = canvas.toDataURL('image/png');
         var doc = new jsPDF('p', 'mm', 'a4');
@@ -73,6 +73,6 @@ function descargarPDF() {
             doc.addImage(imgData, 'PNG', 0, position, imgWidth, imgHeight);
             heightLeft -= pageHeight;
         }
-        doc.save('pedido.pdf');
+        doc.save('factura.pdf');
     });
 }

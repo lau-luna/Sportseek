@@ -8,16 +8,16 @@
 $filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
 
 if ($filtroSeleccionado == 'ninguno') {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos WHERE Usuarios_ID_Usuario=:IdUsuario ORDER BY Fecha_Pedido DESC");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE Usuarios_ID_Usuario=:IdUsuario ORDER BY Fecha_Emision_Factura DESC");
     $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
     $sentenciaSQL->execute();
-    $listaPedidos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+    $listaFacturas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos WHERE Usuarios_ID_Usuario=:IdUsuario AND Estados_Pedidos_ID_Estado_Pedido=:estado ORDER BY Fecha_Pedido DESC");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE Usuarios_ID_Usuario=:IdUsuario AND Estados_Facturas_ID_Estado_Factura=:estado ORDER BY Fecha_Emision_Factura DESC");
     $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
     $sentenciaSQL->bindParam(":estado", $filtroSeleccionado);
     $sentenciaSQL->execute();
-    $listaPedidos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+    $listaFacturas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 }
 
 ?>
@@ -42,41 +42,41 @@ if ($filtroSeleccionado == 'ninguno') {
         <table class="table table-bordered" id="tabla-productos">
             <thead>
                 <tr style="font-size: small;">
-                    <th style="width: 10%;" id="th-ID">ID Pedido</th>
+                    <th style="width: 10%;" id="th-ID">ID Factura</th>
                     <th id="th-estado">Estado</th>
-                    <th style="width: 25%;" id="th-fecha">Fecha</th>
+                    <th style="width: 25%;" id="th-fecha">Fecha de Emisión</th>
                     <th style="width: 10%;" id="th"></th>
                 </tr>
             </thead>
             <tbody>
-                <?php foreach ($listaPedidos as $pedido) {
-                    $sentenciaSQL = $conexion->prepare("SELECT Estados_Pedidos.Estado_Pedido FROM Pedidos INNER JOIN Estados_Pedidos ON Pedidos.Estados_Pedidos_ID_Estado_Pedido=Estados_Pedidos.ID_Estado_Pedido WHERE Pedidos.ID_Pedido=:IdPedido");
-                    $sentenciaSQL->bindParam(":IdPedido", $pedido['ID_Pedido']);
+                <?php foreach ($listaFacturas as $factura) {
+                    $sentenciaSQL = $conexion->prepare("SELECT Estados_Facturas.Estado_Factura FROM Facturas INNER JOIN Estados_Facturas ON Facturas.Estados_Facturas_ID_Estados_Factura=Estados_Facturas.ID_Estados_Factura WHERE Facturas.ID_Factura=:IdFactura");
+                    $sentenciaSQL->bindParam(":IdFactura", $factura['ID_Factura']);
                     $sentenciaSQL->execute();
-                    $estadoPedido = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+                    $estadoFactura = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
-                    $classPedido = "";
-                    switch ($estadoPedido->Estado_Pedido) {
-                        case 'Entregado':
-                            $classPedido = 'alert-success';
+                    $classFactura = "";
+                    switch ($estadoFactura->Estado_Factura) {
+                        case 'Pagado':
+                            $classFactura = 'alert-success';
                             break;
-                        case 'Pendiente':
-                            $classPedido = 'alert-primary';
+                        case 'No pagado':
+                            $classFactura = 'alert-warning';
                             break;
                         case 'Cancelado':
-                            $classPedido = 'alert-danger';
+                            $classFactura = 'alert-danger';
                             break;
                     } ?>
 
-                    <form id="form-pedido-<?php echo htmlspecialchars($pedido['ID_Pedido']); ?>" action="pedido.php" method="GET">
-                        <input type="hidden" name="ID_Pedido" value="<?php echo htmlspecialchars($pedido['ID_Pedido']); ?>">
+                    <form id="form-factura-<?php echo htmlspecialchars($factura['ID_Factura']); ?>" action="factura.php" method="GET">
+                        <input type="hidden" name="ID_Factura" value="<?php echo htmlspecialchars($factura['ID_Factura']); ?>">
                         <tr>
-                            <td><?php echo htmlspecialchars($pedido['ID_Pedido']); ?></td>
+                            <td><?php echo htmlspecialchars($factura['ID_Factura']); ?></td>
                             <td>
-                                <div class="alert <?php echo htmlspecialchars($classPedido); ?>" role="alert"> <?php echo htmlspecialchars($estadoPedido->Estado_Pedido); ?> </div>
+                                <div class="alert <?php echo htmlspecialchars($classFactura); ?>" role="alert"> <?php echo htmlspecialchars($estadoFactura->Estado_Factura); ?> </div>
                             </td>
-                            <td><?php echo htmlspecialchars($pedido['Fecha_Pedido']); ?></td>
-                            <td><button type="submit" class="btn btn-primary">Ver Detalle</button></td>
+                            <td><?php echo htmlspecialchars($factura['Fecha_Emision_Factura']); ?></td>
+                            <td><button type="submit" class="btn btn-outline-primary">Ver Detalle</button></td>
                         </tr>
                     </form>
 

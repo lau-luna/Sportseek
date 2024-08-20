@@ -19,9 +19,16 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/factura.css" rel="stylesheet">
 
-<div class="container mt-5">
-    <button onclick="imprimirPedido()">Imprimir Pedido</button>
-    <button onclick="descargarPDF()">Descargar Pedido como PDF</button>
+<div class="container mt-2">
+    <div class="div-botones-imprimir-descargar mb-2 d-flex justify-content-end">
+        <button class="btn btn-outline-primary mr-2 col-md-2" id="boton-imprimir" onclick="imprimirPedido()">
+            <img style="width: 10%;" src="./img/impresora.png" alt="">
+            Imprimir Pedido</button>
+        <button class="btn btn-outline-danger col-md-2" id="boton-descargar" onclick="descargarPDF()">
+            <img style="width: 10%;" src="./img/pdf.png" alt="">
+            Descargar como PDF</button>
+    </div>
+
 
     <div class="invoice-box" id="pedido">
         <div class="row">
@@ -106,7 +113,11 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
             <tfoot>
                 <tr class="total-row">
                     <td>Total</td>
-                    <td class="text-end">$ <?php echo htmlspecialchars($_SESSION['Total_Pedido']) ?> </td>
+                    <?php
+                    $valorIVA = (floatval($_SESSION['Total_Pedido']) * 21) / 100;
+                    $_SESSION['totalConIVA'] = floatval($_SESSION['Total_Pedido']) + floatval($valorIVA);
+                    ?>
+                    <td class="text-end">$ <?php echo htmlspecialchars($_SESSION['totalConIVA']) ?> </td>
                 </tr>
             </tfoot>
         </table>

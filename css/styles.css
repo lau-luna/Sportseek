@@ -68,3 +68,7 @@ h2{
 .productosCategorias{
     margin-left: 5%;
 }
+
+.div-botones-imprimir-descargar{
+    display: flex;
+}

@@ -76,7 +76,7 @@ if ($filtroSeleccionado == 'ninguno') {
                                 <div class="alert <?php echo htmlspecialchars($classPedido); ?>" role="alert"> <?php echo htmlspecialchars($estadoPedido->Estado_Pedido); ?> </div>
                             </td>
                             <td><?php echo htmlspecialchars($pedido['Fecha_Pedido']); ?></td>
-                            <td><button type="submit" class="btn btn-primary">Ver Detalle</button></td>
+                            <td><button type="submit" class="btn btn-outline-primary">Ver Detalle</button></td>
                         </tr>
                     </form>
 

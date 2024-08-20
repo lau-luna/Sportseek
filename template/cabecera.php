@@ -28,7 +28,7 @@ ini_set('max_execution_time', '60');
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-<!-- BoxIcons -->
+    <!-- BoxIcons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Styles -->
@@ -37,9 +37,8 @@ ini_set('max_execution_time', '60');
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
     <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.3.2/jspdf.min.js"></script>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 
 </head>
 
@@ -94,10 +93,10 @@ ini_set('max_execution_time', '60');
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
                             <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador') { ?>
                                 <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
-                                <?php } ?>
-                                <a class="dropdown-item" href="listaPedidos.php">Pedidos</a>
-                                <a class="dropdown-item" href="factura.php">Facturas</a>
-                            
+                            <?php } ?>
+                            <a class="dropdown-item" href="listaPedidos.php">Pedidos</a>
+                            <a class="dropdown-item" href="listaFacturas.php">Facturas</a>
+
                             <div class="dropdown-divider"></div>
                             <a class="dropdown-item text-danger" href="./config/procesar.php?accion=cerrarsesion">Cerrar Sesión</a>
                         </div>

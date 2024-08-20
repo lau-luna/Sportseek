@@ -86,51 +86,9 @@ switch ($accion) {
         break;
     case 'Continuar con la compra':
 
-        // Crear Pedido
-        $fecha = new DateTime();
-        $fechaPedido = date('Y-m-d H:i:s', $fecha->getTimestamp());
+        $_SESSION['ID_Carrito']= $carrito['ID_Carrito'];
 
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Pedidos (Usuarios_ID_Usuario, Estados_Pedidos_ID_Estado_Pedido, Fecha_Pedido) VALUES (:IdUsuario, 1 ,:fecha)");
-        $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
-        $sentenciaSQL->bindParam(":fecha", $fechaPedido);
-        $sentenciaSQL->execute();
-
-        // Obtener el ID del pedido recién creado
-        $IdNuevoPedido = $conexion->lastInsertId();
-
-        // Crear Factura
-        $fechaFactura = date('Y-m-d H:i:s', $fecha->getTimestamp());
-
-
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas (Fecha_Emision_Factura, Total_Factura, Estados_Facturas_ID_Estados_Factura, Usuarios_ID_Usuario) VALUES (:fecha, :total, 2, :IdUsuario )");
-        $sentenciaSQL->bindParam(":fecha", $fechaFactura);
-        $sentenciaSQL->bindParam(":total", $_SESSION['total']);
-        $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
-        $sentenciaSQL->execute();
-
-        // Obtener el ID de la factura recién creada
-        $IdNuevaFactura = $conexion->lastInsertId();
-
-
-        // Transferir productos del carrito al Pedido y a las Facturas
-        foreach ($listaCarritosProductos as $carrritoProducto) {
-            $sentenciaSQL = $conexion->prepare("INSERT INTO Facturas_Pedidos_Productos (Facturas_ID_Factura, Pedidos_ID_Pedido, Productos_ID_Productos, Cantidad_Productos) VALUES (:IdFactura, :IdPedido, :IdProducto, :cantidad)");
-            $sentenciaSQL->bindParam(":IdFactura", $IdNuevaFactura);
-            $sentenciaSQL->bindParam(":IdPedido", $IdNuevoPedido);
-            $sentenciaSQL->bindParam(":IdProducto", $carrritoProducto['ID_Producto']);
-            $sentenciaSQL->bindParam(":cantidad", $carrritoProducto['Cantidad_Productos']);
-            $sentenciaSQL->execute();
-        }
-
-
-        // Eliminar este carrito
-        $sentenciaSQL = $conexion->prepare("DELETE FROM Carritos WHERE ID_Carrito=:IdCarrito");
-        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
-        $sentenciaSQL->execute();
-
-        $_SESSION['ID_Pedido'] = $IdNuevoPedido;
-
-        echo "<script>window.location.href='pedido.php';</script>";
+        echo "<script>window.location.href='pago.php';</script>";
         exit;
 
 
