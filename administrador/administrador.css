@@ -5,3 +5,8 @@
 #fecha {
     width: 10%;
 }
+
+.busqueda-filtro{
+    width: 100%;
+    display: flex;
+}

@@ -9,7 +9,7 @@ if (isset($_GET['ID_Factura'])) {
     $IdFactura = intval($_SESSION['ID_Factura']);
 }
 
-$sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas INNER JOIN Facturas_Pedidos_Productos ON Facturas.ID_Factura=Facturas_Pedidos_Productos.Facturas_ID_Factura WHERE ID_Factura=:IdFactura");
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE ID_Factura=:IdFactura");
 $sentenciaSQL->bindParam(":IdFactura", $IdFactura);
 $sentenciaSQL->execute();
 $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
@@ -43,6 +43,7 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                 <p>
                     N° Factura: <?php echo htmlspecialchars($factura['ID_Factura']) ?> <br>
                     Fecha de Emisión: <?php echo htmlspecialchars($factura['Fecha_Emision_Factura']) ?><br>
+                    ID Pedido vinculado: <?php echo htmlspecialchars($factura['ID_Pedido']) ?><br>
                 </p>
             </div>
         </div>
@@ -51,40 +52,20 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
             <div class="col-md-6">
                 <h5>Información del solicitante:</h5>
 
-                <?php
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas INNER JOIN Usuarios ON Facturas.Usuarios_ID_Usuario=Usuarios.ID_Usuario WHERE ID_Factura=:IdFactura");
-                $sentenciaSQL->bindParam(":IdFactura", $IdFactura);
-                $sentenciaSQL->execute();
-                $usuarioFactura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-
-                $sentenciaSQL = $conexion->prepare("SELECT Provincias.Nombre_Provincia, Localidades.Nombre_Localidad FROM (Provincias INNER JOIN Localidades ON Localidades.Provincias_ID_Provincia=Provincias.ID_Provincia) INNER JOIN Usuarios ON Localidades.ID_Localidades=Usuarios.Localidades_ID_Localidades WHERE Usuarios.ID_Usuario=:IdUsuario");
-                $sentenciaSQL->bindParam(":IdUsuario", $usuarioFactura['ID_Usuario']);
-                $sentenciaSQL->execute();
-                $provinciaLocalidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-                ?>
                 <p>
-                    <?php echo htmlspecialchars("ID cliente: " . $usuarioFactura['ID_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Nombre o razón social: " . $usuarioFactura['Apellidos_Usuario'] . ", " . $usuarioFactura['Nombre_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Dirección: " . $usuarioFactura['Direccion_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Telefono: " . $usuarioFactura['Telefono_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Email: " . $usuarioFactura['Email_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Localidad: " . $provinciaLocalidad['Nombre_Localidad']) ?> <br>
-                    <?php echo htmlspecialchars("Provincia: " . $provinciaLocalidad['Nombre_Provincia']) ?> <br>
+                    <?php echo htmlspecialchars("ID cliente: " . $factura['ID_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Nombre o razón social: " . $factura['Apellidos_Usuario'] . ", " . $factura['Nombre_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Dirección: " . $factura['Direccion_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Telefono: " . $factura['Telefono_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Email: " . $factura['Email_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Localidad: " . $factura['Localidad_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Provincia: " . $factura['Provincia_Usuario']) ?> <br>
 
                 </p>
             </div>
             <div class="col-md-6 text-md-end">
                 <h5>Método de Pago:</h5>
-                <p>
-                    <?php
-                    $sentenciaSQL = $conexion->prepare("SELECT Metodos_Pago.Metodo_Pago FROM Facturas INNER JOIN Metodos_Pago ON Facturas.Metodos_Pago_ID_Metodo_Pago=Metodos_Pago.ID_Metodo_Pago WHERE Facturas.ID_Factura=:IdFactura");
-                    $sentenciaSQL->bindParam(":IdFactura", $IdFactura);
-                    $sentenciaSQL->execute();
-                    $metodoPago = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
-                    echo htmlspecialchars($metodoPago['Metodo_Pago']);
-                    ?>
-                </p>
+                <p> <?php echo htmlspecialchars($factura['Metodo_Pago']);?></p>
             </div>
         </div>
 
@@ -98,15 +79,12 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php
-                $sentenciaSQL = $conexion->prepare("SELECT Productos.Nombre_Producto, Productos.Precio_Producto, Facturas_Pedidos_Productos.Cantidad_Productos FROM Facturas_Pedidos_Productos INNER JOIN Productos ON Productos.ID_Producto=Facturas_Pedidos_Productos.Productos_ID_Productos WHERE Facturas_Pedidos_Productos.Facturas_ID_Factura=:IdFactura");
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas_Pedidos_Productos WHERE Facturas_Pedidos_Productos.Facturas_ID_Factura=:IdFactura");
                 $sentenciaSQL->bindParam(":IdFactura", $IdFactura);
                 $sentenciaSQL->execute();
                 $listaProductosCantidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-                $_SESSION['Total_Factura'] = 0;
                 foreach ($listaProductosCantidades as $productoCantidad) {
-
-                    $_SESSION['Total_Factura'] = $_SESSION['Total_Factura'] + (floatval($productoCantidad['Precio_Producto']) * intval($productoCantidad['Cantidad_Productos']));
                 ?>
                     <tr>
                         <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Producto']) ?> </td>
@@ -118,19 +96,16 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
             </tbody>
             <tfoot>
-                <?php
-                $valorIVA = (floatval($_SESSION['Total_Factura']) * 21) / 100;
-                $_SESSION['totalConIVA'] = floatval($_SESSION['Total_Factura']) + floatval($valorIVA);
-                ?>
+                
                 <tr class="IVA-row">
                     <td></td>
                     <td>IVA 21%:</td>
-                    <td class="text-end">$ <?php echo htmlspecialchars($valorIVA) ?> </td>
+                    <td class="text-end">$ <?php echo htmlspecialchars($factura['IVA_Factura']) ?> </td>
                 </tr>
                 <tr class="total-row">
                     <td></td>
                     <td>Total:</td>
-                    <td class="text-end">$ <?php echo htmlspecialchars($_SESSION['totalConIVA']) ?> </td>
+                    <td class="text-end">$ <?php echo htmlspecialchars($factura['Total_Factura']) ?> </td>
                 </tr>
             </tfoot>
         </table>

@@ -10,7 +10,7 @@ if (isset($_GET['ID_Pedido'])) {
     $IdPedido = intval($_SESSION['ID_Pedido']);
 }
 
-$sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos INNER JOIN Facturas_Pedidos_Productos ON Pedidos.ID_Pedido=Facturas_Pedidos_Productos.Pedidos_ID_Pedido WHERE ID_Pedido=:IdPedido");
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos WHERE ID_Pedido=:IdPedido");
 $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
 $sentenciaSQL->execute();
 $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
@@ -51,25 +51,14 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
             <div class="col-md-6">
                 <h5>Información del solicitante:</h5>
 
-                <?php
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos INNER JOIN Usuarios ON Pedidos.Usuarios_ID_Usuario=Usuarios.ID_Usuario WHERE ID_Pedido=:IdPedido");
-                $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
-                $sentenciaSQL->execute();
-                $usuarioPedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-
-                $sentenciaSQL = $conexion->prepare("SELECT Provincias.Nombre_Provincia, Localidades.Nombre_Localidad FROM (Provincias INNER JOIN Localidades ON Localidades.Provincias_ID_Provincia=Provincias.ID_Provincia) INNER JOIN Usuarios ON Localidades.ID_Localidades=Usuarios.Localidades_ID_Localidades WHERE Usuarios.ID_Usuario=:IdUsuario");
-                $sentenciaSQL->bindParam(":IdUsuario", $usuarioPedido['ID_Usuario']);
-                $sentenciaSQL->execute();
-                $provinciaLocalidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-                ?>
                 <p>
-                    <?php echo htmlspecialchars("ID cliente: " . $usuarioPedido['ID_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Nombre o razón social: " . $usuarioPedido['Apellidos_Usuario'] . ", " . $usuarioPedido['Nombre_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Dirección: " . $usuarioPedido['Direccion_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Telefono: " . $usuarioPedido['Telefono_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Email: " . $usuarioPedido['Email_Usuario']) ?> <br>
-                    <?php echo htmlspecialchars("Localidad: " . $provinciaLocalidad['Nombre_Localidad']) ?> <br>
-                    <?php echo htmlspecialchars("Provincia: " . $provinciaLocalidad['Nombre_Provincia']) ?> <br>
+                    <?php echo htmlspecialchars("ID cliente: " . $pedido['ID_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Nombre o razón social: " . $pedido['Apellidos_Usuario'] . ", " . $pedido['Nombre_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Dirección: " . $pedido['Direccion_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Telefono: " . $pedido['Telefono_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Email: " . $pedido['Email_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Localidad: " . $pedido['Localidad_Usuario']) ?> <br>
+                    <?php echo htmlspecialchars("Provincia: " . $pedido['Provincia_Usuario']) ?> <br>
                 </p>
             </div>
             <div class="col-md-6 text-md-end">
@@ -93,15 +82,14 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
             </thead>
             <tbody>
                 <?php
-                $sentenciaSQL = $conexion->prepare("SELECT Productos.Nombre_Producto, Productos.Precio_Producto, Facturas_Pedidos_Productos.Cantidad_Productos FROM Facturas_Pedidos_Productos INNER JOIN Productos ON Productos.ID_Producto=Facturas_Pedidos_Productos.Productos_ID_Productos WHERE Facturas_Pedidos_Productos.Pedidos_ID_Pedido=:IdPedido");
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas_Pedidos_Productos WHERE Facturas_Pedidos_Productos.Pedidos_ID_Pedido=:IdPedido");
                 $sentenciaSQL->bindParam(":IdPedido", $IdPedido);
                 $sentenciaSQL->execute();
                 $listaProductosCantidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-                $_SESSION['Total_Pedido'] = 0;
+              
                 foreach ($listaProductosCantidades as $productoCantidad) {
 
-                    $_SESSION['Total_Pedido'] = $_SESSION['Total_Pedido'] + (floatval($productoCantidad['Precio_Producto']) * intval($productoCantidad['Cantidad_Productos']));
                 ?>
                     <tr>
                         <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Producto']) ?> </td>
@@ -110,16 +98,6 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
                 <?php } ?>
             </tbody>
-            <tfoot>
-                <tr class="total-row">
-                    <td>Total</td>
-                    <?php
-                    $valorIVA = (floatval($_SESSION['Total_Pedido']) * 21) / 100;
-                    $_SESSION['totalConIVA'] = floatval($_SESSION['Total_Pedido']) + floatval($valorIVA);
-                    ?>
-                    <td class="text-end">$ <?php echo htmlspecialchars($_SESSION['totalConIVA']) ?> </td>
-                </tr>
-            </tfoot>
         </table>
 
         <div class="card-footer text-muted">
