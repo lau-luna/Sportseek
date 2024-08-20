@@ -171,10 +171,12 @@ echo "<script>
                         <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
                         <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
                         <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
-                            <div class="card">
-                                <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                                <div class="card-body h-100">
-                                    <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                            <div class="card h-100 d-flex flex-column">
+                                <div class="embed-responsive embed-responsive-4by3">
+                                    <img class="card-img-top embed-responsive-item" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="" style="object-fit: contain;">
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title text-truncate"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                                     <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
                                     <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
                                         <p class="text-danger"><?php echo "Sin Stock" ?></p>
@@ -184,41 +186,24 @@ echo "<script>
                         </a>
                     </form>
                 </div>
-            <?php } ?>
+                <?php } ?>
             <?php } else { ?>
-                <p>No se encontraron productos que coincidan con la búsqueda.</p>
+                <p class="text-center">No se encontraron productos.</p>
             <?php } ?>
         </div>
 
-        <!-- Productos -->
-    <div class="col-md-10">
-        <div class="row">
-            
-        </div>
-
-        <!-- Navegación de páginas -->
-        <nav aria-label="Page navigation">
-            <ul class="pagination">
-                <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
-                </li>
+        <!-- Paginación -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination justify-content-center">
                 <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
                     <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
-                        <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                        <a class="page-link" href="?pagina=<?php echo $i; ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>">
                             <?php echo $i; ?>
                         </a>
                     </li>
                 <?php } ?>
-                <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
-                </li>
             </ul>
         </nav>
-
     </div>
 </div>
 
