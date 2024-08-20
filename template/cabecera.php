@@ -42,6 +42,11 @@ ini_set('max_execution_time', '60');
 
 </head>
 
+<?
+
+
+?>
+
 <body>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
@@ -55,8 +60,8 @@ ini_set('max_execution_time', '60');
                 <span class="sr-only"></span>
             </a>
 
-            <form class="form-inline " id="formulario-busqueda-productos">
-                <input class="form-control" type="text" placeholder="¿Qué estás buscando?">
+            <form method="GET" action="productos.php" class="form-inline" id="formulario-busqueda-productos">
+                <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
                 <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
                     <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
                 </button>
@@ -114,7 +119,7 @@ ini_set('max_execution_time', '60');
             <div class="collapse navbar-collapse" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="./index.php">Incio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link text-white" href="./productos.php">Productos</a>

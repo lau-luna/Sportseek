@@ -1,7 +1,7 @@
 <?php include('../template/cabecera.php') ?>
 
 <?php
-//Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
+// Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
 $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
 $txtNombre = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
 $numPrecio = (isset($_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
@@ -13,6 +13,8 @@ $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
 $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
 
 include("../config/bd.php");
+
+$_SESSION['Categoria_ID']  = "";
 
 switch ($accion) {
     case "Agregar":
@@ -102,9 +104,9 @@ switch ($accion) {
         $txtDescripcion = $producto['Descripcion_Producto'];
         $boolStock = $producto['Tiene_Stock_Producto'];
         $txtImagen = $producto['Imagen_Producto'];
-        $txtCategoria = $producto['Categorias_ID_Categoria'];
+        $_SESSION['Categoria_ID'] = $producto['Categorias_ID_Categoria'];
         $txtEspecificaciones = $producto['Especificaciones_Producto'];
-
+        
         break;
     case 'Borrar':
         // Borrar Imagen
@@ -128,31 +130,40 @@ switch ($accion) {
         break;
 }
 
+// Parámetros para la paginación
+$productosPorPagina = 10;
+$paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$offset = ($paginaActual - 1) * $productosPorPagina;
+
 // Obtener la categoría seleccionada del formulario
 $categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
 
-if (isset($categoriaSeleccionada)) {
-    if ($categoriaSeleccionada == 'todas') {
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos");
-        $sentenciaSQL->execute();
-        $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-    } else {
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria");
-        $sentenciaSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
-        $sentenciaSQL->execute();
-        $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+if ($categoriaSeleccionada == 'todas') {
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos LIMIT :offset, :productosPorPagina");
+    $sentenciaSQL->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $sentenciaSQL->bindParam(':productosPorPagina', $productosPorPagina, PDO::PARAM_INT);
+    $sentenciaSQL->execute();
+    $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-        echo "<script>
-        window.onload = function() {
-            var element = document.getElementById('tabla-productos');
-            if (element) {
-                element.scrollIntoView({behavior: 'auto'});
-            }
-        };
-      </script>";
-    }
+    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos");
+    $totalProductosSQL->execute();
+    $totalProductos = $totalProductosSQL->fetchColumn();
+} else {
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria LIMIT :offset, :productosPorPagina");
+    $sentenciaSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
+    $sentenciaSQL->bindParam(':offset', $offset, PDO::PARAM_INT);
+    $sentenciaSQL->bindParam(':productosPorPagina', $productosPorPagina, PDO::PARAM_INT);
+    $sentenciaSQL->execute();
+    $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria");
+    $totalProductosSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
+    $totalProductosSQL->execute();
+    $totalProductos = $totalProductosSQL->fetchColumn();
 }
 
+// Calcular el número total de páginas
+$totalPaginas = ceil($totalProductos / $productosPorPagina);
 
 ?>
 
@@ -173,53 +184,35 @@ if (isset($categoriaSeleccionada)) {
 
                         <div class="form-group">
                             <label for="txtNombre">Nombre:</label>
-                            <input type="text" required value="<?php echo $txtNombre; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre">
+                            <input type="text" required value="<?php echo $txtNombre; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre del producto">
                         </div>
 
                         <div class="form-group">
                             <label for="numPrecio">Precio:</label>
-                            <input type="number" required value="<?php if (isset($numPrecio)) {
-                                                                        echo floatval($numPrecio);
-                                                                    } ?>" class="form-control" name="numPrecio" id="numPrecio" placeholder="$">
+                            <input type="number" min="0" required value="<?php echo $numPrecio; ?>" class="form-control" name="numPrecio" id="numPrecio" placeholder="Precio del producto">
                         </div>
 
-                        <div class="form-group" id="div-descripcion">
-                            <div class="form-group" id="div-descripcion">
-                                <label for="txtDescripcion">Descripción:</label>
-                                <textarea maxlength="5000" required class="form-control" name="txtDescripcion" id="txtDescripcion" placeholder="Describe el producto" rows="4" style="resize: none;"><?php echo $txtDescripcion; ?></textarea>
-                            </div>
-                        </div>
 
-                        <div class="btn-group" role="group" aria-label="">
-                            <button type="submit" name="accion" <?php echo ($accion == "Seleccionar") ? "disabled" : ""; ?> value="Agregar" class="btn btn-success">Agregar</button>
-                            <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Modificar" class="btn btn-warning">Modificar</button>
-                            <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Cancelar" class="btn btn-info">Cancelar</button>
+                        <div class="form-group">
+                            <label for="txtDescripcion">Descripción:</label>
+                            <textarea required class="form-control" name="txtDescripcion" id="txtDescripcion" rows="5" placeholder="Descripción del producto"><?php echo $txtDescripcion; ?></textarea>
                         </div>
-
                     </div>
 
-
-                    <div style="width: 50%;">
+                    <div style="width: 48%;">
                         <div class="form-group">
-                            <label for="boolStock">Tiene stock:</label>
-                            <input type="checkbox" value="true" <?php if ($boolStock == 1) {
-                                                                    echo 'checked';
-                                                                } ?> class="form-control" name="boolStock" id="boolStock">
+                            <label for="boolStock">Stock:</label>
+                            <input type="checkbox" <?php echo ($boolStock) ? "checked" : ""; ?> class="form-control" name="boolStock" id="boolStock">
                         </div>
 
                         <div class="form-group">
                             <label for="txtImagen">Imagen:</label>
-
-                            <?php if ($txtImagen != "") {
-                                echo $producto['Imagen_Producto'];
-                            } ?>
-
-                            <input type="file" class="form-control" name="txtImagen" id="txtImagen" placeholder="Imagen">
+                            <input type="file" class="form-control" name="txtImagen" id="txtImagen" placeholder="Nombre del producto">
                         </div>
 
-                        <div data-mdb-input-init class="categoria mb-3">
-                            <label class="form-label">Categoría</label>
-                            <select name="txtCategoria" id="provincia" class="form-control" required>
+                        <div class="form-group">
+                            <label for="txtCategoria">Categoría:</label>
+                            <select class="form-control" name="txtCategoria" id="txtCategoria" onchange="this.form.submit()">
                                 <?php
                                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
                                 $sentenciaSQL->execute();
@@ -227,111 +220,127 @@ if (isset($categoriaSeleccionada)) {
 
                                 foreach ($listaCategorias as $categoria) {
                                 ?>
-                                    <option <?php if(isset($txtCategoria) && $txtCategoria==$categoria['ID_Categoria']) { echo 'selected'; } ?> value="<?php echo $categoria['ID_Categoria'] ?>"><?php echo $categoria['Nombre_Categoria'] ?></option>
+                                    <option value="<?php echo $categoria['ID_Categoria']; ?>" <?php echo ($_SESSION['Categoria_ID'] == $categoria['ID_Categoria']) ? 'selected' : ''; ?>> <?php echo htmlspecialchars($categoria['Nombre_Categoria']) ?> </option>
                                 <?php } ?>
+
                             </select>
                         </div>
-
-                        <div class="form-group" id="div-especificaciones">
+                        <div class="form-group">
                             <label for="txtEspecificaciones">Especificaciones:</label>
-                            <textarea maxlength="5000" class="form-control" name="txtEspecificaciones" id="txtEspecificaciones" placeholder="Escribe las especificaciones del producto (opcional)" rows="4" style="resize: none;"><?php echo $txtEspecificaciones; ?></textarea>
+                            <textarea rows="5" class="form-control" name="txtEspecificaciones" id="txtEspecificaciones" placeholder="Especificaciones del producto"><?php echo $txtEspecificaciones; ?></textarea>
                         </div>
+                    </div>
+
 
                 </section>
 
+                <div class="btn-group" role="group" aria-label="">
+                    <button type="submit" name="accion" <?php echo ($accion == "Seleccionar") ? "disabled" : ""; ?> value="Agregar" class="btn btn-success">Agregar</button>
+                    <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Modificar" class="btn btn-warning">Modificar</button>
+                    <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Cancelar" class="btn btn-info">Cancelar</button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</div>
+
+
+<div class="col-md-12" id="tabla-productos">
+
+    <div class="table-responsive">
+        <div class="card-header">
+            Lista de productos
         </div>
 
-        </form>
+        <div class="card-body">
+            <form method="get" action="">
+                <div class="form-group">
+                    <label for="txtCategoria">Filtrar por categoría:</label>
+                    <select class="form-control" name="txtCategoria" id="txtCategoria" onchange="this.form.submit()">
+                        <option value="todas">Todas</option>
+                        <?php
+                        $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
+                        $sentenciaSQL->execute();
+                        $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-    </div>
-</div>
-
-
-</div>
-
-<br> <br>
-
-<hr>
-
-
-
-<form method="GET" action="">
-    <div data-mdb-input-init class="categoria col-md-3 mb-3">
-        <label class="form-label">Filtrar por Categoría:</label>
-        <select name="txtCategoria" id="categoria" class="form-control" onchange="this.form.submit()">
-            <option value="todas" <?php if ($categoriaSeleccionada == 'todas') echo 'selected'; ?>>Todas las Categorías</option>
-            <?php
-            $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
-            $sentenciaSQL->execute();
-            $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-            foreach ($listaCategorias as $categoria) { ?>
-                <option value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>" <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'selected'; ?>>
-                    <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
-                </option>
-            <?php } ?>
-        </select>
-    </div>
-</form>
-
-
-
-<div class="col-md-12">
-    <table class="table table-bordered" id="tabla-productos">
-        <thead>
-            <tr style="font-size: small;">
-                <th style="width: 3%;" id="th-ID">ID</th>
-                <th style="width: 15%;" id="th-nombre">Nombre</th>
-                <th style="width: 8%;" id="th-precio">Precio</th>
-                <th style="width: 6%;" id="th-imagen">Imagen</th>
-                <th style="width: 18%;" id="th-descripcion">Descripción</th>
-                <th style="width: 7%;" id="th-stock">Stock</th>
-                <th id="th-especificiaciones">Especificaciones</th>
-                <th id="th-categoria">Categoria</th>
-                <th style="width: 7%;" id="th-acciones">Acciones</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php foreach ($listaProductos as $producto) { ?>
-                <tr>
-                    <td><?php echo $producto['ID_Producto']; ?></td>
-                    <td><?php echo $producto['Nombre_Producto']; ?></td>
-                    <td><?php echo $producto['Precio_Producto']; ?></td>
-                    <td id="td-imagen">
-                        <?php if ($producto['Imagen_Producto'] != 'imagen.jpg') { ?>
-                            <img class="img-thumbnail rounded" src="../../imgProductos/<?php echo $producto['Imagen_Producto']; ?>" width="50">
+                        foreach ($listaCategorias as $categoria) {
+                        ?>
+                            <option value="<?php echo $categoria['ID_Categoria']; ?>" <?php echo ($categoriaSeleccionada == $categoria['ID_Categoria']) ? 'selected' : ''; ?>> <?php echo htmlspecialchars($categoria['Nombre_Categoria']) ?> </option>
                         <?php } ?>
-                    </td>
-                    <td><?php echo $producto['Descripcion_Producto']; ?></td>
-                    <td><?php if ($producto['Tiene_Stock_Producto'] == 1) {
-                            echo "Tiene";
-                        } else {
-                            echo "No tiene";
-                        } ?></td>
-                    <td><?php echo $producto['Especificaciones_Producto']; ?></td>
-                    <td><?php
-                        $sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria=:IdCategoria WHERE Productos.ID_Producto=:IdProducto");
-                        $sentenciaSQL->bindParam(":IdCategoria", $producto['Categorias_ID_Categoria']);
+
+                    </select>
+                </div>
+            </form>
+
+            <table class="table table-bordered">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Precio</th>
+                        <th>Descripción</th>
+                        <th>Stock</th>
+                        <th>Imagen</th>
+                        <th>Especificaciones</th>
+                        <th>Categoría</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php
+
+                    foreach ($listaProductos as $producto) { ?>
+                        <?php
+                        $sentenciaSQL = $conexion->prepare("SELECT Nombre_Categoria FROM Categorias INNER JOIN Productos ON Categorias.ID_Categoria=Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto=:IdProducto");
                         $sentenciaSQL->bindParam(":IdProducto", $producto['ID_Producto']);
                         $sentenciaSQL->execute();
-
                         $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+                        ?>
 
-                        echo $categoria['Nombre_Categoria']; ?></td>
+                        <tr>
+                            <td><?php echo $producto['ID_Producto']; ?></td>
+                            <td><?php echo $producto['Nombre_Producto']; ?></td>
+                            <td><?php echo $producto['Precio_Producto']; ?></td>
+                            <td><?php echo $producto['Descripcion_Producto']; ?></td>
+                            <td><?php echo $producto['Tiene_Stock_Producto'] ? 'Sí' : 'No'; ?></td>
+                            <td>
+                                <img src="../../imgProductos/<?php echo $producto['Imagen_Producto']; ?>" width="50" alt="">
+                            </td>
+                            <td><?php echo $producto['Especificaciones_Producto']; ?></td>
+                            <td><?php echo $categoria['Nombre_Categoria']; ?></td>
+                            <td>
+                                <form method="post">
+                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>" />
+                                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary" />
+                                    <input type="submit" name="accion" value="Borrar" class="btn btn-danger" />
+                                </form>
+                            </td>
+                        </tr>
+                    <?php } ?>
+                </tbody>
+            </table>
 
-                    <td>
-                        <form method="POST">
-                            <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>">
+            <!-- Navegación de la paginación -->
+            <nav aria-label="Page navigation example">
+                <ul class="pagination justify-content-center">
+                    <li class="page-item <?php echo $paginaActual <= 1 ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $paginaActual - 1; ?>&txtCategoria=<?php echo $categoriaSeleccionada; ?>">Anterior</a>
+                    </li>
+                    <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
+                        <li class="page-item <?php echo $i == $paginaActual ? 'active' : ''; ?>">
+                            <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo $categoriaSeleccionada; ?>"><?php echo $i; ?></a>
+                        </li>
+                    <?php } ?>
+                    <li class="page-item <?php echo $paginaActual >= $totalPaginas ? 'disabled' : ''; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $paginaActual + 1; ?>&txtCategoria=<?php echo $categoriaSeleccionada; ?>">Siguiente</a>
+                    </li>
+                </ul>
+            </nav>
 
-                            <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary">
+        </div>
 
-                            <input type="submit" name="accion" value="Borrar" class="btn btn-danger">
-
-                        </form>
-                    </td>
-                </tr>
-            <?php } ?>
-        </tbody>
-    </table>
+    </div>
 </div>
 
 <?php include('../template/pie.php') ?>
