@@ -46,25 +46,28 @@
     $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
   }
   ?>
-  <div class="col-md-10">
+  <div class="">
     <div class="row">
       <?php foreach ($listaProductos as $producto) {
         $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
       ?>
-        <div class="col-md-3 mb-4">
+        <div class="">
           <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
             <a href="#" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
-              <div class="card">
-                <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
-                <div class="card-body h-100">
-                  <h5 class="card-title"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                  <p class="text-info"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
-                  <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
-                    <p class="text-danger"><?php echo "Sin Stock" ?></p>
-                  <?php } ?>
+              <div class="cardLista">
+                <div class="cardProdInicio">
+                  <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                  <div class="card-bodyProd">
+                    <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                    <p class="text-infoProd"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                    <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
+                      <p class="text-danger stock-labelProd"><?php echo "Sin Stock" ?></p>
+                    <?php } ?>
+                  </div>
                 </div>
               </div>
+
             </a>
           </form>
         </div>

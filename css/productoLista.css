@@ -6,7 +6,20 @@
 .cardProd {
     width: 20rem; /* Ajusta el ancho según tu diseño */
     height: 22rem; /* Ajusta la altura según tu diseño */
-    margin: 1rem;
+    margin: 0.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cardProdInicio {
+    width: 38vh; /* Ajusta el ancho según tu diseño */
+    height: 22rem; /* Ajusta la altura según tu diseño */
+    margin: 1.2vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
