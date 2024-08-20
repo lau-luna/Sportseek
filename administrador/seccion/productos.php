@@ -212,7 +212,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                         <div class="form-group">
                             <label for="txtCategoria">Categoría:</label>
-                            <select class="form-control" name="txtCategoria" id="txtCategoria" onchange="this.form.submit()">
+                            <select class="form-control" name="txtCategoria" id="txtCategoria">
                                 <?php
                                 $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
                                 $sentenciaSQL->execute();

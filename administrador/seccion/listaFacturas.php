@@ -1,6 +1,6 @@
-<?php include("template/cabecera.php"); ?>
+<?php include('../template/cabecera.php') ?>
 <!--Conexión a base de datos -->
-<?php include("administrador/config/bd.php"); ?>
+<?php include("../config/bd.php"); ?>
 
 <?php
 
@@ -8,8 +8,7 @@
 $filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
 
 if ($filtroSeleccionado == 'ninguno') {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE Usuarios_ID_Usuario=:IdUsuario ORDER BY Fecha_Emision_Factura DESC");
-    $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas ORDER BY Fecha_Emision_Factura DESC");
     $sentenciaSQL->execute();
     $listaFacturas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 } else {
@@ -26,7 +25,12 @@ if ($filtroSeleccionado == 'ninguno') {
 <link href="./css/factura.css" rel="stylesheet">
 
 <div class="container">
-
+    <form method="GET" class="form-inline" id="formulario-busqueda-facturas">
+        <input class="form-control" name="busqueda" type="text" placeholder="Buscar por usuario o ID">
+        <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
+            <img src="../../img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+        </button>
+    </form>
 
     <form method="GET" action="">
         <div class="col-md-2 mb-2">
@@ -45,6 +49,8 @@ if ($filtroSeleccionado == 'ninguno') {
             <thead>
                 <tr style="font-size: small;">
                     <th style="width: 10%;" id="th-ID">ID Factura</th>
+                    <th style="width: 10%;" id="th-ID">ID Usuario</th>
+                    <th style="width: 30%;" id="th-ID">Nombre usuario</th>
                     <th id="th-estado">Estado</th>
                     <th style="width: 25%;" id="th-fecha">Fecha de Emisión</th>
                     <th style="width: 10%;" id="th"></th>
@@ -56,6 +62,11 @@ if ($filtroSeleccionado == 'ninguno') {
                     $sentenciaSQL->bindParam(":IdFactura", $factura['ID_Factura']);
                     $sentenciaSQL->execute();
                     $estadoFactura = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+                    $sentenciaSQL = $conexion->prepare("SELECT Nombre_Usuario, Apellidos_Usuario, ID_Usuario FROM Facturas INNER JOIN Usuarios ON Facturas.Usuarios_ID_Usuario=Usuarios.ID_Usuario WHERE Facturas.ID_Factura=:IdFactura");
+                    $sentenciaSQL->bindParam(":IdFactura", $factura['ID_Factura']);
+                    $sentenciaSQL->execute();
+                    $usuario = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
                     $classFactura = "";
                     switch ($estadoFactura->Estado_Factura) {
@@ -74,11 +85,14 @@ if ($filtroSeleccionado == 'ninguno') {
                         <input type="hidden" name="ID_Factura" value="<?php echo htmlspecialchars($factura['ID_Factura']); ?>">
                         <tr>
                             <td><?php echo htmlspecialchars($factura['ID_Factura']); ?></td>
+                            <td><?php echo htmlspecialchars($usuario['ID_Usuario']); ?></td>
+                            <td><?php echo htmlspecialchars($usuario['Apellidos_Usuario'].", ".$usuario['Nombre_Usuario']); ?></td>
+                            
                             <td>
                                 <div class="alert <?php echo htmlspecialchars($classFactura); ?>" role="alert"> <?php echo htmlspecialchars($estadoFactura->Estado_Factura); ?> </div>
                             </td>
                             <td><?php echo htmlspecialchars($factura['Fecha_Emision_Factura']); ?></td>
-                            <td><button type="submit" class="btn btn-outline-primary">Ver Detalle</button></td>
+                            <td><button style="width: 100%" type="submit" class="btn btn-outline-primary">Ver Detalle</button></td>
                         </tr>
                     </form>
 
@@ -88,4 +102,4 @@ if ($filtroSeleccionado == 'ninguno') {
     </div>
 </div>
 
-<?php include("template/pie.php"); ?>
+<?php include('../template/pie.php') ?>
