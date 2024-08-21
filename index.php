@@ -3,12 +3,14 @@
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style="z-index: -999">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="./img/messi-banner.jpg" class=" w-100" style="z-index: -999; max-height: 400px; object-fit:cover;" alt="...">
+      <img src="./img/carrusel1.png" class=" w-100" style="z-index: -999; object-fit:cover;" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="./img/lionel-messi.2183aef8.jpg" class="w-100" style="z-index: -999; max-height: 400px; object-fit:cover;" alt="...">
+      <img src="./img/carrusel2.png" class="w-100" style="z-index: -999; object-fit:cover;" alt="...">
     </div>
-
+    <div class="carousel-item">
+      <img src="./img/carrusel3.png" class="w-100" style="z-index: -999; object-fit:cover;" alt="...">
+    </div>
   </div>
 </div>
 <br>
