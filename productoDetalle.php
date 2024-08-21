@@ -4,16 +4,20 @@
 <?php include("administrador/config/bd.php"); ?>
 <br>
 <?php
-$sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto=:id");
+// Obtener el producto específico
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto = :id");
 $sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
 $sentenciaSQL->execute();
 $producto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-$sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
-$sentenciaSQL->bindParam(':IdCategoria', $producto['Categorias_ID_Categoria']);
+
+// Obtener la categoría del producto
+$sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria = Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto = :id");
 $sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
 $sentenciaSQL->execute();
-$categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+$categoria = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
+// Formatear el precio del producto
+$precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
 ?>
 
 <div class="container">
@@ -31,7 +35,7 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                 <div class="card-body">
                     <p class="card-text text-success mb-1" style="font-size: smaller;"> <?php echo htmlspecialchars($categoria['Nombre_Categoria']) ?> </p>
                     <h3 class="card-title text-info"> <?php echo htmlspecialchars($producto['Nombre_Producto']) ?> </h3>
-                    <p class="card-text text-danger mb-1" style="font-size:large;">$ <?php echo htmlspecialchars($producto['Precio_Producto']) ?> </p>
+                    <p class="card-text text-danger mb-1" style="font-size: large;">$ <?php echo $precioFormateado ?> </p>
                     <div class="mb-4"></div>
 
                     <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
@@ -51,11 +55,11 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                         </form>
                     <?php } ?>
 
-                    <p class=" mb-0" style="font-size:large; font-weight:bold;">Descripción</p>
+                    <p class="mb-0" style="font-size: large; font-weight: bold;">Descripción</p>
                     <hr style="margin-top: 0.5%; margin-bottom: 1%;">
                     <p class="card-text mb-2" style="margin-bottom: 4%;"><?php echo htmlspecialchars($producto['Descripcion_Producto']) ?></p>
 
-                    <p class="mb-0" style="font-size:large; font-weight:bold;">Especificaciones</p>
+                    <p class="mb-0" style="font-size: large; font-weight: bold;">Especificaciones</p>
                     <hr style="margin-top: 0.5%; margin-bottom: 1%;">
                     <p class="card-text"><?php echo htmlspecialchars($producto['Especificaciones_Producto']) ?></p>
                 </div>
@@ -64,11 +68,7 @@ $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
                 </div>
             </div>
         </div>
-
     </div>
-
 </div>
-
-
 
 <?php include("template/pie.php"); ?>

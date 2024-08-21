@@ -168,10 +168,6 @@ if ($_GET) {
             </div>
         </div>
     </form>
-
-    <footer class="my-5 pt-5 text-muted text-center text-small">
-        <p class="mb-1">&copy; </p>
-    </footer>
 </div>
 
 <?php include("template/pie.php"); ?>
