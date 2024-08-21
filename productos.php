@@ -4,7 +4,24 @@
 <?php include("administrador/config/bd.php");
 
 // Verifica si se ha enviado una búsqueda
-$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : "";
+$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
+
+// Dividir la búsqueda en palabras (si hay más de una)
+$palabras = explode(' ', $busqueda);
+$condiciones = [];
+$params = [];
+
+// Crear las condiciones para nombre o categoría
+if ($busqueda) {
+    foreach ($palabras as $index => $palabra) {
+        // Añadir las condiciones para cada palabra en la búsqueda
+        $params[":busqueda$index"] = "%" . strtolower($palabra) . "%";
+        $condiciones[] = "(LOWER(Productos.Nombre_Producto) LIKE :busqueda$index OR LOWER(Categorias.Nombre_Categoria) LIKE :busqueda$index)";
+    }
+    $condicionesStr = implode(' OR ', $condiciones);
+} else {
+    $condicionesStr = '1'; // Siempre verdadero si no hay búsqueda
+}
 
 // Configuración de paginación
 $productosPorPagina = 12;
@@ -15,103 +32,71 @@ $offset = ($paginaActual - 1) * $productosPorPagina;
 $categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
 $filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
 
-// Consulta para la búsqueda
-if ($busqueda) {
-    if ($categoriaSeleccionada == 'todas') {
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Nombre_Producto LIKE :busqueda ORDER BY 
-        CASE 
-            WHEN :filtro = 'precioMasBajo' THEN Precio_Producto 
-            WHEN :filtro = 'precioMasAlto' THEN Precio_Producto * -1 
-            ELSE ID_Producto 
-        END LIMIT :limit OFFSET :offset");
-    } else {
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria 
-        AND Nombre_Producto LIKE :busqueda ORDER BY 
-        CASE 
-            WHEN :filtro = 'precioMasBajo' THEN Precio_Producto 
-            WHEN :filtro = 'precioMasAlto' THEN Precio_Producto * -1 
-            ELSE ID_Producto 
-        END LIMIT :limit OFFSET :offset");
-        $sentenciaSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
-    }
-    $sentenciaSQL->bindValue(':busqueda', '%' . $busqueda . '%', PDO::PARAM_STR);
-    $sentenciaSQL->bindValue(':filtro', $filtroSeleccionado, PDO::PARAM_STR);
-    $sentenciaSQL->bindValue(':limit', $productosPorPagina, PDO::PARAM_INT);
-    $sentenciaSQL->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $sentenciaSQL->execute();
-    $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+// Preparar la consulta SQL base
+$sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria, 
+            MATCH (Productos.Nombre_Producto) AGAINST (:busqueda IN BOOLEAN MODE) AS relevance
+            FROM Productos
+            INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
+            WHERE $condicionesStr";
 
-    // Obtener el número total de productos que coinciden con la búsqueda para la paginación
-    $sentenciaSQLCount = $conexion->prepare("SELECT COUNT(*) FROM Productos WHERE Nombre_Producto LIKE :busqueda");
-    if ($categoriaSeleccionada != 'todas') {
-        $sentenciaSQLCount->bindParam(":IdCategoria", $categoriaSeleccionada);
-    }
-    $sentenciaSQLCount->bindValue(':busqueda', '%' . $busqueda . '%', PDO::PARAM_STR);
-    $sentenciaSQLCount->execute();
-    $totalProductos = $sentenciaSQLCount->fetchColumn();
-    $totalPaginas = ceil($totalProductos / $productosPorPagina);
-} else {
-    // Consulta cuando no hay búsqueda
-    if ($categoriaSeleccionada == 'todas') {
-        switch ($filtroSeleccionado) {
-            case 'precioMasBajo':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY Precio_Producto ASC LIMIT :limit OFFSET :offset");
-                break;
-            case 'precioMasAlto':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY Precio_Producto DESC LIMIT :limit OFFSET :offset");
-                break;
-            case 'ninguno':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY ID_Producto DESC LIMIT :limit OFFSET :offset");
-                break;
-        }
-    } else {
-        switch ($filtroSeleccionado) {
-            case 'precioMasBajo':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY Precio_Producto ASC LIMIT :limit OFFSET :offset");
-                break;
-            case 'precioMasAlto':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY Precio_Producto DESC LIMIT :limit OFFSET :offset");
-                break;
-            case 'ninguno':
-                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY ID_Producto DESC LIMIT :limit OFFSET :offset");
-                break;
-        }
-        $sentenciaSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
-    }
+// Añadir filtro y ordenamiento
+$sqlBase .= " ORDER BY 
+            CASE 
+                WHEN :filtro = 'precioMasBajo' THEN Precio_Producto 
+                WHEN :filtro = 'precioMasAlto' THEN Precio_Producto * -1 
+                ELSE relevance 
+            END DESC 
+            LIMIT :limit OFFSET :offset";
 
-    $sentenciaSQL->bindValue(':limit', $productosPorPagina, PDO::PARAM_INT);
-    $sentenciaSQL->bindValue(':offset', $offset, PDO::PARAM_INT);
-    $sentenciaSQL->execute();
-    $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+// Preparar la consulta
+$sentenciaSQL = $conexion->prepare($sqlBase);
 
-    // Obtener el número total de productos para paginación
-    if ($categoriaSeleccionada == 'todas') {
-        $sentenciaSQLCount = $conexion->prepare("SELECT COUNT(*) FROM Productos");
-    } else {
-        $sentenciaSQLCount = $conexion->prepare("SELECT COUNT(*) FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria");
-        $sentenciaSQLCount->bindParam(":IdCategoria", $categoriaSeleccionada);
-    }
-    $sentenciaSQLCount->execute();
-    $totalProductos = $sentenciaSQLCount->fetchColumn();
-    $totalPaginas = ceil($totalProductos / $productosPorPagina);
+// Asignar parámetros de búsqueda
+foreach ($params as $param => $value) {
+    $sentenciaSQL->bindValue($param, $value, PDO::PARAM_STR);
 }
+$sentenciaSQL->bindValue(':filtro', $filtroSeleccionado, PDO::PARAM_STR);
+$sentenciaSQL->bindValue(':limit', $productosPorPagina, PDO::PARAM_INT);
+$sentenciaSQL->bindValue(':offset', $offset, PDO::PARAM_INT);
+$sentenciaSQL->bindValue(':busqueda', $busqueda, PDO::PARAM_STR);
 
-echo "<script>
+// Ejecutar la consulta
+$sentenciaSQL->execute();
+$listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
+// Obtener el número total de productos que coinciden con la búsqueda
+$sqlCount = "SELECT COUNT(*) FROM Productos
+             INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
+             WHERE $condicionesStr";
+if ($categoriaSeleccionada != 'todas') {
+    $sqlCount .= " AND Productos.Categorias_ID_Categoria = :IdCategoria";
+}
+$sentenciaSQLCount = $conexion->prepare($sqlCount);
+if ($categoriaSeleccionada != 'todas') {
+    $sentenciaSQLCount->bindParam(":IdCategoria", $categoriaSeleccionada);
+}
+foreach ($params as $param => $value) {
+    $sentenciaSQLCount->bindValue($param, $value, PDO::PARAM_STR);
+}
+$sentenciaSQLCount->execute();
+$totalProductos = $sentenciaSQLCount->fetchColumn();
+$totalPaginas = ceil($totalProductos / $productosPorPagina);
+?>
+
+<script>
     window.onload = function() {
         var element = document.getElementById('tabla-productos');
         if (element) {
             element.scrollIntoView({behavior: 'auto'});
         }
     };
-</script>";
-?>
+</script>
 
 <br>
 
 <div class="row">
     <!-- Sidebar -->
     <aside class="col-md-2">
-
         <!-- Formulario de filtros -->
         <form method="GET" action="">
             <div data-mdb-input-init class="categoria mb-2">
@@ -154,7 +139,6 @@ echo "<script>
                 </form>
             </div>
         </div>
-
     </aside>
 
     <!-- Productos -->
@@ -183,8 +167,6 @@ echo "<script>
                                         </div>
                                     </div>
                                 </div>
-
-
                             </a>
                         </form>
                     </div>
@@ -194,36 +176,29 @@ echo "<script>
             <?php } ?>
         </div>
 
-        <!-- Productos -->
-        <div class="col-md-10">
-            <div class="row">
-
-            </div>
-
-            <!-- Navegación de páginas -->
-            <nav aria-label="Page navigation">
-                <ul class="pagination">
-                    <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
-                        <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Previous">
-                            <span aria-hidden="true">&laquo;</span>
+        <!-- Navegación de páginas -->
+        <nav aria-label="Page navigation">
+            <ul class="pagination">
+                <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
+                    <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>" aria-label="Previous">
+                        <span aria-hidden="true">&laquo;</span>
+                    </a>
+                </li>
+                <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
+                    <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
+                        <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>">
+                            <?php echo $i; ?>
                         </a>
                     </li>
-                    <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
-                        <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
-                            <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>">
-                                <?php echo $i; ?>
-                            </a>
-                        </li>
-                    <?php } ?>
-                    <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
-                        <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>" aria-label="Next">
-                            <span aria-hidden="true">&raquo;</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-
-        </div>
+                <?php } ?>
+                <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
+                    <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
     </div>
+</div>
 
-    <?php include("template/pie.php"); ?>
+<?php include("template/pie.php"); ?>
