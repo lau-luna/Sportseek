@@ -55,7 +55,7 @@
     </div>
   </div>
 
-  <?php $arrayCategorias = ['Futbol', 'Caza y Pesca', 'Rugby'];
+  <?php $arrayCategorias = ['Fútbol', 'Caza y Pesca', 'Rugby'];
   foreach ($arrayCategorias as $categoria) { ?>
     <br>
     <h3> <?php echo htmlspecialchars($categoria)?> </h3>
