@@ -103,17 +103,17 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
 <br>
 
-<div class="row">
+<div class="" style="display: flex;" id="filtros">
     <!-- Sidebar -->
-    <aside class="col-md-2">
+    <aside class="ml-4 mr-3" style="width: 13%;">
         <!-- Formulario de filtros -->
         <form method="GET" action="">
             <div data-mdb-input-init class="categoria mb-2">
                 <label class="form-label">Filtrar por:</label>
                 <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
                     <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
-                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
-                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
+                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más alto</option>
+                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más bajo</option>
                 </select>
                 <!-- Campo oculto para mantener la búsqueda -->
                 <input type="hidden" name="busqueda" value="<?php echo htmlspecialchars($busqueda); ?>">
@@ -155,12 +155,10 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
         <div class="row">
             <?php if (!empty($listaProductos)) { ?>
                 <?php foreach ($listaProductos as $producto) {
-                    // Formatear el precio del producto
-                    $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
                     // Generar un ID único para cada formulario
                     $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
                 ?>
-                    <div class="col-md-3 mb-4">
+                    <div class="mb-4 col-md-3" style="padding-left: 1vh; padding-right: 1vh;">
                         <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
@@ -171,7 +169,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                                         <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
                                         <div class="card-bodyProd">
                                             <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                                            <p class="text-infoProd"><?php echo "$ " . $precioFormateado; ?></p>
+                                            <p class="text-infoProd"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
                                             <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
                                                 <p class="text-danger stock-labelProd"><?php echo "Sin Stock" ?></p>
                                             <?php } ?>
