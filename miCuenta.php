@@ -103,7 +103,9 @@ if ($_POST) {
                     <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
                     <span class="font-weight-bold"> <?php echo htmlspecialchars($usuario['Username_Usuario']); ?> </span>
                     <span class="text-black-50"> <?php echo htmlspecialchars($usuario['Email_Usuario']); ?> </span>
-                    <span> </span>
+                    <?php if($usuario['Tipos_de_Usuario_ID_Tipos_de_Usuario'] == 1) { ?>
+                        <div class="alert alert-info mt-2"> <?php echo htmlspecialchars("Administrador"); ?> </div>
+                    <?php } ?>
                 </div>
             </div>
 
