@@ -27,11 +27,14 @@ ini_set('max_execution_time', '60');
 
 
     <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+   
     <!-- BoxIcons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Styles -->
+    <link rel="stylesheet" href="./bootstrap/bootstrap.css" type="text/css">
+
+
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
@@ -113,11 +116,11 @@ ini_set('max_execution_time', '60');
 
         </header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
-            <div class="collapse navbar-collapse" id="navbarNavDropdown">
+            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
                 <ul class="navbar-nav">
                     <li class="nav-item active">
                         <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>

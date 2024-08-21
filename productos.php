@@ -39,6 +39,11 @@ $sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria,
             INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
             WHERE $condicionesStr";
 
+// Añadir filtro de categoría si se selecciona una categoría específica
+if ($categoriaSeleccionada != 'todas') {
+    $sqlBase .= " AND Productos.Categorias_ID_Categoria = :IdCategoria";
+}
+
 // Añadir filtro y ordenamiento
 $sqlBase .= " ORDER BY 
             CASE 
@@ -54,6 +59,9 @@ $sentenciaSQL = $conexion->prepare($sqlBase);
 // Asignar parámetros de búsqueda
 foreach ($params as $param => $value) {
     $sentenciaSQL->bindValue($param, $value, PDO::PARAM_STR);
+}
+if ($categoriaSeleccionada != 'todas') {
+    $sentenciaSQL->bindValue(':IdCategoria', $categoriaSeleccionada, PDO::PARAM_INT);
 }
 $sentenciaSQL->bindValue(':filtro', $filtroSeleccionado, PDO::PARAM_STR);
 $sentenciaSQL->bindValue(':limit', $productosPorPagina, PDO::PARAM_INT);
@@ -73,7 +81,7 @@ if ($categoriaSeleccionada != 'todas') {
 }
 $sentenciaSQLCount = $conexion->prepare($sqlCount);
 if ($categoriaSeleccionada != 'todas') {
-    $sentenciaSQLCount->bindParam(":IdCategoria", $categoriaSeleccionada);
+    $sentenciaSQLCount->bindValue(":IdCategoria", $categoriaSeleccionada, PDO::PARAM_INT);
 }
 foreach ($params as $param => $value) {
     $sentenciaSQLCount->bindValue($param, $value, PDO::PARAM_STR);
