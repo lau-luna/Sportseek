@@ -2,7 +2,15 @@
 
 <div class="jumbotron">
     <h1 class="display-3">Nosotros</h1>
-    <p class="lead">Somos una tienda de deportes que ahora tiene una pagina web para vender los productos de forma online.</p>
+    <p class="lead">Olimpiadas de informatica - I.P.E.T. y M. N° 257 "Dr. René Favaloro" - Laboulaye</p>
+    
+    <ul>
+        <li>Luna, Lautaro Eduardo Eber</li>
+        <li>Wiesek, Lucio</li>
+        <li>Gómez Molina, Lucio</li>
+        <li>Loza, Enzo Jeremías</li>
+    </ul>
+
     <hr class="my-2">
 </div>
 

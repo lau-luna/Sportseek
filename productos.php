@@ -39,7 +39,7 @@ $sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria,
             INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
             WHERE $condicionesStr";
 
-// Añadir filtro de categoría si se selecciona una categoría específica
+// Añadir filtro de categoría si es necesario
 if ($categoriaSeleccionada != 'todas') {
     $sqlBase .= " AND Productos.Categorias_ID_Categoria = :IdCategoria";
 }
@@ -49,6 +49,7 @@ $sqlBase .= " ORDER BY
             CASE 
                 WHEN :filtro = 'precioMasBajo' THEN Precio_Producto 
                 WHEN :filtro = 'precioMasAlto' THEN Precio_Producto * -1 
+                WHEN :busqueda = '' THEN ID_Producto
                 ELSE relevance 
             END DESC 
             LIMIT :limit OFFSET :offset";
@@ -188,21 +189,17 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
         <nav aria-label="Page navigation">
             <ul class="pagination">
                 <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo max(1, $paginaActual - 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>" aria-label="Previous">
-                        <span aria-hidden="true">&laquo;</span>
-                    </a>
+                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
                 </li>
                 <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
                     <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
-                        <a class="page-link" href="?pagina=<?php echo $i; ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>">
+                        <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $i; ?>">
                             <?php echo $i; ?>
                         </a>
                     </li>
                 <?php } ?>
                 <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
-                    <a class="page-link" href="?pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&busqueda=<?php echo htmlspecialchars($busqueda); ?>" aria-label="Next">
-                        <span aria-hidden="true">&raquo;</span>
-                    </a>
+                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
                 </li>
             </ul>
         </nav>
