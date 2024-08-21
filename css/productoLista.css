@@ -1,0 +1,58 @@
+.cardLista {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+.cardProd {
+    width: 20rem; /* Ajusta el ancho según tu diseño */
+    height: 22rem; /* Ajusta la altura según tu diseño */
+    margin: 0.2rem;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    text-align: center;
+}
+
+.cardProdInicio {
+    width: 38vh; /* Ajusta el ancho según tu diseño */
+    height: 22rem; /* Ajusta la altura según tu diseño */
+    margin: 1.2vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    border: 1px solid #ddd;
+    border-radius: 0.25rem;
+    overflow: hidden;
+    text-align: center;
+}
+
+.card-img-topProd {
+    width: 100%;
+    height: 55%; /* Ajusta la altura según tu diseño */
+    object-fit:contain; /* Asegura que la imagen cubra el área sin deformarse */
+}
+
+.card-bodyProd {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 1rem;
+}
+
+.card-titleProd {
+    font-size: 1.25rem;
+    margin-bottom: 0.5rem;
+}
+
+.text-infoProd {
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+}
+
+.stock-labelProd {
+    font-size: 0.875rem;
+    color: #dc3545;
+}
