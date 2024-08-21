@@ -58,10 +58,12 @@
   <?php $arrayCategorias = ['Fútbol', 'Caza y Pesca', 'Rugby'];
   foreach ($arrayCategorias as $categoria) { ?>
     <br>
-    <h3> <?php echo htmlspecialchars($categoria)?> </h3>
+    <h3> <?php echo htmlspecialchars($categoria) ?> </h3>
     <hr>
     <?php
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos INNER JOIN Categorias ON Productos.Categorias_ID_Categoria=Categorias.ID_Categoria WHERE Categorias.Nombre_Categoria=:categoria ORDER BY Productos.ID_Producto DESC LIMIT 10");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos 
+                    INNER JOIN Categorias ON Productos.Categorias_ID_Categoria=Categorias.ID_Categoria 
+                    WHERE Categorias.Nombre_Categoria=:categoria ORDER BY Productos.ID_Producto DESC LIMIT 10");
     $sentenciaSQL->bindParam(":categoria", $categoria);
     $sentenciaSQL->execute();
     $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC); ?>
