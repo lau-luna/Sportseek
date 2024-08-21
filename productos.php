@@ -155,6 +155,8 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
         <div class="row">
             <?php if (!empty($listaProductos)) { ?>
                 <?php foreach ($listaProductos as $producto) {
+                    // Formatear el precio del producto
+                    $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
                     // Generar un ID único para cada formulario
                     $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
                 ?>
@@ -169,7 +171,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                                         <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
                                         <div class="card-bodyProd">
                                             <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                                            <p class="text-infoProd"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                                            <p class="text-infoProd"><?php echo "$ " . $precioFormateado; ?></p>
                                             <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
                                                 <p class="text-danger stock-labelProd"><?php echo "Sin Stock" ?></p>
                                             <?php } ?>

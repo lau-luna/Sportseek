@@ -11,7 +11,7 @@ if (!isset($_SESSION['ID_Usuario'])){
 }
 
 // Obtener carrito del usuario
-$sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos INNER JOIN Usuarios ON Usuarios.ID_Usuario=Carritos.Usuarios_ID_Usuario WHERE Usuarios.ID_Usuario=:IdUsuario");
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos INNER JOIN Usuarios ON Usuarios.ID_Usuario = Carritos.Usuarios_ID_Usuario WHERE Usuarios.ID_Usuario = :IdUsuario");
 $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
 $sentenciaSQL->execute();
 $carrito = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
@@ -21,16 +21,16 @@ if (isset($carrito['ID_Carrito'])) {
 
     // Si se manda un producto desde productoDetalle.php
     if (isset($_GET['IdProducto'])) {
-        //Comprobar si ya tiene el producto seleccionado para aumentar su cantidad
-        $sentenciaSQL = $conexion->prepare("SELECT Productos_ID_Producto, Cantidad_Productos FROM Carritos_Productos WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
+        // Comprobar si ya tiene el producto seleccionado para aumentar su cantidad
+        $sentenciaSQL = $conexion->prepare("SELECT Productos_ID_Producto, Cantidad_Productos FROM Carritos_Productos WHERE Carritos_ID_Carrito = :IdCarrito AND Productos_ID_Producto = :IdProducto");
         $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
         $sentenciaSQL->bindParam(":IdProducto", $_GET['IdProducto']);
         $sentenciaSQL->execute();
-        $IdProducto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+        $productoExistente = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-        if (isset($IdProducto['Productos_ID_Producto'])) {
-            $cantidad = intval($IdProducto['Cantidad_Productos']) + intval($_GET['cantidadProducto']);
-            $sentenciaSQL = $conexion->prepare("UPDATE Carritos_Productos SET Cantidad_Productos=:cantidad WHERE Carritos_ID_Carrito=:IdCarrito AND Productos_ID_Producto=:IdProducto");
+        if (isset($productoExistente['Productos_ID_Producto'])) {
+            $cantidad = intval($productoExistente['Cantidad_Productos']) + intval($_GET['cantidadProducto']);
+            $sentenciaSQL = $conexion->prepare("UPDATE Carritos_Productos SET Cantidad_Productos = :cantidad WHERE Carritos_ID_Carrito = :IdCarrito AND Productos_ID_Producto = :IdProducto");
             $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
             $sentenciaSQL->bindParam(":IdProducto", $_GET['IdProducto']);
             $sentenciaSQL->bindParam(":cantidad", $cantidad);
@@ -68,18 +68,18 @@ if (isset($carrito['ID_Carrito'])) {
 }
 
 // Obtener lista de productos en el carrito
-$sentenciaSQL = $conexion->prepare("SELECT Productos.*, Carritos_Productos.Cantidad_Productos FROM Carritos_Productos INNER JOIN Productos ON Carritos_Productos.Productos_ID_Producto=Productos.ID_Producto WHERE Carritos_Productos.Carritos_ID_Carrito=:IdCarrito");
+$sentenciaSQL = $conexion->prepare("SELECT Productos.*, Carritos_Productos.Cantidad_Productos FROM Carritos_Productos INNER JOIN Productos ON Carritos_Productos.Productos_ID_Producto = Productos.ID_Producto WHERE Carritos_Productos.Carritos_ID_Carrito = :IdCarrito");
 $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
 $sentenciaSQL->execute();
 $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-$txtID = (isset($_GET['txtID'])) ? $_GET['txtID'] : "";
-$accion = (isset($_GET['accion'])) ? $_GET['accion'] : "";
+$txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
+$accion = isset($_GET['accion']) ? $_GET['accion'] : "";
 
 switch ($accion) {
     case 'Quitar del carrito':
         // Borrar producto del carrito
-        $sentenciaSQL = $conexion->prepare("DELETE FROM Carritos_Productos WHERE Productos_ID_Producto=:idProducto AND Carritos_ID_Carrito=:idCarrito");
+        $sentenciaSQL = $conexion->prepare("DELETE FROM Carritos_Productos WHERE Productos_ID_Producto = :idProducto AND Carritos_ID_Carrito = :idCarrito");
         $sentenciaSQL->bindParam(':idProducto', $txtID);
         $sentenciaSQL->bindParam(':idCarrito', $carrito['ID_Carrito']);
         $sentenciaSQL->execute();
@@ -89,13 +89,9 @@ switch ($accion) {
       </script>';
         break;
     case 'Continuar con la compra':
-
-        $_SESSION['ID_Carrito']= $carrito['ID_Carrito'];
-
+        $_SESSION['ID_Carrito'] = $carrito['ID_Carrito'];
         echo "<script>window.location.href='pago.php';</script>";
         exit;
-
-
         break;
 }
 
@@ -117,8 +113,11 @@ switch ($accion) {
             <?php
             $_SESSION['total'] = 0;
             foreach ($listaCarritosProductos as $producto) {
-                $_SESSION['total'] = $_SESSION['total'] + ((floatval($producto['Precio_Producto'])) * (floatval($producto['Cantidad_Productos'])));
-
+                // Formatear precios y calcular el total
+                $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
+                $totalProducto = $producto['Cantidad_Productos'] * $producto['Precio_Producto'];
+                $_SESSION['total'] += $totalProducto;
+                $totalProductoFormateado = number_format($totalProducto, 0, ',', '.');
             ?>
                 <tr>
                     <td class="text-info">
@@ -127,7 +126,7 @@ switch ($accion) {
                         <?php } ?>
                         <?php echo htmlspecialchars($producto['Nombre_Producto']); ?>
                     </td>
-                    <td class="text-success">$ <?php echo htmlspecialchars($producto['Precio_Producto']); ?></td>
+                    <td class="text-success">$ <?php echo $precioFormateado; ?></td>
                     <td><?php echo htmlspecialchars($producto['Cantidad_Productos']); ?></td>
                     <td>
                         <form method="GET">
@@ -140,7 +139,7 @@ switch ($accion) {
         </tbody>
     </table>
 
-    <h4>Total: $<span id="total"> <?php echo htmlspecialchars($_SESSION['total']); ?> </span></h4>
+    <h4>Total: $<span id="total"> <?php echo number_format($_SESSION['total'], 0, ',', '.'); ?> </span></h4>
 
     <?php if (isset($carrito['ID_Carrito'])) { ?>
         <form method="GET">
