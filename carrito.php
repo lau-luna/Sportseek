@@ -6,6 +6,10 @@
 
 include("administrador/config/bd.php");
 
+if (!isset($_SESSION['ID_Usuario'])){
+    echo "<script>window.location.href='loginUsuario.php';</script>";
+}
+
 // Obtener carrito del usuario
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos INNER JOIN Usuarios ON Usuarios.ID_Usuario=Carritos.Usuarios_ID_Usuario WHERE Usuarios.ID_Usuario=:IdUsuario");
 $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
