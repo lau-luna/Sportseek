@@ -4,9 +4,9 @@
 }
 
 .cardProd {
-    width: 20rem; /* Ajusta el ancho según tu diseño */
+    width: 12rem; /* Ajusta el ancho según tu diseño */
     height: 22rem; /* Ajusta la altura según tu diseño */
-    margin: 0.2rem;
+    margin: 0.9rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -43,7 +43,7 @@
 }
 
 .card-titleProd {
-    font-size: 1.25rem;
+    font-size: 1rem;
     margin-bottom: 0.5rem;
 }
 
@@ -55,4 +55,10 @@
 .stock-labelProd {
     font-size: 0.875rem;
     color: #dc3545;
+}
+#filtros{
+    margin-left: 2%;
+}
+body{
+    overflow-x: hidden;
 }

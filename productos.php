@@ -103,7 +103,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
 <br>
 
-<div class="row">
+<div class="row" id="filtros">
     <!-- Sidebar -->
     <aside class="col-md-2">
         <!-- Formulario de filtros -->
@@ -112,8 +112,8 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                 <label class="form-label">Filtrar por:</label>
                 <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
                     <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
-                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más bajo</option>
-                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más alto</option>
+                    <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más alto</option>
+                    <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más bajo</option>
                 </select>
                 <!-- Campo oculto para mantener la búsqueda -->
                 <input type="hidden" name="busqueda" value="<?php echo htmlspecialchars($busqueda); ?>">
@@ -158,7 +158,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                     // Generar un ID único para cada formulario
                     $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
                 ?>
-                    <div class="col-md-3 mb-4">
+                    <div class="mb-4" style="padding-left: 1vh; padding-right: 1vh;">
                         <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
