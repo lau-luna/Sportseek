@@ -69,8 +69,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estado_pedido'], $_PO
                 <label class="form-label">Filtrar por estado:</label>
                 <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
                     <option value="ninguno" <?php echo ($filtroSeleccionado == 'ninguno') ? 'selected' : ''; ?>>Todos</option>
-                    <option value="1" <?php echo ($filtroSeleccionado == 1) ? 'selected' : ''; ?>>Completados</option>
-                    <option value="2" <?php echo ($filtroSeleccionado == 2) ? 'selected' : ''; ?>>Pendientes</option>
+                    <option value="2" <?php echo ($filtroSeleccionado == 1) ? 'selected' : ''; ?>>Completados</option>
+                    <option value="1" <?php echo ($filtroSeleccionado == 2) ? 'selected' : ''; ?>>Pendientes</option>
                     <option value="3" <?php echo ($filtroSeleccionado == 3) ? 'selected' : ''; ?>>Cancelados</option>
                 </select>
             </div>
