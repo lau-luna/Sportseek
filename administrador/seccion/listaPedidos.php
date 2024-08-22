@@ -15,7 +15,7 @@ $params = [];
 // Crear las condiciones para nombre, apellidos o ID de pedido
 foreach ($palabras as $index => $palabra) {
     $params[":busqueda$index"] = "%$palabra%";
-    $condiciones[] = "(Usuarios.Nombre_Usuario LIKE :busqueda$index OR Usuarios.Apellidos_Usuario LIKE :busqueda$index OR Pedidos.ID_Pedido LIKE :busqueda$index)";
+    $condiciones[] = "(Usuarios.Nombre_Usuario LIKE :busqueda$index OR Usuarios.ID_Usuario LIKE :busqueda$index OR Usuarios.Apellidos_Usuario LIKE :busqueda$index OR Pedidos.ID_Pedido LIKE :busqueda$index)";
 }
 
 $condiciones = implode(' OR ', $condiciones);
@@ -59,18 +59,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && isset($_POST['estado_pedido'], $_PO
 <link href="./css/factura.css" rel="stylesheet">
 
 <div class="container">
-    <div class="d-flex justify-content-between mb-2 busqueda-filtro">
-        <form method="GET" class="form-inline flex-grow-1 me-2" id="formulario-busqueda-pedidos">
+    <div class="d-flex justify-content-between mb-3 busqueda-filtro">
+        <form method="GET" class="form-inline flex-grow-1 ml-3" id="formulario-busqueda-pedidos">
             <input class="form-control w-100" name="busqueda" type="text" placeholder="Buscar por usuario, apellidos o ID de pedido" value="<?php echo htmlspecialchars($busqueda); ?>" style="max-width: 500px;">
             <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
                 <img src="../../img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
             </button>
-            <div class="d-flex flex-column align-items-end">
+            <div class="d-flex ml-4">
                 <label class="form-label">Filtrar por estado:</label>
-                <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                <select name="txtFiltro" id="filtro" class="form-control ml-2" onchange="this.form.submit()">
                     <option value="ninguno" <?php echo ($filtroSeleccionado == 'ninguno') ? 'selected' : ''; ?>>Todos</option>
-                    <option value="2" <?php echo ($filtroSeleccionado == 1) ? 'selected' : ''; ?>>Completados</option>
-                    <option value="1" <?php echo ($filtroSeleccionado == 2) ? 'selected' : ''; ?>>Pendientes</option>
+                    <option value="2" <?php echo ($filtroSeleccionado == 2) ? 'selected' : ''; ?>>Completados</option>
+                    <option value="1" <?php echo ($filtroSeleccionado == 1) ? 'selected' : ''; ?>>Pendientes</option>
                     <option value="3" <?php echo ($filtroSeleccionado == 3) ? 'selected' : ''; ?>>Cancelados</option>
                 </select>
             </div>

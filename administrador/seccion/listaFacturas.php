@@ -44,15 +44,15 @@ $listaFacturas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 <link href="./css/factura.css" rel="stylesheet">
 
 <div class="container">
-    <div class="d-flex justify-content-between mb-2 busqueda-filtro">
-        <form method="GET" class="form-inline flex-grow-1 me-2" id="formulario-busqueda-facturas">
+    <div class="d-flex justify-content-between mb-3 busqueda-filtro">
+        <form method="GET" class="form-inline flex-grow-1 ml-3 me-2" id="formulario-busqueda-facturas">
             <input class="form-control w-100" name="busqueda" type="text" placeholder="Buscar por usuario, apellidos o ID de factura" value="<?php echo htmlspecialchars($busqueda); ?>" style="max-width: 500px;">
             <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
                 <img src="../../img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
             </button>
-            <div class="d-flex flex-column align-items-end">
+            <div class="d-flex ml-4">
                 <label class="form-label">Filtrar por estado:</label>
-                <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                <select name="txtFiltro" id="filtro" class="form-control ml-2" onchange="this.form.submit()">
                     <option value="ninguno" <?php echo ($filtroSeleccionado == 'ninguno') ? 'selected' : ''; ?>>Todas</option>
                     <option value="1" <?php echo ($filtroSeleccionado == 1) ? 'selected' : ''; ?>>Pagadas</option>
                     <option value="2" <?php echo ($filtroSeleccionado == 2) ? 'selected' : ''; ?>>No Pagadas</option>

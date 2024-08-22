@@ -165,7 +165,7 @@ if ($_POST) {
                     <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                         <div class="containerr" style="position: relative;">
-                            <input style="width: 100%;" type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <input style="width: 100%;" type="password" name="txtContrasenia" id="txtContrasenia" class="form-control form-control-md" />
                             <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                         </div>
                     </div>
