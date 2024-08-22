@@ -15,6 +15,120 @@ $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Zn]+$/',  $_POST['acci
 if ($_POST) {
     if (!preg_match('/^[0-1]+$/',  $_POST['txtID']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || preg_match('/^[0-1]+$/',  $_POST['numPrecio']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
         $mensaje =  "Error en los caracteres de los datos";
+    } else {
+        switch ($accion) {
+            case "Agregar":
+                // Insertar datos a tabla Productos
+                $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Nombre_Producto, Precio_Producto, Descripcion_Producto, Tiene_Stock_Producto, Imagen_Producto, Especificaciones_Producto, Categorias_ID_Categoria) VALUES (:nombre, :precio, :descripcion, :stock, :imagen, :especificaciones, :IdCategoria);");
+                $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                $sentenciaSQL->bindParam(':precio', $numPrecio);
+                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                $sentenciaSQL->bindParam(':stock', $boolStock);
+
+                $fecha = new DateTime();
+                $nombreArchivo = ($txtImagen != "") ? $fecha->getTimestamp() . "_" . $_FILES["txtImagen"]["name"] : "imagen.jpg";
+
+                $tmpImagen = $_FILES["txtImagen"]["tmp_name"];
+
+                if ($tmpImagen != "") {
+                    move_uploaded_file($tmpImagen, "../../imgProductos/" . $nombreArchivo);
+                }
+
+                $sentenciaSQL->bindParam(':imagen', $nombreArchivo);
+                $sentenciaSQL->bindParam(':especificaciones', $txtEspecificaciones);
+                $sentenciaSQL->bindParam(':IdCategoria', $txtCategoria);
+
+                $sentenciaSQL->execute();
+
+                header('Location:productos.php');
+
+                echo "<script>
+                window.onload = function() {
+                    var element = document.getElementById('tabla-productos');
+                    if (element) {
+                        element.scrollIntoView({behavior: 'auto'});
+                    }
+                };
+              </script>";
+                break;
+            case "Modificar":
+                $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Nombre_Producto=:nombre, Precio_Producto=:precio, Descripcion_Producto=:descripcion, Tiene_Stock_Producto=:stock, Especificaciones_Producto=:especificaciones, Categorias_ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
+                $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                $sentenciaSQL->bindParam(':precio', $numPrecio);
+                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                $sentenciaSQL->bindParam(':stock', $boolStock);
+                $sentenciaSQL->bindParam(':especificaciones', $txtEspecificaciones);
+                $sentenciaSQL->bindParam(':IdCategoria', $txtCategoria);
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+
+                if ($txtImagen != "") {
+                    // Subir nueva imagen
+                    $fecha = new DateTime();
+                    $nombreArchivo = ($txtImagen != "") ? $fecha->getTimestamp() . "_" . $_FILES["txtImagen"]["name"] : "imagen.jpg";
+
+                    $tmpImagen = $_FILES["txtImagen"]["tmp_name"];
+                    move_uploaded_file($tmpImagen, "../../imgProductos/" . $nombreArchivo);
+
+                    // Borrar Imagen anterior
+                    $sentenciaSQL = $conexion->prepare("SELECT Imagen_Producto FROM Productos WHERE ID_Producto=:id");
+                    $sentenciaSQL->bindParam(':id', $txtID);
+                    $sentenciaSQL->execute();
+                    $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+                    if (isset($producto['Imagen_Producto']) && ($producto['Imagen_Producto'] != "imagen.jpg")) {
+                        if (file_exists("../../imgProductos/" . $producto['Imagen_Producto'])) {
+                            unlink("../../imgProductos/" . $producto['Imagen_Producto']);
+                        }
+                    }
+
+                    $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Imagen_Producto=:imagen WHERE ID_Producto=:id");
+                    $sentenciaSQL->bindParam(':imagen', $nombreArchivo);
+                    $sentenciaSQL->bindParam(':id', $txtID);
+                    $sentenciaSQL->execute();
+                }
+
+                header('Location:productos.php');
+                break;
+            case "Cancelar":
+                header('Location:productos.php');
+                break;
+            case 'Seleccionar':
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto=:id");
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+                $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+                $txtNombre = $producto['Nombre_Producto'];
+                $numPrecio = $producto['Precio_Producto'];
+                $txtDescripcion = $producto['Descripcion_Producto'];
+                $boolStock = $producto['Tiene_Stock_Producto'];
+                $txtImagen = $producto['Imagen_Producto'];
+                $_SESSION['Categoria_ID'] = $producto['Categorias_ID_Categoria'];
+                $txtEspecificaciones = $producto['Especificaciones_Producto'];
+
+                break;
+            case 'Borrar':
+                // Borrar Imagen
+                $sentenciaSQL = $conexion->prepare("SELECT Imagen_producto FROM Productos WHERE ID_Producto=:id");
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+                $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+
+                if (isset($producto['Imagen_producto']) && ($producto['Imagen_producto'] != "imagen.jpg")) {
+                    if (file_exists("../../imgProductos/" . $producto['Imagen_producto'])) {
+                        unlink("../../imgProductos/" . $producto['Imagen_producto']);
+                    }
+                }
+
+                // Borrar resto de datos
+                $sentenciaSQL = $conexion->prepare("DELETE FROM Productos WHERE ID_Producto=:id");
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+
+                header('Location:productos.php');
+                break;
+        }
     }
 }
 
@@ -22,119 +136,7 @@ include("../config/bd.php");
 
 $_SESSION['Categoria_ID']  = "";
 
-switch ($accion) {
-    case "Agregar":
-        // Insertar datos a tabla Productos
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Nombre_Producto, Precio_Producto, Descripcion_Producto, Tiene_Stock_Producto, Imagen_Producto, Especificaciones_Producto, Categorias_ID_Categoria) VALUES (:nombre, :precio, :descripcion, :stock, :imagen, :especificaciones, :IdCategoria);");
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':precio', $numPrecio);
-        $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-        $sentenciaSQL->bindParam(':stock', $boolStock);
 
-        $fecha = new DateTime();
-        $nombreArchivo = ($txtImagen != "") ? $fecha->getTimestamp() . "_" . $_FILES["txtImagen"]["name"] : "imagen.jpg";
-
-        $tmpImagen = $_FILES["txtImagen"]["tmp_name"];
-
-        if ($tmpImagen != "") {
-            move_uploaded_file($tmpImagen, "../../imgProductos/" . $nombreArchivo);
-        }
-
-        $sentenciaSQL->bindParam(':imagen', $nombreArchivo);
-        $sentenciaSQL->bindParam(':especificaciones', $txtEspecificaciones);
-        $sentenciaSQL->bindParam(':IdCategoria', $txtCategoria);
-
-        $sentenciaSQL->execute();
-
-        header('Location:productos.php');
-
-        echo "<script>
-        window.onload = function() {
-            var element = document.getElementById('tabla-productos');
-            if (element) {
-                element.scrollIntoView({behavior: 'auto'});
-            }
-        };
-      </script>";
-        break;
-    case "Modificar":
-        $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Nombre_Producto=:nombre, Precio_Producto=:precio, Descripcion_Producto=:descripcion, Tiene_Stock_Producto=:stock, Especificaciones_Producto=:especificaciones, Categorias_ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':precio', $numPrecio);
-        $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-        $sentenciaSQL->bindParam(':stock', $boolStock);
-        $sentenciaSQL->bindParam(':especificaciones', $txtEspecificaciones);
-        $sentenciaSQL->bindParam(':IdCategoria', $txtCategoria);
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-
-        if ($txtImagen != "") {
-            // Subir nueva imagen
-            $fecha = new DateTime();
-            $nombreArchivo = ($txtImagen != "") ? $fecha->getTimestamp() . "_" . $_FILES["txtImagen"]["name"] : "imagen.jpg";
-
-            $tmpImagen = $_FILES["txtImagen"]["tmp_name"];
-            move_uploaded_file($tmpImagen, "../../imgProductos/" . $nombreArchivo);
-
-            // Borrar Imagen anterior
-            $sentenciaSQL = $conexion->prepare("SELECT Imagen_Producto FROM Productos WHERE ID_Producto=:id");
-            $sentenciaSQL->bindParam(':id', $txtID);
-            $sentenciaSQL->execute();
-            $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
-            if (isset($producto['Imagen_Producto']) && ($producto['Imagen_Producto'] != "imagen.jpg")) {
-                if (file_exists("../../imgProductos/" . $producto['Imagen_Producto'])) {
-                    unlink("../../imgProductos/" . $producto['Imagen_Producto']);
-                }
-            }
-
-            $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Imagen_Producto=:imagen WHERE ID_Producto=:id");
-            $sentenciaSQL->bindParam(':imagen', $nombreArchivo);
-            $sentenciaSQL->bindParam(':id', $txtID);
-            $sentenciaSQL->execute();
-        }
-
-        header('Location:productos.php');
-        break;
-    case "Cancelar":
-        header('Location:productos.php');
-        break;
-    case 'Seleccionar':
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-        $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
-        $txtNombre = $producto['Nombre_Producto'];
-        $numPrecio = $producto['Precio_Producto'];
-        $txtDescripcion = $producto['Descripcion_Producto'];
-        $boolStock = $producto['Tiene_Stock_Producto'];
-        $txtImagen = $producto['Imagen_Producto'];
-        $_SESSION['Categoria_ID'] = $producto['Categorias_ID_Categoria'];
-        $txtEspecificaciones = $producto['Especificaciones_Producto'];
-
-        break;
-    case 'Borrar':
-        // Borrar Imagen
-        $sentenciaSQL = $conexion->prepare("SELECT Imagen_producto FROM Productos WHERE ID_Producto=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-        $producto = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
-        if (isset($producto['Imagen_producto']) && ($producto['Imagen_producto'] != "imagen.jpg")) {
-            if (file_exists("../../imgProductos/" . $producto['Imagen_producto'])) {
-                unlink("../../imgProductos/" . $producto['Imagen_producto']);
-            }
-        }
-
-        // Borrar resto de datos
-        $sentenciaSQL = $conexion->prepare("DELETE FROM Productos WHERE ID_Producto=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-
-        header('Location:productos.php');
-        break;
-}
 
 // Parámetros para la paginación
 $productosPorPagina = 10;
