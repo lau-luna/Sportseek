@@ -16,6 +16,8 @@ include("../config/bd.php");
 
 $_SESSION['Categoria_ID']  = "";
 
+include ("../config/ftp.php");
+
 switch ($accion) {
     case "Agregar":
         // Insertar datos a tabla Productos
@@ -24,6 +26,7 @@ switch ($accion) {
         $sentenciaSQL->bindParam(':precio', $numPrecio);
         $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
         $sentenciaSQL->bindParam(':stock', $boolStock);
+
 
         $fecha = new DateTime();
         $nombreArchivo = ($txtImagen != "") ? $fecha->getTimestamp() . "_" . $_FILES["txtImagen"]["name"] : "imagen.jpg";
@@ -39,6 +42,25 @@ switch ($accion) {
         $sentenciaSQL->bindParam(':IdCategoria', $txtCategoria);
 
         $sentenciaSQL->execute();
+
+        // upload a file
+        $file = $tmpImagen;
+
+        if (ftp_put($conn_id, $remote_file, $file, FTP_ASCII)) {
+
+            echo "successfully uploaded $file\n";
+
+            exit;
+        } else {
+
+            echo "There was a problem while uploading $file\n";
+
+            exit;
+        }
+
+        // close the connectiona
+
+        ftp_close($conn_id);
 
         header('Location:productos.php');
 
@@ -106,7 +128,7 @@ switch ($accion) {
         $txtImagen = $producto['Imagen_Producto'];
         $_SESSION['Categoria_ID'] = $producto['Categorias_ID_Categoria'];
         $txtEspecificaciones = $producto['Especificaciones_Producto'];
-        
+
         break;
     case 'Borrar':
         // Borrar Imagen
