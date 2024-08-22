@@ -10,7 +10,7 @@ $txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑá
 $txtImagen = (isset($_FILES['txtImagen']['name']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
 $txtEspecificaciones = (isset($_POST['txtEspecificaciones']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
 $txtCategoria = (isset($_POST['txtCategoria']) && preg_match('/^[0-1]+$/',  $_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
-$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
+$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
 if ($_POST) {
     if (!preg_match('/^[0-1]+$/',  $_POST['txtID']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || preg_match('/^[0-1]+$/',  $_POST['numPrecio']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
