@@ -292,7 +292,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                     foreach ($listaProductos as $producto) { ?>
                         <?php
-                        $sentenciaSQL = $conexion->prepare("SELECT Nombre_Categoria FROM Categorias INNER JOIN Productos ON Categorias.ID_Categoria=Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto=:IdProducto ORDER BY ID_Producto DESC");
+                        $sentenciaSQL = $conexion->prepare("SELECT Nombre_Categoria FROM Categorias INNER JOIN Productos ON Categorias.ID_Categoria=Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto=:IdProducto");
                         $sentenciaSQL->bindParam(":IdProducto", $producto['ID_Producto']);
                         $sentenciaSQL->execute();
                         $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
@@ -312,7 +312,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                             <td>
                                 <form method="post">
                                     <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>" />
-                                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary" />
+                                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary mb-2" />
                                     <input type="submit" name="accion" value="Borrar" class="btn btn-danger" />
                                 </form>
                             </td>
