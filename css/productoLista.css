@@ -1,6 +1,15 @@
 .cardLista {
     display: flex;
     flex-wrap: wrap;
+box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
+transition: all 400ms ease;
+
+}
+
+.cardLista:hover{
+    box-shadow: 5px 5px 20px rgba(0,0,0,0.4);
+    transform: translateY(-3%);
+
 }
 
 .cardProd {
@@ -35,6 +44,7 @@
 }
 
 .card-bodyProd {
+    text-decoration: none;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -42,6 +52,7 @@
 }
 
 .card-titleProd {
+    text-decoration: none;
     font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
