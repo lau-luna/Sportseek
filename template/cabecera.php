@@ -38,7 +38,7 @@ ini_set('max_execution_time', '60');
     <link rel="stylesheet" href="./css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
-    <link rel="stylesheet" href="./css/productoLista.css" type="text/css">
+    <link rel="stylesheet" href="css/productoLista.css" type="text/css">
     <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
