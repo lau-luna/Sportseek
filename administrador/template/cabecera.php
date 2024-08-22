@@ -42,7 +42,7 @@ if (!isset($_SESSION['usuario'])) {
     <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 
     <!-- Esto guard una variable con la url del sitio web principal, luego habría que cambiarle el nombre al sitio -->
-    <?php $url = "http://" . $_SERVER['HTTP_HOST'] . "/olimpiada" ?>
+    <?php $url = "http://" . $_SERVER['HTTP_HOST'] . "" ?>
 
     <nav class="navbar navbar-expand navbar-light bg-primary">
         <div class="nav navbar-nav">
