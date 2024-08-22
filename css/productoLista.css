@@ -4,9 +4,9 @@
 }
 
 .cardProd {
-    width: 12rem; /* Ajusta el ancho según tu diseño */
+    width: 20rem; /* Ajusta el ancho según tu diseño */
     height: 22rem; /* Ajusta la altura según tu diseño */
-    margin: 0.9rem;
+    margin: 0.2rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -16,8 +16,7 @@
     text-align: center;
 }
 
-.cardProdInicio {
-    width: 38vh; /* Ajusta el ancho según tu diseño */
+.cardProdInicio {/* Ajusta el ancho según tu diseño */
     height: 22rem; /* Ajusta la altura según tu diseño */
     margin: 1.2vh;
     display: flex;
@@ -43,7 +42,7 @@
 }
 
 .card-titleProd {
-    font-size: 1rem;
+    font-size: 1.25rem;
     margin-bottom: 0.5rem;
 }
 
@@ -55,10 +54,4 @@
 .stock-labelProd {
     font-size: 0.875rem;
     color: #dc3545;
-}
-#filtros{
-    margin-left: 2%;
-}
-body{
-    overflow-x: hidden;
 }
