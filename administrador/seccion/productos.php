@@ -33,9 +33,7 @@ switch ($accion) {
 
         $tmpImagen = $_FILES["txtImagen"]["tmp_name"];
 
-        if ($tmpImagen != "") {
-            move_uploaded_file($tmpImagen, "../../imgProductos/" . $nombreArchivo);
-        }
+        
 
         $sentenciaSQL->bindParam(':imagen', $nombreArchivo);
         $sentenciaSQL->bindParam(':especificaciones', $txtEspecificaciones);
@@ -44,7 +42,7 @@ switch ($accion) {
         $sentenciaSQL->execute();
 
         // upload a file
-        $file = $tmpImagen;
+        $file = $nombreArchivo;
 
         if (ftp_put($conn_id, $remote_file, $file, FTP_ASCII)) {
 
