@@ -292,7 +292,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                     foreach ($listaProductos as $producto) { ?>
                         <?php
-                        $sentenciaSQL = $conexion->prepare("SELECT Nombre_Categoria FROM Categorias INNER JOIN Productos ON Categorias.ID_Categoria=Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto=:IdProducto");
+                        $sentenciaSQL = $conexion->prepare("SELECT Nombre_Categoria FROM Categorias INNER JOIN Productos ON Categorias.ID_Categoria=Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto=:IdProducto ORDER BY ID_Producto DESC");
                         $sentenciaSQL->bindParam(":IdProducto", $producto['ID_Producto']);
                         $sentenciaSQL->execute();
                         $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
