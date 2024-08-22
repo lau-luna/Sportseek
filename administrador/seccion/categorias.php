@@ -73,15 +73,19 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 <div class="card-body">
 
                     <form method="POST" enctype="multipart/form-data">
-
+                        <?php if (isset($mensaje)) { ?>
+                            <div class="alert alert-danger" role="alert">
+                                ⚠️ <?php echo htmlspecialchars($mensaje) ?>
+                            </div>
+                        <?php } ?>
                         <div class="form-group">
                             <label for="txtID">ID:</label>
-                            <input type="text" required readonly value="<?php echo htmlspecialchars($txtID) ; ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
+                            <input type="text" required readonly value="<?php echo htmlspecialchars($txtID); ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
                         </div>
 
                         <div class="form-group">
                             <label for="txtNombre">Nombre:</label>
-                            <input type="text" required value="<?php echo htmlspecialchars($txtNombre) ; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre de la categoría">
+                            <input type="text" required value="<?php echo htmlspecialchars($txtNombre); ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre de la categoría">
                         </div>
 
                         <div class="form-group" id="div-descripcion">
@@ -97,7 +101,7 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                             <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Modificar" class="btn btn-warning">Modificar</button>
                             <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Cancelar" class="btn btn-info">Cancelar</button>
                         </div>
-                    
+
                     </form>
 
                 </div>
@@ -123,13 +127,13 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($listaCategorias as $categoria) { ?>
                         <tr>
-                            <td><?php echo htmlspecialchars($categoria['ID_Categoria']) ; ?></td>
-                            <td><?php echo htmlspecialchars($categoria['Nombre_Categoria']) ; ?></td>
-                            <td><?php echo htmlspecialchars($categoria['Descripcion_Categoria']) ; ?></td>
+                            <td><?php echo htmlspecialchars($categoria['ID_Categoria']); ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Descripcion_Categoria']); ?></td>
 
                             <td>
                                 <form method="POST">
-                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($categoria['ID_Categoria']) ; ?>">
+                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
 
                                     <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary">
 
