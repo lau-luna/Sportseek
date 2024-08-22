@@ -13,7 +13,7 @@ $txtCategoria = (isset($_POST['txtCategoria']) && preg_match('/^[0-1]+$/',  $_PO
 $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
 if ($_POST) {
-    if (!preg_match('/^[0-9]+$/',  $_POST['txtID']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || !preg_match('/^[0-9]+$/',  $_POST['numPrecio']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || !preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || !preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
+    if (!preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || !preg_match('/^[0-9]+$/',  $_POST['numPrecio']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || !preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || !preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
         $mensaje =  "Error en los caracteres de los datos";
     } else {
         switch ($accion) {
