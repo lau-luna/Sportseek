@@ -27,7 +27,7 @@ ini_set('max_execution_time', '60');
 
 
     <!-- Bootstrap CSS -->
-   
+
     <!-- BoxIcons -->
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
@@ -116,20 +116,20 @@ ini_set('max_execution_time', '60');
 
         </header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary ">
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-center d-flex">
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
             <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
-                <ul class="navbar-nav">
+                <ul class="navbar-nav d-flex justify-content-center">
                     <li class="nav-item active">
-                        <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
+                        <a class="nav-link text-white text-center" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="./productos.php">Productos</a>
+                        <a class="nav-link text-white text-center" href="./productos.php">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link text-white" href="contacto.php">Contacto</a>
+                        <a class="nav-link text-white text-center" href="contacto.php">Contacto</a>
                     </li>
                 </ul>
             </div>
