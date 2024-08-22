@@ -46,12 +46,8 @@ switch ($accion) {
 
         if (ftp_put($conn_id, $remote_file, $file, FTP_ASCII)) {
 
-            echo "successfully uploaded $file\n";
-
             exit;
         } else {
-
-            echo "There was a problem while uploading $file\n";
 
             exit;
         }
