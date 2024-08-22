@@ -11,51 +11,53 @@ $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accio
 if ($_POST) {
     if (!preg_match('/^[0-9]+$/', $_POST['txtID']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
         $mensaje =  "Error en los caracteres de los datos";
+    } else {
+        switch ($accion) {
+            case "Agregar":
+                // Insertar datos a tabla Categorias
+                $sentenciaSQL = $conexion->prepare("INSERT INTO Categorias (Nombre_Categoria, Descripcion_Categoria) VALUES (:nombre, :descripcion);");
+                $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                $sentenciaSQL->execute();
+        
+                header('Location:categorias.php');
+                break;
+            case "Modificar":
+                $sentenciaSQL = $conexion->prepare("UPDATE Categorias SET Nombre_Categoria=:nombre, Descripcion_Categoria=:descripcion WHERE ID_Categoria=:id");
+                $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+        
+                header('Location:categorias.php');
+                break;
+            case "Cancelar":
+                header('Location:categorias.php');
+                break;
+            case 'Seleccionar':
+                $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias WHERE ID_Categoria=:id");
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+                $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+        
+                $txtNombre = $categoria['Nombre_Categoria'];
+                $txtDescripcion = $categoria['Descripcion_Categoria'];
+                break;
+            case 'Borrar':
+                // Borrar resto de datos
+                $sentenciaSQL = $conexion->prepare("DELETE FROM Categorias WHERE ID_Categoria=:id");
+                $sentenciaSQL->bindParam(':id', $txtID);
+                $sentenciaSQL->execute();
+        
+                header('Location:categorias.php');
+                break;
+        }
     }
 }
 
 include("../config/bd.php");
 
-switch ($accion) {
-    case "Agregar":
-        // Insertar datos a tabla Categorias
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Categorias (Nombre_Categoria, Descripcion_Categoria) VALUES (:nombre, :descripcion);");
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-        $sentenciaSQL->execute();
 
-        header('Location:categorias.php');
-        break;
-    case "Modificar":
-        $sentenciaSQL = $conexion->prepare("UPDATE Categorias SET Nombre_Categoria=:nombre, Descripcion_Categoria=:descripcion WHERE ID_Categoria=:id");
-        $sentenciaSQL->bindParam(':nombre', $txtNombre);
-        $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-
-        header('Location:categorias.php');
-        break;
-    case "Cancelar":
-        header('Location:categorias.php');
-        break;
-    case 'Seleccionar':
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias WHERE ID_Categoria=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-        $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
-        $txtNombre = $categoria['Nombre_Categoria'];
-        $txtDescripcion = $categoria['Descripcion_Categoria'];
-        break;
-    case 'Borrar':
-        // Borrar resto de datos
-        $sentenciaSQL = $conexion->prepare("DELETE FROM Categorias WHERE ID_Categoria=:id");
-        $sentenciaSQL->bindParam(':id', $txtID);
-        $sentenciaSQL->execute();
-
-        header('Location:categorias.php');
-        break;
-}
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
 $sentenciaSQL->execute();
