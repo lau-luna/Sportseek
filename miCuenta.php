@@ -24,49 +24,60 @@ $sentenciaSQL->execute();
 $localidadProvincia = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
 if ($_POST) {
-    // Verificar si el correo electrónico ya está registrado
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
-    $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
-    $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
-    $sentenciaSQL->execute();
-    $emailResgistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-
-    if ($emailResgistrado) {
-        $mensaje = "Este correo ya está registrado.";
-    } else {
-
-        // Recibir los datos del formulario y guardarlo en variables
-        $txtUsername = $_POST['txtUsername'];
-        $txtNombreUsuario = $_POST['txtNombre'];
-        $txtApellidosUsuario = $_POST['txtApellidos'];
-        $txtDni = $_POST['txtDni'];
-        $txtEmail = $_POST['txtEmail'];
-        $txtContrasenia = $_POST['txtContrasenia'];
-        $txtDireccion = $_POST['txtDireccion'];
-        $txtTelefono = $_POST['txtTelefono'];
-        $txtIdProvincia = $_POST['txtProvincia'];
-        $txtLocalidad = $_POST['txtLocalidad'];
-
-        // Verificar la localidad
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
-        $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-        $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
+    if (
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',   $_POST['txtApellidos']) &&
+        preg_match('/^[0-9.]+$/', $_POST['txtDni']) &&
+        preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',   $_POST['txtEmail']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_POST['txtContrasenia']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtDireccion']) &&
+        preg_match('/^[0-9]+$/',  $_POST['txtTelefono']) &&
+        preg_match('/^[0-9]+$/',  $_POST['txtProvincia']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtLocalidad'])
+    ) {
+        // Verificar si el correo electrónico ya está registrado
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
+        $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
+        $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
         $sentenciaSQL->execute();
-        $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+        $emailResgistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-        if ($localidad) {
-            $txtIdLocalidad = $localidad['ID_Localidades'];
+        if ($emailResgistrado) {
+            $mensaje = "Este correo ya está registrado.";
         } else {
-            // Insertar nueva localidad
-            $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
-            $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
-            $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-            $sentenciaSQL->execute();
-            $txtIdLocalidad = $conexion->lastInsertId();
-        }
 
-        // Actualizar datos del usuario
-        $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
+            // Recibir los datos del formulario y guardarlo en variables
+            $txtUsername = $_POST['txtUsername'];
+            $txtNombreUsuario = $_POST['txtNombre'];
+            $txtApellidosUsuario = $_POST['txtApellidos'];
+            $txtDni = $_POST['txtDni'];
+            $txtEmail = $_POST['txtEmail'];
+            $txtContrasenia = $_POST['txtContrasenia'];
+            $txtDireccion = $_POST['txtDireccion'];
+            $txtTelefono = $_POST['txtTelefono'];
+            $txtIdProvincia = $_POST['txtProvincia'];
+            $txtLocalidad = $_POST['txtLocalidad'];
+
+            // Verificar la localidad
+            $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
+            $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+            $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
+            $sentenciaSQL->execute();
+            $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+
+            if ($localidad) {
+                $txtIdLocalidad = $localidad['ID_Localidades'];
+            } else {
+                // Insertar nueva localidad
+                $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
+                $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
+                $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+                $sentenciaSQL->execute();
+                $txtIdLocalidad = $conexion->lastInsertId();
+            }
+
+            // Actualizar datos del usuario
+            $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
                 Username_Usuario = :username, 
                 Nombre_Usuario = :nombre_usuario, 
                 Apellidos_Usuario = :apellidos_usuario, 
@@ -78,18 +89,21 @@ if ($_POST) {
                 Localidades_ID_Localidades = :id_localidad 
                 WHERE ID_Usuario = :id_usuario");
 
-        $sentenciaSQL->execute([
-            ':username' => $txtUsername,
-            ':nombre_usuario' => $txtNombreUsuario,
-            ':apellidos_usuario' => $txtApellidosUsuario,
-            ':dni' => $txtDni,
-            ':email' => $txtEmail,
-            ':contrasenia' => $txtContrasenia,
-            ':direccion' => $txtDireccion,
-            ':telefono' => $txtTelefono,
-            ':id_localidad' => $txtIdLocalidad,
-            ':id_usuario' => $_SESSION['ID_Usuario']
-        ]);
+            $sentenciaSQL->execute([
+                ':username' => $txtUsername,
+                ':nombre_usuario' => $txtNombreUsuario,
+                ':apellidos_usuario' => $txtApellidosUsuario,
+                ':dni' => $txtDni,
+                ':email' => $txtEmail,
+                ':contrasenia' => $txtContrasenia,
+                ':direccion' => $txtDireccion,
+                ':telefono' => $txtTelefono,
+                ':id_localidad' => $txtIdLocalidad,
+                ':id_usuario' => $_SESSION['ID_Usuario']
+            ]);
+        }
+    }   else {
+        $mensaje = "Uso de caracteres inválidos.";
     }
 }
 
@@ -103,7 +117,7 @@ if ($_POST) {
                     <img class="rounded-circle mt-5" width="150px" src="https://st3.depositphotos.com/15648834/17930/v/600/depositphotos_179308454-stock-illustration-unknown-person-silhouette-glasses-profile.jpg">
                     <span class="font-weight-bold"> <?php echo htmlspecialchars($usuario['Username_Usuario']); ?> </span>
                     <span class="text-black-50"> <?php echo htmlspecialchars($usuario['Email_Usuario']); ?> </span>
-                    <?php if($usuario['Tipos_de_Usuario_ID_Tipos_de_Usuario'] == 1) { ?>
+                    <?php if ($usuario['Tipos_de_Usuario_ID_Tipos_de_Usuario'] == 1) { ?>
                         <div class="alert alert-info mt-2"> <?php echo htmlspecialchars("Administrador"); ?> </div>
                     <?php } ?>
                 </div>

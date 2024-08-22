@@ -81,7 +81,7 @@ ini_set('max_execution_time', '60');
                 <?php } ?>
 
                 <!-- Mostar sólo se se inció la sessión-->
-                <?php if (isset($_SESSION['usuario'])) { ?>
+                <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <a class="form-inline my-2 my-lg-0" href="./carrito.php">
                         <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
                             <img src="./img/CarritoIcon.png" alt="Carrito" class="btn-img" style="height: 4vh; vertical-align: middle; margin-right: 5px;">
@@ -91,7 +91,7 @@ ini_set('max_execution_time', '60');
                 <?php } ?>
 
                 <!-- Mostar sólo se se inció la sessión-->
-                <?php if (isset($_SESSION['usuario'])) { ?>
+                <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <!-- Example single danger button -->
                     <div class="form-inline my-2 my-lg-0">
                         <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
@@ -100,7 +100,7 @@ ini_set('max_execution_time', '60');
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
-                            <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador') { ?>
+                            <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador' && preg_match('/^[a-zA_Z]+$/', $_SESSION['Tipo_Usuario'])) { ?>
                                 <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
                             <?php } ?>
                             <a class="dropdown-item" href="listaPedidos.php">Pedidos</a>

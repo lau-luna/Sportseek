@@ -20,7 +20,7 @@ $carrito = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 if (isset($carrito['ID_Carrito'])) {
 
     // Si se manda un producto desde productoDetalle.php
-    if (isset($_GET['IdProducto'])) {
+    if (isset($_GET['IdProducto']) && preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
         // Comprobar si ya tiene el producto seleccionado para aumentar su cantidad
         $sentenciaSQL = $conexion->prepare("SELECT Productos_ID_Producto, Cantidad_Productos FROM Carritos_Productos WHERE Carritos_ID_Carrito = :IdCarrito AND Productos_ID_Producto = :IdProducto");
         $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
@@ -57,7 +57,7 @@ if (isset($carrito['ID_Carrito'])) {
     // Obtener el ID del carrito recién creado
     $carrito['ID_Carrito'] = $conexion->lastInsertId();
 
-    if (isset($_GET['IdProducto'])) {
+    if (isset($_GET['IdProducto']) && preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
         // Insertar productos en el nuevo carrito
         $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos_Productos (Carritos_ID_Carrito, Productos_ID_Producto, Cantidad_Productos) VALUES (:IdCarrito, :IdProducto, :cantidad)");
         $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
@@ -73,8 +73,8 @@ $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
 $sentenciaSQL->execute();
 $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-$txtID = isset($_GET['txtID']) ? $_GET['txtID'] : "";
-$accion = isset($_GET['accion']) ? $_GET['accion'] : "";
+$txtID = (isset($_GET['txtID'] ) && preg_match('/^[0-9]+$/', $_GET['IdProducto'])) ? $_GET['txtID'] : "";
+$accion = (isset($_GET['accion']) && preg_match('/^[a-zA-Z]+$/', $_GET['IdProducto']))? $_GET['accion'] : "";
 
 switch ($accion) {
     case 'Quitar del carrito':
@@ -126,11 +126,11 @@ switch ($accion) {
                         <?php } ?>
                         <?php echo htmlspecialchars($producto['Nombre_Producto']); ?>
                     </td>
-                    <td class="text-success">$ <?php echo $precioFormateado; ?></td>
+                    <td class="text-success">$ <?php echo htmlspecialchars($precioFormateado); ?></td>
                     <td><?php echo htmlspecialchars($producto['Cantidad_Productos']); ?></td>
                     <td>
                         <form method="GET">
-                            <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>">
+                            <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']) ; ?>">
                             <input type="submit" name="accion" value="Quitar del carrito" class="btn btn-danger">
                         </form>
                     </td>
@@ -139,7 +139,7 @@ switch ($accion) {
         </tbody>
     </table>
 
-    <h4>Total: $<span id="total"> <?php echo number_format($_SESSION['total'], 0, ',', '.'); ?> </span></h4>
+    <h4>Total: $<span id="total"> <?php echo htmlspecialchars(number_format($_SESSION['total'], 0, ',', '.'));  ?> </span></h4>
 
     <?php if (isset($carrito['ID_Carrito'])) { ?>
         <form method="GET">

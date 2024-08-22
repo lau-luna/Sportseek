@@ -4,9 +4,9 @@
 <?php include("administrador/config/bd.php"); ?>
 
 <?php
-if (isset($_GET['ID_Pedido'])) {
+if (isset($_GET['ID_Pedido']) && preg_match('/^[0-9]+$/', $_GET['ID_Pedido'])) {
     $IdPedido = $_GET['ID_Pedido'];
-} else {
+} else if (preg_match('/^[0-9]+$/', $_SESSION['ID_Pedido'])) {
     $IdPedido = intval($_SESSION['ID_Pedido']);
 }
 
@@ -52,7 +52,6 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                 <h5>Información del solicitante:</h5>
 
                 <p>
-                    <?php echo htmlspecialchars("ID cliente: " . $pedido['ID_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Nombre o razón social: " . $pedido['Apellidos_Usuario'] . ", " . $pedido['Nombre_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Dirección: " . $pedido['Direccion_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Telefono: " . $pedido['Telefono_Usuario']) ?> <br>

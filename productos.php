@@ -4,7 +4,9 @@
 <?php include("administrador/config/bd.php");
 
 // Verifica si se ha enviado una búsqueda
-$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
+
+$busqueda = (isset($_GET['busqueda']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_GET['busqueda'])) ? $_GET['busqueda'] : '';
+
 
 // Dividir la búsqueda en palabras (si hay más de una)
 $palabras = explode(' ', $busqueda);
@@ -25,12 +27,13 @@ if ($busqueda) {
 
 // Configuración de paginación
 $productosPorPagina = 12;
-$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
+$paginaActual = (isset($_GET['pagina']) && preg_match('/^[0-9]+$/',  $_GET['pagina'])) ? intval($_GET['pagina']) : 1;
 $offset = ($paginaActual - 1) * $productosPorPagina;
 
 // Obtener la categoría seleccionada y el filtro desde GET
-$categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
-$filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
+$categoriaSeleccionada = (isset($_GET['txtCategoria']) && preg_match('/^[0-9]+$/',  $_GET['txtCategoria'])) ? $_GET['txtCategoria'] : 'todas';
+$filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[a-zA-Z]+$/',  $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
+
 
 // Preparar la consulta SQL base
 $sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria, 
@@ -92,14 +95,6 @@ $totalProductos = $sentenciaSQLCount->fetchColumn();
 $totalPaginas = ceil($totalProductos / $productosPorPagina);
 ?>
 
-<script>
-    window.onload = function() {
-        var element = document.getElementById('tabla-productos');
-        if (element) {
-            element.scrollIntoView({behavior: 'auto'});
-        }
-    };
-</script>
 
 <br>
 

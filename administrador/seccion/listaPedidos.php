@@ -4,8 +4,8 @@
 
 <?php
 // Obtener el filtro seleccionada del formulario
-$filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
-$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
+$filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[0-9]+$/', $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
+$busqueda = (isset($_GET['busqueda']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9,. ]+$/',  $_GET['busqueda'])) ? $_GET['busqueda'] : '';
 
 // Dividir la búsqueda en palabras
 $palabras = explode(' ', $busqueda);

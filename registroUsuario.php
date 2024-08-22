@@ -2,89 +2,104 @@
 
 <?php
 if ($_POST) {
+    if (
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',   $_POST['txtApellidos']) &&
+        preg_match('/^[0-9.]+$/', $_POST['txtDNI']) &&
+        preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',   $_POST['txtEmail']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_POST['txtContrasenia']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtDireccion']) &&
+        preg_match('/^[0-9]+$/',  $_POST['txtTelefono']) &&
+        preg_match('/^[0-9]+$/',  $_POST['txtProvincia']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtLocalidad'])
+    ) {
 
-    // Extraer de la bd una lista con todos los usuarios
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario LIKE :email");
-    $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
-    $sentenciaSQL->execute();
-    $listaUsuarios = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
-
-    $emailResgistrado = false;
-
-    // Recorrer arreglo de usuarios
-    foreach ($listaUsuarios as $usuario) {
-        // Revisar si el usuario está registrado
-        if (isset($usuario['Email_Usuario'])) {
-            $mensaje = "Este correo ya está registrado.";
-            $emailResgistrado = true;
-        }
-    }
-
-    if (!$emailResgistrado) {
-        //Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-        $txtUsername = (isset($_POST['txtUsername'])) ? $_POST['txtUsername'] : "";
-        $txtNombreUsuario = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-        $txtApellidosUsuario = (isset($_POST['txtApellidos'])) ? $_POST['txtApellidos'] : "";
-        $txtDni = (isset($_POST['txtDni'])) ? $_POST['txtDni'] : "";
-        $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
-        $txtContrasenia = (isset($_POST['txtContrasenia'])) ? $_POST['txtContrasenia'] : "";
-        $txtDireccion = (isset($_POST['txtDireccion'])) ? $_POST['txtDireccion'] : "";
-        $txtTelefono = (isset($_POST['txtTelefono'])) ? $_POST['txtTelefono'] : "";
-        $txtIdProvincia = (isset($_POST['txtProvincia'])) ? $_POST['txtProvincia'] : "";
-        $txtLocalidad = (isset($_POST['txtLocalidad'])) ? $_POST['txtLocalidad'] : "";
-
-
-        // Extraer sos
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia=:IdProvincia AND Nombre_Localidad LIKE :nombreLocalidad ");
-        $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-        $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
+        // Extraer de la bd una lista con todos los usuarios
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario LIKE :email");
+        $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
         $sentenciaSQL->execute();
-        $listaLocalidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+        $listaUsuarios = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-        $seEncontroLocalidad = false;
+        $emailResgistrado = false;
 
-        foreach ($listaLocalidades as $localidad) {
-            if (isset($localidad['Nombre_Localidad'])) {
-                $txtIdLocalidad = $localidad['ID_Localidades'];
-                $seEncontroLocalidad = true;
+        // Recorrer arreglo de usuarios
+        foreach ($listaUsuarios as $usuario) {
+            // Revisar si el usuario está registrado
+            if (isset($usuario['Email_Usuario'])) {
+                $mensaje = "Este correo ya está registrado.";
+                $emailResgistrado = true;
             }
         }
 
-        if (!$seEncontroLocalidad) {
-            $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia); ");
-            $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
+        if (!$emailResgistrado) {
+
+            //Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
+            $txtUsername = (isset($_POST['txtUsername'])) ? $_POST['txtUsername'] : "";
+            $txtNombreUsuario = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+            $txtApellidosUsuario = (isset($_POST['txtApellidos'])) ? $_POST['txtApellidos'] : "";
+            $txtDni = (isset($_POST['txtDni'])) ? $_POST['txtDni'] : "";
+            $txtEmail = (isset($_POST['txtEmail'])) ? $_POST['txtEmail'] : "";
+            $txtContrasenia = (isset($_POST['txtContrasenia'])) ? $_POST['txtContrasenia'] : "";
+            $txtDireccion = (isset($_POST['txtDireccion'])) ? $_POST['txtDireccion'] : "";
+            $txtTelefono = (isset($_POST['txtTelefono'])) ? $_POST['txtTelefono'] : "";
+            $txtIdProvincia = (isset($_POST['txtProvincia'])) ? $_POST['txtProvincia'] : "";
+            $txtLocalidad = (isset($_POST['txtLocalidad'])) ? $_POST['txtLocalidad'] : "";
+
+
+            // Extraer sos
+            $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia=:IdProvincia AND Nombre_Localidad LIKE :nombreLocalidad ");
             $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+            $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
             $sentenciaSQL->execute();
+            $listaLocalidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-            $sentenciaSQL = $conexion->prepare("SELECT ID_Localidades FROM Localidades WHERE Nombre_Localidad=:NombreLocalidad");
-            $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
-            $sentenciaSQL->execute();
-            $localidad = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-            $txtIdLocalidad =  $localidad['ID_Localidades'];
-        }
+            $seEncontroLocalidad = false;
+
+            foreach ($listaLocalidades as $localidad) {
+                if (isset($localidad['Nombre_Localidad'])) {
+                    $txtIdLocalidad = $localidad['ID_Localidades'];
+                    $seEncontroLocalidad = true;
+                }
+            }
+
+            if (!$seEncontroLocalidad) {
+                $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia); ");
+                $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
+                $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+                $sentenciaSQL->execute();
+
+                $sentenciaSQL = $conexion->prepare("SELECT ID_Localidades FROM Localidades WHERE Nombre_Localidad=:NombreLocalidad");
+                $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
+                $sentenciaSQL->execute();
+                $localidad = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+                $txtIdLocalidad =  $localidad['ID_Localidades'];
+            }
 
 
-        // Insertar datos a tabla Usuarios
-        $sentenciaSQL = $conexion->prepare("INSERT INTO Usuarios (Username_Usuario, Nombre_Usuario, Apellidos_Usuario, 
+            // Insertar datos a tabla Usuarios
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Usuarios (Username_Usuario, Nombre_Usuario, Apellidos_Usuario, 
     DNI_Usuario, Email_Usuario, Contrasenia_Usuario, Direccion_Usuario, Telefono_Usuario, Tipos_de_Usuario_ID_Tipos_de_Usuario, Localidades_ID_Localidades) 
     VALUES (:username, :nombre_usuario, :apellidos_usuario, :dni, :email, :contrasenia, :direccion, :telefono, :tipo_usuario, :id_localidad);");
-        // Ejecutar la consulta con los valores proporcionados
-        $sentenciaSQL->execute([
-            ':username' => $txtUsername,
-            ':nombre_usuario' => $txtNombreUsuario,
-            ':apellidos_usuario' => $txtApellidosUsuario,
-            ':dni' => $txtDni,
-            ':email' => $txtEmail,
-            ':contrasenia' => $txtContrasenia,
-            ':direccion' => $txtDireccion,
-            ':telefono' => $txtTelefono,
-            ':tipo_usuario' => 2,
-            ':id_localidad' => $txtIdLocalidad
-        ]);
+            // Ejecutar la consulta con los valores proporcionados
+            $sentenciaSQL->execute([
+                ':username' => $txtUsername,
+                ':nombre_usuario' => $txtNombreUsuario,
+                ':apellidos_usuario' => $txtApellidosUsuario,
+                ':dni' => $txtDni,
+                ':email' => $txtEmail,
+                ':contrasenia' => $txtContrasenia,
+                ':direccion' => $txtDireccion,
+                ':telefono' => $txtTelefono,
+                ':tipo_usuario' => 2,
+                ':id_localidad' => $txtIdLocalidad
+            ]);
 
-        echo '<script type="text/javascript">
+            echo '<script type="text/javascript">
                     window.location.href = "loginUsuario.php";
                   </script>';
+        } 
+    } else {
+        $mensaje = "Uso de caracteres inválidos.";
     }
 }
 
@@ -97,7 +112,7 @@ if ($_POST) {
         <form method="POST">
             <?php if (isset($mensaje)) { ?>
                 <div class="alert alert-danger" role="alert">
-                    ⚠️ <?php echo  $mensaje ?>
+                    ⚠️ <?php echo htmlspecialchars($mensaje) ?>
                 </div>
             <?php } ?>
             <div class="d-flex">
@@ -137,7 +152,7 @@ if ($_POST) {
 
                                 foreach ($listaProvincias as $provincia) {
                                 ?>
-                                    <option value="<?php echo $provincia['ID_Provincia'] ?>"><?php echo $provincia['Nombre_Provincia'] ?></option>
+                                    <option value="<?php echo htmlspecialchars($provincia['ID_Provincia']) ?>"><?php echo htmlspecialchars($provincia['Nombre_Provincia']) ?></option>
                                 <?php } ?>
                             </select>
                         </div>

@@ -3,9 +3,9 @@
 <?php include("../config/bd.php"); ?>
 
 <?php
-if (isset($_GET['ID_Pedido'])) {
+if (isset($_GET['ID_Pedido']) && preg_match('/^[0-9]+$/', $_GET['ID_Pedido'])) {
     $IdPedido = $_GET['ID_Pedido'];
-} else {
+} else if (preg_match('/^[0-9]+$/', $_SESSION['ID_Pedido'])) {
     $IdPedido = intval($_SESSION['ID_Pedido']);
 }
 

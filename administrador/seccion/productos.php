@@ -2,15 +2,21 @@
 
 <?php
 // Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-$txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-$txtNombre = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-$numPrecio = (isset($_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
+$txtID = (isset($_POST['txtID']) && preg_match('/^[0-1]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
+$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+$numPrecio = (isset($_POST['numPrecio']) && preg_match('/^[0-1]+$/',  $_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
 $boolStock = (isset($_POST['boolStock'])) ? 1 : 0;
-$txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-$txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
-$txtEspecificaciones = (isset($_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
-$txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
-$accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
+$txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+$txtImagen = (isset($_FILES['txtImagen']['name']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
+$txtEspecificaciones = (isset($_POST['txtEspecificaciones']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
+$txtCategoria = (isset($_POST['txtCategoria']) && preg_match('/^[0-1]+$/',  $_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
+$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
+
+if ($_POST) {
+    if (!preg_match('/^[0-1]+$/',  $_POST['txtID']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || preg_match('/^[0-1]+$/',  $_POST['numPrecio']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || preg_match('/^[a-zA-Zn]+$/',  $_POST['accion']) ) {
+        $mensaje =  "Error en los caracteres de los datos";
+    }
+}
 
 include("../config/bd.php");
 
@@ -132,11 +138,11 @@ switch ($accion) {
 
 // Parámetros para la paginación
 $productosPorPagina = 10;
-$paginaActual = isset($_GET['pagina']) ? (int)$_GET['pagina'] : 1;
+$paginaActual = (isset($_GET['pagina']) && preg_match('/^[0-9]+$/',  $_GET['pagina'])) ? (int)$_GET['pagina'] : 1;
 $offset = ($paginaActual - 1) * $productosPorPagina;
 
 // Obtener la categoría seleccionada del formulario
-$categoriaSeleccionada = isset($_GET['txtCategoria']) ? $_GET['txtCategoria'] : 'todas';
+$categoriaSeleccionada = (isset($_GET['txtCategoria']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_GET['txtCategoria'])) ? $_GET['txtCategoria'] : 'todas';
 
 if ($categoriaSeleccionada == 'todas') {
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos LIMIT :offset, :productosPorPagina");
@@ -179,12 +185,12 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                     <div style="width: 48%; margin-right:4%;">
                         <div class="form-group">
                             <label for="txtID">ID:</label>
-                            <input type="text" required readonly value="<?php echo $txtID; ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
+                            <input type="text" required readonly value="<?php echo htmlspecialchars($txtID); ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
                         </div>
 
                         <div class="form-group">
                             <label for="txtNombre">Nombre:</label>
-                            <input type="text" required value="<?php echo $txtNombre; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre del producto">
+                            <input type="text" required value="<?php echo htmlspecialchars($txtNombre); ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre del producto">
                         </div>
 
                         <div class="form-group">
@@ -195,7 +201,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
                         <div class="form-group">
                             <label for="txtDescripcion">Descripción:</label>
-                            <textarea required class="form-control" name="txtDescripcion" id="txtDescripcion" rows="5" placeholder="Descripción del producto"><?php echo $txtDescripcion; ?></textarea>
+                            <textarea required class="form-control" name="txtDescripcion" id="txtDescripcion" rows="5" placeholder="Descripción del producto"><?php echo htmlspecialchars($txtDescripcion) ; ?></textarea>
                         </div>
                     </div>
 
@@ -227,7 +233,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                         </div>
                         <div class="form-group">
                             <label for="txtEspecificaciones">Especificaciones:</label>
-                            <textarea rows="5" class="form-control" name="txtEspecificaciones" id="txtEspecificaciones" placeholder="Especificaciones del producto"><?php echo $txtEspecificaciones; ?></textarea>
+                            <textarea rows="5" class="form-control" name="txtEspecificaciones" id="txtEspecificaciones" placeholder="Especificaciones del producto"><?php echo htmlspecialchars($txtEspecificaciones) ; ?></textarea>
                         </div>
                     </div>
 
@@ -299,19 +305,19 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                         ?>
 
                         <tr>
-                            <td><?php echo $producto['ID_Producto']; ?></td>
-                            <td><?php echo $producto['Nombre_Producto']; ?></td>
-                            <td><?php echo $producto['Precio_Producto']; ?></td>
-                            <td><?php echo $producto['Descripcion_Producto']; ?></td>
-                            <td><?php echo $producto['Tiene_Stock_Producto'] ? 'Sí' : 'No'; ?></td>
+                            <td><?php echo htmlspecialchars($producto['ID_Producto']);  ?></td>
+                            <td><?php echo htmlspecialchars($producto['Nombre_Producto']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['Precio_Producto']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['Descripcion_Producto']); ?></td>
+                            <td><?php echo htmlspecialchars($producto['Tiene_Stock_Producto'] ? 'Sí' : 'No'); ?></td>
                             <td>
-                                <img src="../../imgProductos/<?php echo $producto['Imagen_Producto']; ?>" width="50" alt="">
+                                <img src="../../imgProductos/<?php echo $producto['Imagen_Producto'] ; ?>" width="50" alt="">
                             </td>
-                            <td><?php echo $producto['Especificaciones_Producto']; ?></td>
-                            <td><?php echo $categoria['Nombre_Categoria']; ?></td>
+                            <td><?php echo htmlspecialchars($producto['Especificaciones_Producto']); ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?></td>
                             <td>
                                 <form method="post">
-                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $producto['ID_Producto']; ?>" />
+                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']) ; ?>" />
                                     <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary mb-2" />
                                     <input type="submit" name="accion" value="Borrar" class="btn btn-danger" />
                                 </form>

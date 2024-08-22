@@ -25,4 +25,3 @@ $ftp_server="ftpupload.net";
 
 
 
-?>

@@ -1,58 +1,65 @@
 <?php include('template/cabecera.php');
 
 if ($_POST) {
-    // Extraer de la bd una lista con todos los usuarios
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios");
-    $sentenciaSQL->execute();
-    $listaUsuarios = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+    if (
+        preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',   $_POST['email']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_POST['contrasenia'])
+    ) {
 
-    // Recorrer arreglo de usuarios
-    foreach ($listaUsuarios as $usuario) {
-        // Revisar si el usuario está registrado
-        if ($_POST['email'] == $usuario['Email_Usuario']) {
+        // Extraer de la bd una lista con todos los usuarios
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios");
+        $sentenciaSQL->execute();
+        $listaUsuarios = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-            // Revisar si la contraseña es correcta
-            if (($_POST['contrasenia'] == $usuario['Contrasenia_Usuario'])) {
+        // Recorrer arreglo de usuarios
+        foreach ($listaUsuarios as $usuario) {
+            // Revisar si el usuario está registrado
+            if ($_POST['email'] == $usuario['Email_Usuario']) {
 
-                // Revisar si tiene cuenta de Cliente
-                $sentenciaSQL = $conexion->prepare("SELECT Usuarios.Username_Usuario, Tipos_de_Usuario.Tipo_de_Usuario
+                // Revisar si la contraseña es correcta
+                if (($_POST['contrasenia'] == $usuario['Contrasenia_Usuario'])) {
+
+                    // Revisar si tiene cuenta de Cliente
+                    $sentenciaSQL = $conexion->prepare("SELECT Usuarios.Username_Usuario, Tipos_de_Usuario.Tipo_de_Usuario
                     FROM Usuarios
                     INNER JOIN Tipos_de_Usuario ON Usuarios.Tipos_de_Usuario_ID_Tipos_de_Usuario = Tipos_de_Usuario.ID_Tipos_de_Usuario WHERE Usuarios.ID_Usuario=:ID;");
-                $sentenciaSQL->bindParam(':ID', $usuario['ID_Usuario']);
-                $sentenciaSQL->execute();
-                $lista2 = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
+                    $sentenciaSQL->bindParam(':ID', $usuario['ID_Usuario']);
+                    $sentenciaSQL->execute();
+                    $lista2 = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
 
-                if ($lista2['Tipo_de_Usuario'] == "Cliente") {
+                    if ($lista2['Tipo_de_Usuario'] == "Cliente") {
 
-                    $_SESSION['usuario'] = "ok";
-                    $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
-                    $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
-                    $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
-                    $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
+                        $_SESSION['usuario'] = "ok";
+                        $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
+                        $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
+                        $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
+                        $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
-                    echo '<script type="text/javascript">
+                        echo '<script type="text/javascript">
                     window.location.href = "index.php";
                   </script>';
+                    } else {
 
-                } else {
+                        echo "entro";
+                        $_SESSION['usuario'] = "ok";
+                        $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
+                        $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
+                        $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
+                        $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
-                    echo "entro";
-                    $_SESSION['usuario'] = "ok";
-                    $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
-                    $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];
-                    $_SESSION['ID_Usuario'] = $usuario['ID_Usuario'];
-                    $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
-
-                    echo '<script type="text/javascript">
+                        echo '<script type="text/javascript">
                     window.location.href = "administrador/inicio.php";
                   </script>';
+                    }
+                } else {
+                    $mensaje = "El nombre de usuario o contraseña es incorrecto.";
                 }
             } else {
-                $mensaje = "El nombre de usuario o contraseña es incorrecto.";
+                $mensaje = "No se encontró el usuario.";
             }
-        } else {
-            $mensaje = "No se encontró el usuario.";
         }
+    } else {
+        $mensaje = "Uso de caracteres inválidos.";
     }
 }
 
@@ -71,7 +78,7 @@ if ($_POST) {
 
                 <?php if (isset($mensaje)) { ?>
                     <div class="alert alert-danger" role="alert">
-                        ⚠️ <?php echo  $mensaje ?>
+                        ⚠️ <?php echo htmlspecialchars($mensaje) ?>
                     </div>
                 <?php } ?>
 

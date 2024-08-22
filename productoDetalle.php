@@ -4,20 +4,24 @@
 <?php include("administrador/config/bd.php"); ?>
 <br>
 <?php
-// Obtener el producto específico
-$sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto = :id");
-$sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
-$sentenciaSQL->execute();
-$producto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
+    // Obtener el producto específico
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto = :id");
+    $sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
+    $sentenciaSQL->execute();
+    $producto = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-// Obtener la categoría del producto
-$sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria = Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto = :id");
-$sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
-$sentenciaSQL->execute();
-$categoria = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+    // Obtener la categoría del producto
+    $sentenciaSQL = $conexion->prepare("SELECT Categorias.Nombre_Categoria FROM Productos INNER JOIN Categorias ON Categorias.ID_Categoria = Productos.Categorias_ID_Categoria WHERE Productos.ID_Producto = :id");
+    $sentenciaSQL->bindParam(':id', $_GET['IdProducto']);
+    $sentenciaSQL->execute();
+    $categoria = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-// Formatear el precio del producto
-$precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
+    // Formatear el precio del producto
+    $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
+}
+
+
 ?>
 
 <div class="container">
@@ -47,7 +51,7 @@ $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
                         <form id="form" action="carrito.php" method="GET">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <label for="cantidad">Cantidad:</label>
-                            <input type="number" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto">
+                            <input type="number" min="1" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto">
 
                             <a href="#" onclick="document.getElementById('form').submit();">
                                 <button type="button" class="btn btn-success mb-4">Agregar al carrito</button>

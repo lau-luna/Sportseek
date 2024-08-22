@@ -5,7 +5,7 @@
 <?php
 
 // Obtener el filtro seleccionada del formulario
-$filtroSeleccionado = isset($_GET['txtFiltro']) ? $_GET['txtFiltro'] : 'ninguno';
+$filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[0-9]+$/', $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
 
 if ($filtroSeleccionado == 'ninguno') {
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Pedidos WHERE Usuarios_ID_Usuario=:IdUsuario ORDER BY Fecha_Pedido DESC");

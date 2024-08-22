@@ -13,4 +13,3 @@ try {
     // En caso de fallo en la concecion con la BD
       echo $ex->getMessage();
 }
-?>

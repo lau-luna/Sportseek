@@ -1,11 +1,18 @@
 <?php include('../template/cabecera.php') ?>
 
 <?php
+
 //Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-$txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-$txtNombre = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-$txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-$accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
+$txtID = (isset($_POST['txtID']) && preg_match('/^[0-9]+$/', $_POST['txtID'])) ? $_POST['txtID'] : "";
+$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+$txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
+
+if ($_POST) {
+    if (!preg_match('/^[0-9]+$/', $_POST['txtID']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
+        $mensaje =  "Error en los caracteres de los datos";
+    }
+}
 
 include("../config/bd.php");
 
@@ -69,12 +76,12 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
                         <div class="form-group">
                             <label for="txtID">ID:</label>
-                            <input type="text" required readonly value="<?php echo $txtID; ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
+                            <input type="text" required readonly value="<?php echo htmlspecialchars($txtID) ; ?>" class="form-control" name="txtID" id="txtID" placeholder="ID">
                         </div>
 
                         <div class="form-group">
                             <label for="txtNombre">Nombre:</label>
-                            <input type="text" required value="<?php echo $txtNombre; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre de la categoría">
+                            <input type="text" required value="<?php echo htmlspecialchars($txtNombre) ; ?>" class="form-control" name="txtNombre" id="txtNombre" placeholder="Nombre de la categoría">
                         </div>
 
                         <div class="form-group" id="div-descripcion">
@@ -90,7 +97,7 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                             <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Modificar" class="btn btn-warning">Modificar</button>
                             <button type="submit" name="accion" <?php echo ($accion != "Seleccionar") ? "disabled" : ""; ?> value="Cancelar" class="btn btn-info">Cancelar</button>
                         </div>
-
+                    
                     </form>
 
                 </div>
@@ -116,13 +123,13 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                 <tbody>
                     <?php foreach ($listaCategorias as $categoria) { ?>
                         <tr>
-                            <td><?php echo $categoria['ID_Categoria']; ?></td>
-                            <td><?php echo $categoria['Nombre_Categoria']; ?></td>
-                            <td><?php echo $categoria['Descripcion_Categoria']; ?></td>
+                            <td><?php echo htmlspecialchars($categoria['ID_Categoria']) ; ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Nombre_Categoria']) ; ?></td>
+                            <td><?php echo htmlspecialchars($categoria['Descripcion_Categoria']) ; ?></td>
 
                             <td>
                                 <form method="POST">
-                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $categoria['ID_Categoria']; ?>">
+                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($categoria['ID_Categoria']) ; ?>">
 
                                     <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary">
 

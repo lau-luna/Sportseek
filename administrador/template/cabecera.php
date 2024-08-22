@@ -47,7 +47,7 @@ if (!isset($_SESSION['usuario'])) {
     <nav class="navbar navbar-expand navbar-light bg-primary">
         <div class="nav navbar-nav">
             <a class="nav-item nav-link text-white" href="#">Administrador del sitio web <span class="sr-only"></span></a>
-            <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/inicio.php"; ?>">Inicio</a>
+            <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/index.php"; ?>">Inicio</a>
             <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/productos.php"; ?>">Productos</a>
             <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/categorias.php"; ?>">Categorias</a>
             <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaPedidos.php"; ?>">Pedidos</a>

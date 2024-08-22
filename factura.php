@@ -4,9 +4,9 @@
 <?php include("administrador/config/bd.php"); ?>
 
 <?php
-if (isset($_GET['ID_Factura'])) {
+if (isset($_GET['ID_Factura']) && preg_match('/^[0-9]+$/', $_GET['ID_Factura'])) {
     $IdFactura = $_GET['ID_Factura'];
-} else {
+} else if (preg_match('/^[0-9]+$/', $_SESSION['ID_Factura'])) {
     $IdFactura = intval($_SESSION['ID_Factura']);
 }
 
@@ -54,7 +54,6 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
                 <h5>Información del solicitante:</h5>
 
                 <p>
-                    <?php echo htmlspecialchars("ID cliente: " . $factura['ID_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Nombre o razón social: " . $factura['Apellidos_Usuario'] . ", " . $factura['Nombre_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Dirección: " . $factura['Direccion_Usuario']) ?> <br>
                     <?php echo htmlspecialchars("Telefono: " . $factura['Telefono_Usuario']) ?> <br>
