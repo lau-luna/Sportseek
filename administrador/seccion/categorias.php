@@ -7,7 +7,6 @@
 
 if ($_POST) {
     if (
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  intval($_POST['txtID'])) &&
         preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
         preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) &&
         preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])
