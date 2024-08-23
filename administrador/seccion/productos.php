@@ -2,7 +2,7 @@
 
 <?php
 // Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-$txtID = (isset($_POST['txtID']) && preg_match('/^[0-1ID ]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
+$txtID = (isset($_POST['txtID']) && preg_match('/^[0-9]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
 $txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
 $numPrecio = (isset($_POST['numPrecio']) && preg_match('/^[0-9]+$/',  $_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
 $boolStock = (isset($_POST['boolStock'])) ? 1 : 0;
@@ -12,10 +12,11 @@ $txtEspecificaciones = (isset($_POST['txtEspecificaciones']) && preg_match('/^[a
 $txtCategoria = (isset($_POST['txtCategoria']) && preg_match('/^[0-1]+$/',  $_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
 $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
+include ('../config/bd.php');
+
+
 if ($_POST) {
-    if (!preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) || !preg_match('/^[0-9]+$/',  $_POST['numPrecio']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) || !preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) || !preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
-        $mensaje =  "Error en los caracteres de los datos";
-    } else {
+    if (preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) && preg_match('/^[0-9]+$/',  $_POST['numPrecio']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9_ ]+$/',  $_FILES['txtImagen']['name']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $_POST['txtEspecificaciones']) && preg_match('/^[0-1]+$/',  $_POST['txtCategoria']) && preg_match('/^[a-zA-Zn]+$/',  $_POST['accion'])) {
         switch ($accion) {
             case "Agregar":
                 // Insertar datos a tabla Productos
@@ -129,6 +130,8 @@ if ($_POST) {
                 header('Location:productos.php');
                 break;
         }
+    } else {
+        $mensaje =  "Error en los caracteres de los datos";
     }
 }
 

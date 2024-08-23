@@ -48,7 +48,7 @@ if ($_POST) {
                         $_SESSION['Tipo_Usuario'] = $lista2['Tipo_de_Usuario'];
 
                         echo '<script type="text/javascript">
-                    window.location.href = "administrador/inicio.php";
+                    window.location.href = "administrador/index.php";
                   </script>';
                     }
                 } else {
