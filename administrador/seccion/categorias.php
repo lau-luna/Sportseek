@@ -142,9 +142,9 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                                 <form method="POST">
                                     <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
 
-                                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary">
+                                    <input type="submit" style="width: 100%;" name="accion" value="Seleccionar" class="btn btn-primary">
 
-                                    <input type="submit" name="accion" value="Borrar" class="btn btn-danger">
+                                    <input type="submit" style="width: 100%;" name="accion" value="Borrar" class="btn btn-danger">
 
                                 </form>
                             </td>
