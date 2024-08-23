@@ -59,8 +59,8 @@ ini_set('max_execution_time', '60');
 
     <div style="position: fixed; width: 100%; z-index: 999;">
         <header class="d-flex" style="background-color: white;">
-            <a class="nav-link" href="index.php">
-                <img src="./img/LogoTiendaHeader.png" alt="Deportes" width="150">
+            <a class="nav-link logoTienda" href="index.php">
+                <img src="./img/LogoTiendaHeader.png" alt="Deportes">
                 <span class="sr-only"></span>
             </a>
 
@@ -80,28 +80,27 @@ ini_set('max_execution_time', '60');
                     </a>
                 <?php } ?>
 
-                <!-- Mostar sólo se se inció la sessión-->
+                <!-- Mostar sólo si se inició la sesión-->
                 <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <a class="form-inline my-2 my-lg-0" href="./carrito.php">
-                        <button class="btn btn-outline-info my-2 my-sm-0" type="submit">
-                            <img src="./img/CarritoIcon.png" alt="Carrito" class="btn-img" style="height: 4vh; vertical-align: middle; margin-right: 5px;">
-                            MI CARRITO
+                        <button class="btn btn-outline-info my-2 my-sm-0 btn-carrito" type="submit">
+                            <img src="./img/CarritoIcon.png" alt="Carrito" class="btn-img">
+                            <span class="text-to-hide">MI CARRITO</span>
                         </button>
                     </a>
                 <?php } ?>
 
-                <!-- Mostar sólo se se inció la sessión-->
+                <!-- Mostar sólo si se inició la sesión-->
                 <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
-                    <!-- Example single danger button -->
                     <div class="form-inline my-2 my-lg-0">
-                        <button type="button" class="btn btn-outline-success dropdown-toggle" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
-                            <img src="./img/CuentaIcon.png" alt="Cuenta" class="btn-img" style="height: 4vh; vertical-align: middle; margin-right: 5px;">
-                            MI CUENTA
+                        <button type="button" class="btn btn-outline-success dropdown-toggle btn-cuenta" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                            <img src="./img/CuentaIcon.png" alt="Cuenta" class="btn-img">
+                            <span class="text-to-hide">MI CUENTA</span>
                         </button>
                         <div class="dropdown-menu">
                             <a class="dropdown-item" href="miCuenta.php">Ver mis datos</a>
                             <?php if ($_SESSION['Tipo_Usuario'] == 'Administrador' && preg_match('/^[a-zA_Z]+$/', $_SESSION['Tipo_Usuario'])) { ?>
-                                <a class="dropdown-item" href="administrador/inicio.php">Administrar sitio</a>
+                                <a class="dropdown-item" href="administrador/index.php">Administrar sitio</a>
                             <?php } ?>
                             <a class="dropdown-item" href="listaPedidos.php">Pedidos</a>
                             <a class="dropdown-item" href="listaFacturas.php">Facturas</a>
@@ -116,22 +115,32 @@ ini_set('max_execution_time', '60');
 
         </header>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-primary justify-content-center d-flex">
-            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse d-flex justify-content-center" id="navbarNavDropdown">
-                <ul class="navbar-nav d-flex justify-content-center">
-                    <li class="nav-item active">
-                        <a class="nav-link text-white text-center" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="./productos.php">Productos</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link text-white text-center" href="contacto.php">Contacto</a>
-                    </li>
-                </ul>
+        <nav class="navbar navbar-expand-lg navbar-light bg-primary">
+            <div class="container-fluid">
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <form method="GET" action="productos.php" class="navbar-toggler" id="formulario-busqueda-productos-navbar">
+                    <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
+                    <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
+                        <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                    </button>
+                </form>
+                <div class="collapse navbar-collapse" id="navbarSupportedContent">
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="./index.php">Inicio <span class="sr-only">(current)</span></a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="./productos.php">Productos</a>
+
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-white" href="contacto.php">Contacto</a>
+                        </li>
+                    </ul>
+                </div>
             </div>
         </nav>
 

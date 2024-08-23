@@ -3,7 +3,7 @@
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" style="z-index: -999; margin-top: 0.5%">
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="./img/carrusel1.png" class="d-block w-100" style="z-index: -999; object-fit:cover;" alt="...">
+      <img src="./img/carrusel1.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
     </div>
     <div class="carousel-item">
       <img src="./img/carrusel2.png" class="d-block w-100" style="z-index: -999; object-fit:cover;" alt="...">

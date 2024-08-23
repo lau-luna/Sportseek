@@ -1,5 +1,4 @@
 #formulario-busqueda-productos {
-    display: flex;
     width: 32%;
     margin-left: 20%;
 }
@@ -77,4 +76,82 @@ h2{
 .nav-item{
     margin-left: 5vh;
     margin-right: 5vh;
+}
+
+.logoTienda {
+    width: 12%;
+}
+
+.logoTienda img {
+    width: 100%;
+}
+
+.btn-carrito img {
+    height: 4vh; 
+    vertical-align: middle; 
+    margin-right: 5px;
+}
+
+.btn-cuenta img {
+    height: 4vh; 
+    vertical-align: middle; 
+    margin-right: 5px;
+}
+
+#formulario-busqueda-productos-navbar {
+    display: none;
+}
+
+.navbar-toggler-icon {
+    filter: invert(1);
+}
+
+/* Media query para pantallas con un ancho máximo de 768px */
+@media (max-width: 768px) {
+    .logoTienda {
+        width: 40%;
+        display: grid;
+    place-items: center; /* Centra vertical y horizontalmente */
+    }
+    
+    .logoTienda img {
+        width: 100%;
+    }
+
+    .text-to-hide {
+        display: none;
+    }
+
+    #contenedor-botones-registro-carrito {
+        width: 38%;
+    }
+
+   
+
+    #formulario-busqueda-productos {
+        display: none;
+    }
+
+    #formulario-busqueda-productos-navbar {
+        display: flex;    
+        margin-left: 5%;
+        width: 85%;
+    }
+
+    .navbar-toggler {
+        padding: 0%;
+    }
+
+    #formulario-busqueda-productos-header input {
+        border-top-right-radius: 0%;
+        border-bottom-right-radius: 0%;
+        width: 90%;
+        font-size: small;
+    }
+    #formulario-busqueda-productos-header button {
+        border-top-left-radius: 0%;
+        border-bottom-left-radius: 0%;
+        width: 10%;
+    }
+
 }
