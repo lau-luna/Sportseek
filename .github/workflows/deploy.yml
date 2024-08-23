@@ -15,8 +15,8 @@ jobs:
     - name: Install LFTP
       run: sudo apt-get install lftp
 
-    - name: Deploy only changed files via FTP
-      run: lftp -c "open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; mirror -R --only-newer . /htdocs"
+    - name: Deploy files via FTP
+      run: lftp -c "open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; mirror -R . /htdocs"
       env:
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
