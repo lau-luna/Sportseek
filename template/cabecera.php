@@ -19,7 +19,7 @@ ini_set('max_execution_time', '60');
 <html lang="es">
 
 <head>
-    <title>Sportseek</title>
+    <title>Sportsis</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">

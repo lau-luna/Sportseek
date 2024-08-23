@@ -16,7 +16,7 @@
 
 <br>
 <div class="productosCategorias">
-  <h3>Los más recientes</h3>
+  <h3>Los más nuevos</h3>
   <hr>
   <?php
   include("administrador/config/bd.php");
