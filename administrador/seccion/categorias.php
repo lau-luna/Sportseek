@@ -9,9 +9,8 @@ $txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑá
 $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
 if ($_POST) {
-    if (!preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  !$_POST['txtNombre']) || !preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) || !preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
-        $mensaje =  "Error en los caracteres de los datos";
-    } else {
+    if (preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) 
+    && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) {
         switch ($accion) {
             case "Agregar":
                 // Insertar datos a tabla Categorias
@@ -52,6 +51,9 @@ if ($_POST) {
                 header('Location:categorias.php');
                 break;
         }
+    } else {
+        $mensaje =  "Error en los caracteres de los datos";
+        
     }
 }
 
