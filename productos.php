@@ -104,7 +104,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
         <!-- Formulario de filtros -->
         <form method="GET" action="">
             <div data-mdb-input-init class="categoria mb-2">
-                <label class="form-label">Filtrar elpapu por:</label>
+                <label class="form-label">Filtrar por:</label>
                 <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
                     <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
                     <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más alto</option>
