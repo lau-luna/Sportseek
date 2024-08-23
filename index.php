@@ -21,7 +21,7 @@
   <?php
   include("administrador/config/bd.php");
 
-  $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY ID_Producto DESC LIMIT 10");
+  $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY ID_Producto DESC LIMIT 8");
   $sentenciaSQL->execute();
   $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
@@ -66,7 +66,7 @@
     <?php
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos 
                     INNER JOIN Categorias ON Productos.Categorias_ID_Categoria=Categorias.ID_Categoria 
-                    WHERE Categorias.Nombre_Categoria=:categoria ORDER BY Productos.ID_Producto DESC LIMIT 10");
+                    WHERE Categorias.Nombre_Categoria=:categoria ORDER BY Productos.ID_Producto DESC LIMIT 8");
     $sentenciaSQL->bindParam(":categoria", $categoria);
     $sentenciaSQL->execute();
     $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC); ?>
