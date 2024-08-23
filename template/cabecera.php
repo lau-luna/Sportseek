@@ -30,16 +30,16 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./bootstrap/bootstrap.css" type="text/css">
+    <link rel="stylesheet" href="./bootstrap/bootstrap.css?v=<?php echo time(); ?>" type="text/css">
 
 
-    <link rel="stylesheet" href="./css/styles.css" type="text/css">
+    <link rel="stylesheet" href="./css/styles.css?v=<?php echo time(); ?>" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
     <link rel="stylesheet" href="css/productoLista.css" type="text/css">
     <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
-    <link rel="stylesheet" href="./css/responsive.css" type="text/css">
+    <link rel="stylesheet" href="./css/responsive.css?v=<?php echo time(); ?>" type="text/css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
