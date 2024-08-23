@@ -3,14 +3,19 @@
 <?php
 
 //Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-$txtID = (isset($_POST['txtID']) && preg_match('/^[0-9ID ]+$/', $_POST['txtID'])) ? $_POST['txtID'] : "";
-$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-$txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
+
 
 if ($_POST) {
-    if (preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) 
-    && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) {
+    if (
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  intval($_POST['txtID'])) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
+        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) &&
+        preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])
+    ) {
+        $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
+        $txtNombre = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+        $txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+        $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
         switch ($accion) {
             case "Agregar":
                 // Insertar datos a tabla Categorias
@@ -18,7 +23,7 @@ if ($_POST) {
                 $sentenciaSQL->bindParam(':nombre', $txtNombre);
                 $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
                 $sentenciaSQL->execute();
-        
+
                 header('Location:categorias.php');
                 break;
             case "Modificar":
@@ -27,7 +32,7 @@ if ($_POST) {
                 $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
                 $sentenciaSQL->bindParam(':id', $txtID);
                 $sentenciaSQL->execute();
-        
+
                 header('Location:categorias.php');
                 break;
             case "Cancelar":
@@ -38,7 +43,7 @@ if ($_POST) {
                 $sentenciaSQL->bindParam(':id', $txtID);
                 $sentenciaSQL->execute();
                 $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-        
+
                 $txtNombre = $categoria['Nombre_Categoria'];
                 $txtDescripcion = $categoria['Descripcion_Categoria'];
                 break;
@@ -47,13 +52,12 @@ if ($_POST) {
                 $sentenciaSQL = $conexion->prepare("DELETE FROM Categorias WHERE ID_Categoria=:id");
                 $sentenciaSQL->bindParam(':id', $txtID);
                 $sentenciaSQL->execute();
-        
+
                 header('Location:categorias.php');
                 break;
         }
     } else {
         $mensaje =  "Error en los caracteres de los datos";
-        
     }
 }
 
