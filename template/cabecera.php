@@ -11,8 +11,6 @@ if (isset($_SERVER['sesionIniciada']) && !$_SERVER['sesionIniciada']) {
 // Establecer la zona horaria de Argentina
 date_default_timezone_set('America/Argentina/Buenos_Aires');
 
-ini_set('memory_limit', '500M');
-ini_set('max_execution_time', '60');
 ?>
 
 <!DOCTYPE html>
@@ -35,7 +33,7 @@ ini_set('max_execution_time', '60');
     <link rel="stylesheet" href="./bootstrap/bootstrap.css" type="text/css">
 
 
-    <link rel="stylesheet" href="./css/styles.css" type="text/css">
+    <link rel="stylesheet" href="/css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
     <link rel="stylesheet" href="css/productoLista.css" type="text/css">
