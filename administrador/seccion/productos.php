@@ -339,8 +339,8 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                             <td>
                                 <form method="post">
                                     <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']); ?>" />
-                                    <input type="submit" name="accion" value="Seleccionar" class="btn btn-primary mb-2" />
-                                    <input type="submit" name="accion" value="Borrar" class="btn btn-danger" />
+                                    <input type="submit" style="width: 100%;" name="accion" value="Seleccionar" class="btn btn-primary mb-2" />
+                                    <input type="submit" style="width: 100%;" name="accion" value="Borrar" class="btn btn-danger" />
                                 </form>
                             </td>
                         </tr>
