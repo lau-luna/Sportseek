@@ -33,7 +33,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <link rel="stylesheet" href="./bootstrap/bootstrap.css" type="text/css">
 
 
-    <link rel="stylesheet" href="/css/styles.css" type="text/css">
+    <link rel="stylesheet" href="./css/styles.css" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
     <link rel="stylesheet" href="css/productoLista.css" type="text/css">
