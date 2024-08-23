@@ -160,24 +160,24 @@ $offset = ($paginaActual - 1) * $productosPorPagina;
 $categoriaSeleccionada = (isset($_GET['txtCategoria']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_GET['txtCategoria'])) ? $_GET['txtCategoria'] : 'todas';
 
 if ($categoriaSeleccionada == 'todas') {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos LIMIT :offset, :productosPorPagina");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos ORDER BY ID_Producto DESC LIMIT :offset, :productosPorPagina");
     $sentenciaSQL->bindParam(':offset', $offset, PDO::PARAM_INT);
     $sentenciaSQL->bindParam(':productosPorPagina', $productosPorPagina, PDO::PARAM_INT);
     $sentenciaSQL->execute();
     $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos");
+    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos ORDER BY ID_Producto DESC");
     $totalProductosSQL->execute();
     $totalProductos = $totalProductosSQL->fetchColumn();
 } else {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria LIMIT :offset, :productosPorPagina");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY ID_Producto DESC LIMIT :offset, :productosPorPagina");
     $sentenciaSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
     $sentenciaSQL->bindParam(':offset', $offset, PDO::PARAM_INT);
     $sentenciaSQL->bindParam(':productosPorPagina', $productosPorPagina, PDO::PARAM_INT);
     $sentenciaSQL->execute();
     $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria");
+    $totalProductosSQL = $conexion->prepare("SELECT COUNT(*) FROM Productos WHERE Categorias_ID_Categoria=:IdCategoria ORDER BY ID_Producto DESC");
     $totalProductosSQL->bindParam(":IdCategoria", $categoriaSeleccionada);
     $totalProductosSQL->execute();
     $totalProductos = $totalProductosSQL->fetchColumn();
