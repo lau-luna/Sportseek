@@ -19,7 +19,7 @@ ini_set('max_execution_time', '60');
 <html lang="es">
 
 <head>
-    <title>Sportsis</title>
+    <title>Funciono el deploy</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
