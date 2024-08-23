@@ -2,37 +2,51 @@
 
 <?php
 
+include('../config/bd.php');
+
 //Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
+$txtID = (isset($_POST['txtID']) && preg_match('/^[0-9]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
+$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/', $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+$txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
 
 if ($_POST) {
-    if (
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $_POST['txtDescripcion']) &&
-        preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])
-    ) {
-        $txtID = (isset($_POST['txtID'])) ? $_POST['txtID'] : "";
-        $txtNombre = (isset($_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-        $txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-        $accion = (isset($_POST['accion'])) ? $_POST['accion'] : "";
+    if (preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
         switch ($accion) {
             case "Agregar":
-                // Insertar datos a tabla Categorias
-                $sentenciaSQL = $conexion->prepare("INSERT INTO Categorias (Nombre_Categoria, Descripcion_Categoria) VALUES (:nombre, :descripcion);");
-                $sentenciaSQL->bindParam(':nombre', $txtNombre);
-                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-                $sentenciaSQL->execute();
+                if (
+                    preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $txtNombre) &&
+                    preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $txtDescripcion)
+                ) {
+                    // Insertar datos a tabla Categorias
+                    $sentenciaSQL = $conexion->prepare("INSERT INTO Categorias (Nombre_Categoria, Descripcion_Categoria) VALUES (:nombre, :descripcion);");
+                    $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                    $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                    $sentenciaSQL->execute();
 
-                header('Location:categorias.php');
+                    header('Location:categorias.php');
+                }   else {
+                    $mensaje =  "Error en los caracteres de los datos";
+                }
+
                 break;
             case "Modificar":
-                $sentenciaSQL = $conexion->prepare("UPDATE Categorias SET Nombre_Categoria=:nombre, Descripcion_Categoria=:descripcion WHERE ID_Categoria=:id");
-                $sentenciaSQL->bindParam(':nombre', $txtNombre);
-                $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
-                $sentenciaSQL->bindParam(':id', $txtID);
-                $sentenciaSQL->execute();
+                if (
+                    preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $txtNombre) &&
+                    preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ,.0-9 ]+$/',  $txtDescripcion)
+                ) {
+                    $sentenciaSQL = $conexion->prepare("UPDATE Categorias SET Nombre_Categoria=:nombre, Descripcion_Categoria=:descripcion WHERE ID_Categoria=:id");
+                    $sentenciaSQL->bindParam(':nombre', $txtNombre);
+                    $sentenciaSQL->bindParam(':descripcion', $txtDescripcion);
+                    $sentenciaSQL->bindParam(':id', $txtID);
+                    $sentenciaSQL->execute();
 
-                header('Location:categorias.php');
+                    header('Location:categorias.php');
+                }   else {
+                    $mensaje =  "Error en los caracteres de los datos";
+                }
+
                 break;
             case "Cancelar":
                 header('Location:categorias.php');
@@ -42,7 +56,7 @@ if ($_POST) {
                 $sentenciaSQL->bindParam(':id', $txtID);
                 $sentenciaSQL->execute();
                 $categoria = $sentenciaSQL->fetch(PDO::FETCH_LAZY);
-
+                
                 $txtNombre = $categoria['Nombre_Categoria'];
                 $txtDescripcion = $categoria['Descripcion_Categoria'];
                 break;
@@ -59,8 +73,6 @@ if ($_POST) {
         $mensaje =  "Error en los caracteres de los datos";
     }
 }
-
-include("../config/bd.php");
 
 
 
@@ -140,9 +152,9 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
                             <td>
                                 <form method="POST">
-                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
+                                    <input type="hidden" name="txtID" id="txtID" value="<?php echo $categoria['ID_Categoria']; ?>">
 
-                                    <input type="submit" style="width: 100%;" name="accion" value="Seleccionar" class="btn btn-primary">
+                                    <input type="submit" style="width: 100%;" name="accion" value="Seleccionar" class="btn btn-primary mb-2">
 
                                     <input type="submit" style="width: 100%;" name="accion" value="Borrar" class="btn btn-danger">
 
