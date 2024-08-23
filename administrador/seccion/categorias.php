@@ -87,7 +87,7 @@ $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
         <div class="col-md-5" id="carga">
             <div class="card">
                 <div class="card-header">
-                    Datos de la Categoría
+                    Datos de la Categoría siais
                 </div>
                 <div class="card-body">
 
