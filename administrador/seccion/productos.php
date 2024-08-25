@@ -3,12 +3,12 @@
 <?php
 // Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
 $txtID = (isset($_POST['txtID']) && preg_match('/^[0-9]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
-$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
+$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\'()% ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
 $numPrecio = (isset($_POST['numPrecio']) && preg_match('/^[0-9]+$/',  $_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
 $boolStock = (isset($_POST['boolStock'])) ? 1 : 0;
-$txtDescripcion = (isset($_POST['txtDescripcion']) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
+$txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
 $txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
-$txtEspecificaciones = (isset($_POST['txtEspecificaciones']) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
+$txtEspecificaciones = (isset($_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
 $txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
 $accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
 
@@ -18,7 +18,7 @@ if ($_POST) {
     if (preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
             switch ($accion) {
                 case "Agregar":
-                    if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $txtDescripcion) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $txtEspecificaciones)) { 
+                    if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio)) { 
                          // Insertar datos a tabla Productos
                     $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Nombre_Producto, Precio_Producto, Descripcion_Producto, Tiene_Stock_Producto, Imagen_Producto, Especificaciones_Producto, Categorias_ID_Categoria) VALUES (:nombre, :precio, :descripcion, :stock, :imagen, :especificaciones, :IdCategoria);");
                     $sentenciaSQL->bindParam(':nombre', $txtNombre);
@@ -57,7 +57,7 @@ if ($_POST) {
                    
                     break;
                 case "Modificar":
-                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,: ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio) && preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,: ]+$/',  $txtDescripcion) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9: ]+$/',  $txtEspecificaciones)) {
+                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,: ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio)) {
                     $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Nombre_Producto=:nombre, Precio_Producto=:precio, Descripcion_Producto=:descripcion, Tiene_Stock_Producto=:stock, Especificaciones_Producto=:especificaciones, Categorias_ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
                     $sentenciaSQL->bindParam(':nombre', $txtNombre);
                     $sentenciaSQL->bindParam(':precio', $numPrecio);
