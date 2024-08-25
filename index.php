@@ -28,7 +28,7 @@
   $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
   ?>
-  <div class="col-md-12" >
+  <div class="col-md-12">
     <div class="row">
       <?php foreach ($listaProductos as $producto) {
         // Generar un ID único para cada formulario
