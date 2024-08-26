@@ -73,7 +73,7 @@ $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
 $sentenciaSQL->execute();
 $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-$txtID = (isset($_GET['txtID'] ) && preg_match('/^[0-9]+$/', $_GET['IdProducto'])) ? $_GET['txtID'] : "";
+$txtID = (isset($_GET['txtID'] ) && preg_match('/^[0-9]+$/', $_GET['txtID'])) ? $_GET['txtID'] : "";
 $accion = (isset($_GET['accion']) && preg_match('/^[a-zA-Z ]+$/', $_GET['accion']))? $_GET['accion'] : "";
 
 switch ($accion) {
