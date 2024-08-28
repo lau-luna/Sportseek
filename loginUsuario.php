@@ -39,8 +39,6 @@ if ($_POST) {
                     window.location.href = "index.php";
                   </script>';
                     } else {
-
-                        echo "entro";
                         $_SESSION['usuario'] = "ok";
                         $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
                         $_SESSION['Apellido_Usuario'] = $usuario['Apellidos_Usuario'];

@@ -68,6 +68,9 @@ if (!isset($_SESSION['usuario'])) {
                         <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaFacturas.php"; ?>">Facturas</a>
                     </li>
                     <li class="nav-item">
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/ventas.php"; ?>">Ventas</a>
+                    </li>
+                    <li class="nav-item">
                         <a class="nav-item nav-link text-white" href="<?php echo $url; ?>">Ver sitio web</a>
                     </li>
                     <li class="nav-item">
