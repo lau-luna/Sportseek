@@ -19,6 +19,8 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 <link href="./css/factura.css" rel="stylesheet">
 
+<br>
+
 <div class="container mt-2">
     <div class="div-botones-imprimir-descargar mb-2 d-flex justify-content-end">
         <button class="btn btn-outline-primary mr-2 col-md-2" id="boton-imprimir" onclick="imprimirPedido()">
