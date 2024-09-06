@@ -4,7 +4,7 @@
 Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
 
 
-![Logo](https://sportseek.great-site.net/img/LogoTiendaHeader.png)
+![Logo](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaIconVersion.png)
 
 ## Funcionalidades
 
@@ -34,7 +34,7 @@ Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional E
 
 ## Screenshots
 
-![App Screenshot]([[https://sportseek.great-site.net/img/carrusel4.png](https://github.com/lau-luna/Olimpiada/blob/main/img/carrusel4.png?raw=true)](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/carrusel4.png?token=GHSAT0AAAAAACWDXT2DWZN22GRSGKGVUUIYZW26GUA))
+![App Screenshot](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/carrusel4.png)
 
 
 ## Tecnologías
@@ -50,7 +50,17 @@ Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional E
 
 [![MIT License](https://img.shields.io/badge/Olimpiada%20Nacional%20ETP%202024-inet-blue.svg)](https://www.inet.edu.ar/index.php/niveles-educativos/educacion-secundaria-tecnica/encuentros-educativos/olimpiada-nacional-etp-2024/)
 
+## Licencias
+
+[![MIT License](https://img.shields.io/badge/Bootstrap%20License-MIT-purple.svg)](https://github.com/twbs/bootstrap/blob/v5.3.3/LICENSE)
+[![Oracle License](https://img.shields.io/badge/MySQL%20Workbench%20License-Oracle-orange.svg)](https://downloads.mysql.com/docs/licenses/workbench-8.0-com-en.pdf)
 ## Autores
 
-- [@lau-luna](https://www.github.com/lau-luna)
+- [Lautaro Eduardo Eber Luna](https://www.github.com/lau-luna)
+
+- [Lucio Gómez Molina](https://github.com/Luciobillions)
+
+- [Lucio Wiesek](https://github.com/LucioWi)
+
+- [Enzo Jeremías Loza](https://github.com/CapitanBeto1)
 
