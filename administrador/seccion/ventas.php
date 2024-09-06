@@ -9,13 +9,14 @@ $anoInicio = 2024; // Año inicial
 $mesSeleccionado = isset($_GET['mes']) ? $_GET['mes'] : $mesActual;
 $anoSeleccionado = isset($_GET['ano']) ? $_GET['ano'] : $anoActual;
 
-// Obtener todas las categorías y sus ventas
+
+// Verificar si hay ventas por categoría
 $sentenciaSQL = $conexion->prepare("
     SELECT c.Nombre_Categoria, SUM(fp.Cantidad_Productos) AS Total_Vendido
     FROM Facturas_Pedidos_Productos fp
-    INNER JOIN Productos p ON fp.ID_Producto = p.ID_Producto
+    INNER JOIN Productos p ON fp.Productos_ID_Productos = p.ID_Producto
     INNER JOIN Categorias c ON p.Categorias_ID_Categoria = c.ID_Categoria
-    INNER JOIN Pedidos pd ON fp.Facturas_ID_Factura = pd.ID_Pedido
+    INNER JOIN Pedidos pd ON fp.Pedidos_ID_Pedido = pd.ID_Pedido
     WHERE MONTH(pd.Fecha_Pedido) = :mesSeleccionado AND YEAR(pd.Fecha_Pedido) = :anoSeleccionado
     GROUP BY c.Nombre_Categoria
 ");
@@ -23,6 +24,7 @@ $sentenciaSQL->bindParam(":mesSeleccionado", $mesSeleccionado);
 $sentenciaSQL->bindParam(":anoSeleccionado", $anoSeleccionado);
 $sentenciaSQL->execute();
 $ventasPorCategoria = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+
 
 // Preparar los datos para el gráfico
 $etiquetasCategorias = array_column($ventasPorCategoria, 'Nombre_Categoria');
@@ -77,96 +79,102 @@ $nombresMeses = [
         </form>
     </div>
 
-    <div style="max-width: 800px; max-height: 400px; margin: auto;">
-        <canvas id="grafico"></canvas>
-    </div>
+    <?php // Verificar si se obtuvieron resultados
+    if (empty($ventasPorCategoria)) {
+        echo "No hay ventas registradas por categoría para el mes seleccionado.";
+    } else {  ?>
 
-    <script>
-        const $grafico = document.querySelector("#grafico");
-        const etiquetasCategorias = <?php echo json_encode($etiquetasCategorias); ?>;
-        const datosCategorias = {
-            label: "Ventas por Categoría en <?php echo $nombresMeses[$mesSeleccionado] . ' ' . htmlspecialchars($anoSeleccionado); ?>",
-            data: <?php echo json_encode($datosVentas); ?>,
-            backgroundColor: 'rgba(54, 162, 235, 0.2)',
-            borderColor: 'rgba(54, 162, 235, 1)',
-            borderWidth: 1
-        };
-        new Chart($grafico, {
-            type: 'bar',
-            data: {
-                labels: etiquetasCategorias,
-                datasets: [datosCategorias]
-            },
-            options: {
-                responsive: true,
-                maintainAspectRatio: true,
-                scales: {
-                    y: {
-                        beginAtZero: true
+        <div style="max-width: 800px; max-height: 400px; margin: auto;">
+            <canvas id="grafico"></canvas>
+        </div>
+
+        <script>
+            const $grafico = document.querySelector("#grafico");
+            const etiquetasCategorias = <?php echo json_encode($etiquetasCategorias); ?>;
+            const datosCategorias = {
+                label: "Ventas por Categoría en <?php echo $nombresMeses[$mesSeleccionado] . ' ' . htmlspecialchars($anoSeleccionado); ?>",
+                data: <?php echo json_encode($datosVentas); ?>,
+                backgroundColor: 'rgba(54, 162, 235, 0.2)',
+                borderColor: 'rgba(54, 162, 235, 1)',
+                borderWidth: 1
+            };
+            new Chart($grafico, {
+                type: 'bar',
+                data: {
+                    labels: etiquetasCategorias,
+                    datasets: [datosCategorias]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
-    <table class="table table-bordered mt-4">
-        <thead class="table-light table-bordered">
-            <tr>
-                <th style="width: 8%;">ID Pedido</th>
-                <th style="width: 8%;">ID Producto</th>
-                <th style="width: 10%;">Categoria</th>
-                <th>Nombre Producto</th>
-                <th style="width: 2%;">Cantidad</th>
-                <th style="width: 10%;">Precio Unitario</th>
-                <th style="width: 10%;">I.V.A. 21%</th>
-                <th style="width: 10%;" class="text-end">Precio Total</th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
-            $sentenciaSQL = $conexion->prepare("
+        <table class="table table-bordered mt-4">
+            <thead class="table-light table-bordered">
+                <tr>
+                    <th style="width: 8%;">ID Pedido</th>
+                    <th style="width: 8%;">ID Producto</th>
+                    <th style="width: 10%;">Categoria</th>
+                    <th>Nombre Producto</th>
+                    <th style="width: 2%;">Cantidad</th>
+                    <th style="width: 10%;">Precio Unitario</th>
+                    <th style="width: 10%;">I.V.A. 21%</th>
+                    <th style="width: 10%;" class="text-end">Precio Total</th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
+                $sentenciaSQL = $conexion->prepare("
                 SELECT Categorias.Nombre_Categoria, Facturas_Pedidos_Productos.ID_Producto, Facturas_Pedidos_Productos.Nombre_Producto, Facturas_Pedidos_Productos.Cantidad_Productos, Facturas_Pedidos_Productos.Precio_Producto, Facturas_Pedidos_Productos.Pedidos_ID_Pedido
                 FROM Facturas_Pedidos_Productos 
-                INNER JOIN Pedidos ON Facturas_Pedidos_Productos.Facturas_ID_Factura = Pedidos.ID_Pedido
+                INNER JOIN Pedidos ON Facturas_Pedidos_Productos.Pedidos_ID_Pedido = Pedidos.ID_Pedido
                 INNER JOIN Productos ON Facturas_Pedidos_Productos.Productos_ID_Productos = Productos.ID_Producto
                 INNER JOIN Categorias ON Categorias.ID_Categoria = Productos.Categorias_ID_Categoria
                 WHERE MONTH(Pedidos.Fecha_Pedido) = :mesSeleccionado AND YEAR(Pedidos.Fecha_Pedido) = :anoSeleccionado
             ");
-            $sentenciaSQL->bindParam(":mesSeleccionado", $mesSeleccionado);
-            $sentenciaSQL->bindParam(":anoSeleccionado", $anoSeleccionado);
-            $sentenciaSQL->execute();
-            $listaProductosCantidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                $sentenciaSQL->bindParam(":mesSeleccionado", $mesSeleccionado);
+                $sentenciaSQL->bindParam(":anoSeleccionado", $anoSeleccionado);
+                $sentenciaSQL->execute();
+                $listaProductosCantidades = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-            $precioTotal = 0;
+                $precioTotal = 0;
 
-            foreach ($listaProductosCantidades as $productoCantidad) {
-                $precio = $productoCantidad['Cantidad_Productos'] *  $productoCantidad['Precio_Producto'];
-                $IVA = ($precio * 21) / 100;
-                $precioConIVA = $precio + $IVA;
-                $precioTotal += $precioConIVA;
-            ?>
-                <tr>
-                    <td> <?php echo htmlspecialchars($productoCantidad['Pedidos_ID_Pedido']) ?> </td>
-                    <td> <?php echo htmlspecialchars($productoCantidad['ID_Producto']) ?> </td>
-                    <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Categoria']) ?> </td>
-                    <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Producto']) ?> </td>
-                    <td> <?php echo htmlspecialchars($productoCantidad['Cantidad_Productos']) ?> </td>
-                    <td>$ <?php echo htmlspecialchars($productoCantidad['Precio_Producto']) ?></td>
-                    <td>$ <?php echo htmlspecialchars($IVA) ?></td>
-                    <td class="text-end">$ <?php echo htmlspecialchars($precioConIVA) ?> </td>
+                foreach ($listaProductosCantidades as $productoCantidad) {
+                    $precio = $productoCantidad['Cantidad_Productos'] *  $productoCantidad['Precio_Producto'];
+                    $IVA = ($precio * 21) / 100;
+                    $precioConIVA = $precio + $IVA;
+                    $precioTotal += $precioConIVA;
+                ?>
+                    <tr>
+                        <td> <?php echo htmlspecialchars($productoCantidad['Pedidos_ID_Pedido']) ?> </td>
+                        <td> <?php echo htmlspecialchars($productoCantidad['ID_Producto']) ?> </td>
+                        <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Categoria']) ?> </td>
+                        <td> <?php echo htmlspecialchars($productoCantidad['Nombre_Producto']) ?> </td>
+                        <td> <?php echo htmlspecialchars($productoCantidad['Cantidad_Productos']) ?> </td>
+                        <td>$ <?php echo htmlspecialchars($productoCantidad['Precio_Producto']) ?></td>
+                        <td>$ <?php echo htmlspecialchars($IVA) ?></td>
+                        <td class="text-end">$ <?php echo htmlspecialchars($precioConIVA) ?> </td>
+                    </tr>
+                <?php } ?>
+            </tbody>
+            <tfoot>
+                <tr class="total-row">
+                    <td colspan="6"></td>
+                    <td class="text-end" style="font-weight: bold;">Total:</td>
+                    <td class="text-end">$ <?php echo htmlspecialchars($precioTotal) ?> </td>
                 </tr>
-            <?php } ?>
-        </tbody>
-        <tfoot>
-            <tr class="total-row">
-                <td colspan="6"></td>
-                <td class="text-end" style="font-weight: bold;">Total:</td>
-                <td class="text-end">$ <?php echo htmlspecialchars($precioTotal) ?> </td>
-            </tr>
-        </tfoot>
-    </table>
+            </tfoot>
+        </table>
 </div>
 
-<script src="../../js/imprimirDescargarFactura.js"></script>
+<?php } ?>
+
 
 <?php include('../template/pie.php'); ?>
