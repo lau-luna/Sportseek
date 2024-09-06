@@ -10,6 +10,6 @@ try {
     $conexion=new PDO("mysql:host=$host;port=$port;dbname=$bd",$usuario,$contrasenia);
 
 } catch ( Exception $ex) {
-    // En caso de fallo en la concecion con la BD
+    // En caso de fallo en la conexion con la BD
       echo $ex->getMessage();
 }
