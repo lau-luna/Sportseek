@@ -34,7 +34,7 @@ Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional E
 
 ## Screenshots
 
-![App Screenshot]([https://sportseek.great-site.net/img/carrusel4.png](https://github.com/lau-luna/Olimpiada/blob/main/img/carrusel4.png?raw=true))
+![App Screenshot]([[https://sportseek.great-site.net/img/carrusel4.png](https://github.com/lau-luna/Olimpiada/blob/main/img/carrusel4.png?raw=true)](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/carrusel4.png?token=GHSAT0AAAAAACWDXT2DWZN22GRSGKGVUUIYZW26GUA))
 
 
 ## Tecnologías
