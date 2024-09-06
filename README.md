@@ -1,5 +1,5 @@
 
-# Sportseek 
+# Sportseek ![Logo](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaColor.png)
 
 Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
 
@@ -50,10 +50,6 @@ Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional E
 
 [![MIT License](https://img.shields.io/badge/Olimpiada%20Nacional%20ETP%202024-inet-blue.svg)](https://www.inet.edu.ar/index.php/niveles-educativos/educacion-secundaria-tecnica/encuentros-educativos/olimpiada-nacional-etp-2024/)
 
-## Licencias
-
-[![MIT License](https://img.shields.io/badge/Bootstrap%20License-MIT-purple.svg)](https://github.com/twbs/bootstrap/blob/v5.3.3/LICENSE)
-[![Oracle License](https://img.shields.io/badge/MySQL%20Workbench%20License-Oracle-orange.svg)](https://downloads.mysql.com/docs/licenses/workbench-8.0-com-en.pdf)
 ## Autores
 
 - [Lautaro Eduardo Eber Luna](https://www.github.com/lau-luna)
@@ -64,3 +60,7 @@ Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional E
 
 - [Enzo Jeremías Loza](https://github.com/CapitanBeto1)
 
+## Licencias
+
+[![MIT License](https://img.shields.io/badge/Bootstrap%20License-MIT-purple.svg)](https://github.com/twbs/bootstrap/blob/v5.3.3/LICENSE)
+[![Oracle License](https://img.shields.io/badge/MySQL%20Workbench%20License-Oracle-orange.svg)](https://downloads.mysql.com/docs/licenses/workbench-8.0-com-en.pdf)
