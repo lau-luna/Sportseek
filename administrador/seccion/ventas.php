@@ -28,9 +28,18 @@ $ventasPorCategoria = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 $etiquetasCategorias = array_column($ventasPorCategoria, 'Nombre_Categoria');
 $datosVentas = array_column($ventasPorCategoria, 'Total_Vendido');
 $nombresMeses = [
-    1 => 'Enero', 2 => 'Febrero', 3 => 'Marzo', 4 => 'Abril',
-    5 => 'Mayo', 6 => 'Junio', 7 => 'Julio', 8 => 'Agosto',
-    9 => 'Septiembre', 10 => 'Octubre', 11 => 'Noviembre', 12 => 'Diciembre'
+    1 => 'Enero',
+    2 => 'Febrero',
+    3 => 'Marzo',
+    4 => 'Abril',
+    5 => 'Mayo',
+    6 => 'Junio',
+    7 => 'Julio',
+    8 => 'Agosto',
+    9 => 'Septiembre',
+    10 => 'Octubre',
+    11 => 'Noviembre',
+    12 => 'Diciembre'
 ];
 ?>
 
@@ -43,7 +52,7 @@ $nombresMeses = [
         <form method="GET" class="form-inline flex-grow-1 ml-3 me-2" id="formulario-busqueda-facturas">
             <div class="d-flex ml-4">
                 <label class="form-label">Mes:</label>
-                <select name="mes" id="mes" class="form-control ml-2" onchange="this.form.submit()">
+                <select name="mes" id="mes" class="form-control ml-2" onchange="updateUrl(this.value, '<?php echo $anoSeleccionado; ?>')">
                     <?php foreach ($nombresMeses as $numeroMes => $nombreMes) : ?>
                         <option value="<?php echo $numeroMes; ?>" <?php echo ($mesSeleccionado == $numeroMes) ? 'selected' : ''; ?>>
                             <?php echo $nombreMes; ?>
@@ -51,14 +60,19 @@ $nombresMeses = [
                     <?php endforeach; ?>
                 </select>
 
-                <label class="form-label ms-3">Año:</label>
-                <select name="ano" id="ano" class="form-control ml-2" onchange="this.form.submit()">
+                <select name="ano" id="ano" class="form-control ml-2" onchange="updateUrl('<?php echo $mesSeleccionado; ?>', this.value)">
                     <?php for ($i = $anoInicio; $i <= $anoActual + 10; $i++) : ?>
                         <option value="<?php echo $i; ?>" <?php echo ($anoSeleccionado == $i) ? 'selected' : ''; ?>>
                             <?php echo $i; ?>
                         </option>
                     <?php endfor; ?>
                 </select>
+
+                <script>
+                    function updateUrl(mes, ano) {
+                        window.location.search = `?mes=${mes}&ano=${ano}`;
+                    }
+                </script>
             </div>
         </form>
     </div>
