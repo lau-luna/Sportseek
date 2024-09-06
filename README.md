@@ -1,5 +1,5 @@
 
-# Sportseek ![Logo](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaColor.png)
+# <img src="https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaColor.png" style="width: 50px; vertical-align: middle;"> SPORTSEEK
 
 Sportseek es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
 
