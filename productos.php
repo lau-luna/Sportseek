@@ -31,9 +31,10 @@ $paginaActual = (isset($_GET['pagina']) && preg_match('/^[0-9]+$/',  $_GET['pagi
 $offset = ($paginaActual - 1) * $productosPorPagina;
 
 // Obtener la categoría seleccionada y el filtro desde GET
-$categoriaSeleccionada = (isset($_GET['txtCategoria']) && preg_match('/^[0-9]+$/',  $_GET['txtCategoria'])) ? $_GET['txtCategoria'] : 'todas';
+$categoriaSeleccionada = (isset($_GET['txtCategoria']) ) ? $_GET['txtCategoria'] : 'todas';
 $filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[a-zA-Z]+$/',  $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
 
+echo $paginaActual; 
 
 // Preparar la consulta SQL base
 $sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria, 
@@ -139,7 +140,8 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                     <?php } ?>
                     <!-- Mantener el filtro seleccionado en la URL -->
                     <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
-                    <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
+                    <input type="hidden" name="pagina" value="<?php if($categoriaSeleccionada == 'todas' && $paginaActual != 1) { echo htmlspecialchars(1); }  else { echo htmlspecialchars($paginaActual); } ?>">
+
                 </form>
             </div>
         </div>
