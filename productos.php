@@ -34,7 +34,6 @@ $offset = ($paginaActual - 1) * $productosPorPagina;
 $categoriaSeleccionada = (isset($_GET['txtCategoria']) ) ? $_GET['txtCategoria'] : 'todas';
 $filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[a-zA-Z]+$/',  $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
 
-echo $paginaActual; 
 
 // Preparar la consulta SQL base
 $sqlBase = "SELECT Productos.*, Categorias.Nombre_Categoria, 
