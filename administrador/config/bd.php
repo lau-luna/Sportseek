@@ -11,5 +11,5 @@ try {
 
 } catch ( Exception $ex) {
     // En caso de fallo en la conexion con la BD
-      echo $ex->getMessage();
+    echo $ex->getMessage();
 }
