@@ -2,7 +2,7 @@
 try {
     $host="lautaro-luna-lautaroluna906-b4ca.h.aivencloud.com";
     $port = '17205';
-    $bd="defaultdb";
+    $bd="sportseek";
     $usuario="avnadmin";
     $contrasenia="AVNS_aOVthXr6XdGle8n0350";
 
