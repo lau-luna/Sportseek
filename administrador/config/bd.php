@@ -1,15 +1,16 @@
 <?php 
 try {
-    $host="lautaro-luna-lautaroluna906-b4ca.h.aivencloud.com";
-    $port = '17205';
-    $bd="defaultdb";
-    $usuario="avnadmin";
-    $contrasenia="AVNS_aOVthXr6XdGle8n0350";
+    $host = getenv('DB_HOST');
+    $port = getenv('DB_PORT');
+    $bd = getenv('DB_NAME');
+    $usuario = getenv('DB_USER');
+    $contrasenia = getenv('DB_PASSWORD');
 
-    // Conexion PDO con la base de datos
-    $conexion=new PDO("mysql:host=$host;port=$port;dbname=$bd",$usuario,$contrasenia);
+    // Conexión PDO con la base de datos
+    $conexion = new PDO("mysql:host=$host;port=$port;dbname=$bd", $usuario, $contrasenia);
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
 
-} catch ( Exception $ex) {
-    // En caso de fallo en la conexion con la BD
-    echo $ex->getMessage();
+} catch (PDOException $ex) {
+    // Manejo de errores más específico
+    echo "Error de conexión: " . $ex->getMessage();
 }
