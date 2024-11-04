@@ -29,7 +29,7 @@ jobs:
         fi
 
     - name: Run your PHP script
-      run: php bd.php # Reemplaza 'your_script.php' con el nombre de tu script PHP
+      run: php administrador/config/bd.php # Reemplaza 'your_script.php' con el nombre de tu script PHP
       env:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
