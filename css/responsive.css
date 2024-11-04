@@ -6,19 +6,13 @@
     width: 100%;
 }
 
-.btn-carrito img {
+.btn-carrito img, .btn-cuenta img {
     height: 4vh; 
     vertical-align: middle; 
     margin-right: 5px;
 }
 
-.btn-cuenta img {
-    height: 4vh; 
-    vertical-align: middle; 
-    margin-right: 5px;
-}
-
-#formulario-busqueda-productos-navbar {
+#formulario-busqueda-productos-navbar, .text-to-hide, #formulario-busqueda-productos-navbar, aside {
     display: none;
 }
 
@@ -49,18 +43,8 @@
         width: 100%;
     }
 
-    .text-to-hide {
-        display: none;
-    }
-
     #contenedor-botones-registro-carrito {
         width: 38%;
-    }
-
-   
-
-    #formulario-busqueda-productos {
-        display: none;
     }
 
     #formulario-busqueda-productos-navbar {
@@ -83,10 +67,6 @@
         border-top-left-radius: 0%;
         border-bottom-left-radius: 0%;
         width: 10%;
-    }
-
-    aside {
-        display: none;
     }
 
 }
