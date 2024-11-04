@@ -15,29 +15,21 @@ jobs:
     - name: Install LFTP
       run: sudo apt-get install -y lftp
 
-    - name: Set up PHP and install dependencies
+    - name: Install PHP and extensions
       run: |
+        sudo apt-get update
         sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql
-        composer install # Si usas Composer para manejar dependencias
 
-    - name: Test database connection
+    - name: Install Composer dependencies
       run: |
-        php -r "
-        try {
-            \$host = getenv('DB_HOST');
-            \$port = getenv('DB_PORT');
-            \$bd = getenv('DB_NAME');
-            \$usuario = getenv('DB_USER');
-            \$contrasenia = getenv('DB_PASSWORD');
+        if [ -f composer.json ]; then
+          composer install
+        else
+          echo "No composer.json found. Skipping Composer install."
+        fi
 
-            // Conexión PDO con la base de datos
-            \$conexion = new PDO('mysql:host=' . \$host . ';port=' . \$port . ';dbname=' . \$bd, \$usuario, \$contrasenia);
-            echo 'Conexión a la base de datos exitosa';
-        } catch (Exception \$ex) {
-            echo 'Error en la conexión: ' . \$ex->getMessage();
-            exit(1); // Termina el script con un código de error
-        }
-        "
+    - name: Run your PHP script
+      run: php your_script.php # Reemplaza 'your_script.php' con el nombre de tu script PHP
       env:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
@@ -46,12 +38,8 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     - name: Deploy only changed files via FTP
-      run: |
-        lftp -c "set ssl:verify-certificate no; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; mirror -R --only-newer . /htdocs"
+      run: lftp -c "set ssl:verify-certificate no; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; mirror -R --only-newer . /htdocs"
       env:
         FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
         FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
         FTP_SERVER: ${{ secrets.FTP_SERVER }}
-
-    - name: Check deployment status
-      run: echo "Deployment completed successfully!"
