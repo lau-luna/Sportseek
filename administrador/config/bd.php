@@ -7,8 +7,13 @@ try {
     $contrasenia = getenv('DB_PASSWORD');
 
     // Conexión PDO con la base de datos
-    $conexion = new PDO("mysql:host=$host;port=$port;dbname=$bd", $usuario, $contrasenia);
-
+    $dsn = "mysql:host=$host;port=$port;dbname=$bd;charset=utf8mb4"; // Agrega charset
+    $conexion = new PDO($dsn, $usuario, $contrasenia);
+    
+    // Configuración de atributos PDO
+    $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    $conexion->setAttribute(PDO::ATTR_DEFAULT_FETCH_MODE, PDO::FETCH_ASSOC);
+    
 } catch (Exception $ex) {
     // En caso de fallo en la conexión con la BD
     echo $ex->getMessage();
