@@ -1,0 +1,15 @@
+{
+    "name": "root/sportseek",
+    "autoload": {
+        "psr-4": {
+            "Root\\Sportseek\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "Lautaro Luna",
+            "email": "lautaroluna906@gmail.com"
+        }
+    ],
+    "require": {}
+}
