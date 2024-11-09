@@ -3,13 +3,13 @@ name: Deploy to Raspberry Pi
 on:
   push:
     branches:
-      - main  # O la rama que uses para producción
+      - main
 
 jobs:
   ftp-deploy:
     runs-on: ubuntu-latest
+
     steps:
-    
     - name: Checkout repository
       uses: actions/checkout@v3
 
@@ -33,10 +33,10 @@ jobs:
       run: |
         lftp -c "
           set ssl:verify-certificate no;
+          set ftp:passive-mode on;
           open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
-          mirror -R --only-newer . /var/www/Sportseek
-        "
+          mirror -R --only-newer . /var/www/"
       env:
-        FTP_HOST: ${{ secrets.FTP_HOST }}  # IP pública o DDNS de tu Raspberry Pi
-        FTP_USER: ${{ secrets.FTP_USER }}  # Usuario FTP de tu Raspberry Pi
-        FTP_PASS: ${{ secrets.FTP_PASS }}  # Contraseña FTP de tu Raspberry Pi
+        FTP_USER: ${{ secrets.FTP_USER }}
+        FTP_PASS: ${{ secrets.FTP_PASS }}
+        FTP_HOST: ${{ secrets.FTP_HOST }}
