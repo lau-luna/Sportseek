@@ -1,4 +1,4 @@
-name: Deploy to InfinityFree
+name: Deploy to Raspberry Pi
 
 on:
   push:
@@ -6,30 +6,20 @@ on:
       - main
 
 jobs:
-  ftp-deploy:
+  deploy:
     runs-on: ubuntu-latest
+
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install LFTP
-      run: sudo apt-get install -y lftp
-
-    - name: Install PHP and extensions
+    - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql
+        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql rsync
 
-    - name: Install Composer dependencies
-      run: |
-        if [ -f composer.json ]; then
-          composer install
-        else
-          echo "No composer.json found. Skipping Composer install."
-        fi
-
-    - name: Run your PHP script
-      run: php administrador/config/bd.php # Reemplaza 'your_script.php' con el nombre de tu script PHP
+    - name: Run your PHP script (local test)
+      run: php administrador/config/bd.php
       env:
         DB_HOST: ${{ secrets.DB_HOST }}
         DB_PORT: ${{ secrets.DB_PORT }}
@@ -37,9 +27,22 @@ jobs:
         DB_USER: ${{ secrets.DB_USER }}
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
-    - name: Deploy only changed files via FTP
-      run: lftp -c "set ssl:verify-certificate no; open -u ${{ secrets.FTP_USERNAME }},${{ secrets.FTP_PASSWORD }} ${{ secrets.FTP_SERVER }}; mirror -R --only-newer . /htdocs"
+    - name: Deploy files to Raspberry Pi via SSH
       env:
-        FTP_USERNAME: ${{ secrets.FTP_USERNAME }}
-        FTP_PASSWORD: ${{ secrets.FTP_PASSWORD }}
-        FTP_SERVER: ${{ secrets.FTP_SERVER }}
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+          --exclude '.git' \
+          ./ "${{ env.USERNAME }}@${{ env.SERVER_IP }}:/var/www/"
+
+    - name: Execute post-deployment commands on Raspberry Pi
+      env:
+        SERVER_IP: ${{ secrets.SERVER_IP }}
+        USERNAME: ${{ secrets.USERNAME }}
+      run: |
+        ssh -o StrictHostKeyChecking=no "${{ env.USERNAME }}@${{ env.SERVER_IP }}" << 'EOF'
+        cd /var/www/
+        # Agrega aquí cualquier comando adicional que necesites ejecutar después del despliegue
+        sudo systemctl restart nginx
+        EOF
