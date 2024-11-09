@@ -6,37 +6,18 @@ on:
       - main
 
 jobs:
-  ftp-deploy:
+  deploy:
     runs-on: ubuntu-latest
 
     steps:
     - name: Checkout repository
       uses: actions/checkout@v3
 
-    - name: Install LFTP
-      run: sudo apt-get install -y lftp
-
-    - name: Install PHP and extensions
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql
-
-    - name: Install Composer dependencies
-      run: |
-        if [ -f composer.json ]; then
-          composer install
-        else
-          echo "No composer.json found. Skipping Composer install."
-        fi
-
-    - name: Deploy only changed files via FTP
-      run: |
-        lftp -c "
-          set ssl:verify-certificate no;
-          set ftp:passive-mode on;
-          open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
-          mirror -R --only-newer . /var/www/Sportseek"
+    - name: Deploy via SSH and Git Pull
       env:
-        FTP_USER: ${{ secrets.FTP_USER }}
-        FTP_PASS: ${{ secrets.FTP_PASS }}
-        FTP_HOST: ${{ secrets.FTP_HOST }}
+        SSH_KEY: ${{ secrets.SSH_KEY }}
+      run: |
+        echo "${SSH_KEY}" > ssh_key
+        chmod 600 ssh_key
+        ssh -i ssh_key -o StrictHostKeyChecking=no pi@raspberry_ip "cd /var/www/Sportseek && git pull origin main"
+      shell: bash
