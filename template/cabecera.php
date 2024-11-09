@@ -17,7 +17,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 <html lang="es">
 
 <head>
-    <title>Sportsis</title>
+    <title>Sportseek</title>
 
     <!-- Required meta tags -->
     <meta charset="utf-8">
