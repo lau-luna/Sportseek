@@ -21,12 +21,12 @@ jobs:
       # Subir archivos modificados por FTP
       - name: Upload changed files via FTP
         env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}
-          FTP_USER: ${{ secrets.FTP_USER }}
-          FTP_PASS: ${{ secrets.FTP_PASS }}
+          FTP_HOST: ${{ secrets.FTP_HOST }}  # La IP pública o DDNS de tu Raspberry Pi
+          FTP_USER: ${{ secrets.FTP_USER }}  # El usuario FTP de tu Raspberry Pi
+          FTP_PASS: ${{ secrets.FTP_PASS }}  # La contraseña FTP de tu Raspberry Pi
         run: |
           # Guardar la lista de archivos modificados en el último commit
-          FILES=$(git diff --name-only HEAD^ HEAD)
+          FILES=$(git diff --name-only HEAD~1 HEAD)
 
           # Iniciar sesión en el servidor FTP y transferir los archivos
           for file in $FILES; do
