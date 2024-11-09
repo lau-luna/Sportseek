@@ -15,7 +15,7 @@
       <img src="./img/carrusel3.png" class="d-block w-100" style=" object-fit:contain;" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel4.png" class="d-block w-100" style=" object-fit:contain;" alt="...">
+      <img src="./img/carrusel3.png" class="d-block w-100" style=" object-fit:contain;" alt="...">
     </div>
   </div>
 </div>
