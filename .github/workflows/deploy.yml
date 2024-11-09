@@ -34,7 +34,7 @@ jobs:
         lftp -c "
           set ssl:verify-certificate no;
           open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
-          mirror -R --only-newer . /var/www/
+          mirror -R --only-newer . /var/www/Sportseek
         "
       env:
         FTP_HOST: ${{ secrets.FTP_HOST }}  # IP pública o DDNS de tu Raspberry Pi
