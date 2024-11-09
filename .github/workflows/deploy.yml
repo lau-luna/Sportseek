@@ -1,41 +1,42 @@
-name: Deploy to Raspberry Pi
+name: Deploy to Raspberry Pi via FTP
 
 on:
   push:
     branches:
-      - main
+      - main  # O la rama que uses para producción
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-    - name: Checkout repository
-      uses: actions/checkout@v3
+      # Checkout del repositorio
+      - name: Checkout Repository
+        uses: actions/checkout@v3
 
-    - name: Install dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql lftp
+      # Instalar lftp para la transferencia FTP
+      - name: Install lftp
+        run: sudo apt-get install lftp
 
-    - name: Set up FTP credentials
-      run: |
-        echo "set ftp:ssl-allow true" > ~/.lftprc
-        echo "set ftp:ssl-force true" >> ~/.lftprc
-        echo "set ftp:ssl-protect-data true" >> ~/.lftprc
-        echo "set ftp:passive-mode true" >> ~/.lftprc
-        echo "open ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}:${{ secrets.FTP_PORT }}" > deploy_commands.lftp
-        echo "mirror -R ./ /var/www/" >> deploy_commands.lftp
-        echo "exit" >> deploy_commands.lftp
+      # Subir archivos modificados por FTP
+      - name: Upload changed files via FTP
+        env:
+          FTP_HOST: ${{ secrets.FTP_HOST }}
+          FTP_USER: ${{ secrets.FTP_USER }}
+          FTP_PASS: ${{ secrets.FTP_PASS }}
+        run: |
+          # Guardar la lista de archivos modificados en el último commit
+          FILES=$(git diff --name-only HEAD^ HEAD)
 
-    - name: Deploy files to Raspberry Pi via FTP
-      run: |
-        lftp -f deploy_commands.lftp
-
-    - name: Execute post-deployment commands on Raspberry Pi
-      run: |
-        ssh -o StrictHostKeyChecking=no "${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}" << 'EOF'
-        cd /var/www/
-        # Agrega aquí cualquier comando adicional que necesites ejecutar después del despliegue
-        sudo systemctl restart nginx
-        EOF
+          # Iniciar sesión en el servidor FTP y transferir los archivos
+          for file in $FILES; do
+            if [ -f "$file" ]; then
+              # Transferir solo los archivos que hayan cambiado
+              lftp -f "
+                open ftp://$FTP_USER:$FTP_PASS@$FTP_HOST
+                cd /var/www
+                put -O /var/www $file
+                bye
+              "
+            fi
+          done
