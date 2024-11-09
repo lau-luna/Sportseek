@@ -16,20 +16,21 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql rsync openssh-client
+        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql lftp
 
-    - name: Set up SSH key
+    - name: Set up FTP credentials
       run: |
-        mkdir -p ~/.ssh
-        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
-        chmod 600 ~/.ssh/id_rsa
-        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
+        echo "set ftp:ssl-allow true" > ~/.lftprc
+        echo "set ftp:ssl-force true" >> ~/.lftprc
+        echo "set ftp:ssl-protect-data true" >> ~/.lftprc
+        echo "set ftp:passive-mode true" >> ~/.lftprc
+        echo "open ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}" > deploy_commands.lftp
+        echo "mirror -R ./ /var/www/" >> deploy_commands.lftp
+        echo "exit" >> deploy_commands.lftp
 
-    - name: Deploy files to Raspberry Pi via SSH
+    - name: Deploy files to Raspberry Pi via FTP
       run: |
-        rsync -avz -e "ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
-          --exclude '.git' \
-          ./ "${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/"
+        lftp -f deploy_commands.lftp
 
     - name: Execute post-deployment commands on Raspberry Pi
       run: |
