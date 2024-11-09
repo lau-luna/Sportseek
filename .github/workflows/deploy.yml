@@ -6,26 +6,37 @@ on:
       - main
 
 jobs:
-  deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
 
     steps:
-      # 1. Checkout the repository
-      - name: Checkout repository
-        uses: actions/checkout@v3
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # 2. Crear y configurar la clave SSH privada
-      - name: Set up SSH key
-        run: |
-          mkdir -p ~/.ssh
-          echo "${{ secrets.SSH_KEY }}" > ~/.ssh/ssh_key
-          chmod 600 ~/.ssh/ssh_key
-          echo -e "Host lau-raspberry-dev.freemyip.com\n\tStrictHostKeyChecking no\n\tIdentityFile ~/.ssh/ssh_key" > ~/.ssh/config
+    - name: Install LFTP
+      run: sudo apt-get install -y lftp
 
-      # 3. Prueba de conexión SSH
-      - name: Test SSH Connection
-        run: ssh lau@lau-raspberry-dev.freemyip.com "echo 'SSH connection successful'"
+    - name: Install PHP and extensions
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql
 
-      # 4. Ejecutar git pull en la Raspberry Pi
-      - name: Deploy updates via git pull
-        run: ssh lau@lau-raspberry-dev.freemyip.com "cd /var/www/Sportseek && git pull origin main"
+    - name: Install Composer dependencies
+      run: |
+        if [ -f composer.json ]; then
+          composer install
+        else
+          echo "No composer.json found. Skipping Composer install."
+        fi
+
+    - name: Deploy only changed files via FTP
+      run: |
+        lftp -c "
+          set ssl:verify-certificate no;
+          set ftp:passive-mode on;
+          open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
+          mirror -R --only-newer . /var/www/Sportseek"
+      env:
+        FTP_USER: ${{ secrets.FTP_USER }}
+        FTP_PASS: ${{ secrets.FTP_PASS }}
+        FTP_HOST: ${{ secrets.FTP_HOST }}
