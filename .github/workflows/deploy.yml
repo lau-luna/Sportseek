@@ -19,5 +19,5 @@ jobs:
       run: |
         echo "${SSH_KEY}" > ssh_key
         chmod 600 ssh_key
-        ssh -i ssh_key -o StrictHostKeyChecking=no pi@raspberry_ip "cd /var/www/Sportseek && git pull origin main"
+        ssh -i ssh_key -o StrictHostKeyChecking=no lau@lau-raspberry-dev.freemyip.com "cd /var/www/Sportseek && git pull origin main"
       shell: bash
