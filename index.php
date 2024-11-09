@@ -6,7 +6,7 @@
       <img src="./img/carrusel5.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel4.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
+      <img src="./img/carrusel1.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
     </div>
     <div class="carousel-item">
       <img src="./img/carrusel2.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
