@@ -32,7 +32,7 @@ jobs:
         SERVER_IP: ${{ secrets.SERVER_IP }}
         USERNAME: ${{ secrets.USERNAME }}
       run: |
-        rsync -avz -e "ssh -o StrictHostKeyChecking=no" \
+        rsync -avz -e "ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude '.git' \
           ./ "${{ env.USERNAME }}@${{ env.SERVER_IP }}:/var/www/"
 
