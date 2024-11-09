@@ -1,4 +1,4 @@
-name: Deploy to Raspberry Pi via FTP
+name: Deploy to Raspberry Pi
 
 on:
   push:
@@ -6,43 +6,37 @@ on:
       - main  # O la rama que uses para producción
 
 jobs:
-  deploy:
+  ftp-deploy:
     runs-on: ubuntu-latest
-
     steps:
-      # Checkout del repositorio
-      - name: Checkout Repository
-        uses: actions/checkout@v3
+    
+    - name: Checkout repository
+      uses: actions/checkout@v3
 
-      # Instalar lftp para la transferencia FTP
-      - name: Install lftp
-        run: sudo apt-get install lftp
+    - name: Install LFTP
+      run: sudo apt-get install -y lftp
 
-      # Subir archivos modificados por FTP
-      - name: Upload changed files via FTP
-        env:
-          FTP_HOST: ${{ secrets.FTP_HOST }}  # La IP pública o DDNS de tu Raspberry Pi
-          FTP_USER: ${{ secrets.FTP_USER }}  # El usuario FTP de tu Raspberry Pi
-          FTP_PASS: ${{ secrets.FTP_PASS }}  # La contraseña FTP de tu Raspberry Pi
-        run: |
-          # Comprobar si es el primer commit
-          if git rev-parse --verify HEAD > /dev/null 2>&1; then
-            # Si no es el primer commit, obtener los archivos modificados
-            FILES=$(git diff --name-only HEAD~1 HEAD)
-          else
-            # Si es el primer commit, incluir todos los archivos
-            FILES=$(git ls-tree --name-only HEAD)
-          fi
+    - name: Install PHP and extensions
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql
 
-          # Iniciar sesión en el servidor FTP y transferir los archivos
-          for file in $FILES; do
-            if [ -f "$file" ]; then
-              # Transferir solo los archivos que hayan cambiado
-              lftp -f "
-                open ftp://$FTP_USER:$FTP_PASS@$FTP_HOST
-                cd /var/www
-                put -O /var/www $file
-                bye
-              "
-            fi
-          done
+    - name: Install Composer dependencies
+      run: |
+        if [ -f composer.json ]; then
+          composer install
+        else
+          echo "No composer.json found. Skipping Composer install."
+        fi
+
+    - name: Deploy only changed files via FTP
+      run: |
+        lftp -c "
+          set ssl:verify-certificate no;
+          open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
+          mirror -R --only-newer . /var/www/
+        "
+      env:
+        FTP_HOST: ${{ secrets.FTP_HOST }}  # IP pública o DDNS de tu Raspberry Pi
+        FTP_USER: ${{ secrets.FTP_USER }}  # Usuario FTP de tu Raspberry Pi
+        FTP_PASS: ${{ secrets.FTP_PASS }}  # Contraseña FTP de tu Raspberry Pi
