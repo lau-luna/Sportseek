@@ -1,10 +1,10 @@
 <?php 
 try {
-    $host = getenv('DB_HOST');
-    $port = getenv('DB_PORT');
-    $bd = getenv('DB_NAME');
-    $usuario = getenv('DB_USER');
-    $contrasenia = getenv('DB_PASSWORD');
+    $host = '192.168.0.100';
+    $port = '3306';
+    $bd = 'sportseek';
+    $usuario = 'root';
+    $contrasenia = 'lau1545';
 
     // Conexión PDO con la base de datos
     $dsn = "mysql:host=$host;port=$port;dbname=$bd;charset=utf8mb4"; // Agrega charset

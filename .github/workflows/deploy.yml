@@ -25,15 +25,6 @@ jobs:
         chmod 600 ~/.ssh/id_rsa
         ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
-    - name: Run your PHP script (local test)
-      run: php administrador/config/bd.php
-      env:
-        DB_HOST: ${{ secrets.DB_HOST }}
-        DB_PORT: ${{ secrets.DB_PORT }}
-        DB_NAME: ${{ secrets.DB_NAME }}
-        DB_USER: ${{ secrets.DB_USER }}
-        DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
-
     - name: Deploy files to Raspberry Pi via SSH
       run: |
         rsync -avz -e "ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
