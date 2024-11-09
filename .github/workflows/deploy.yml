@@ -16,7 +16,14 @@ jobs:
     - name: Install dependencies
       run: |
         sudo apt-get update
-        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql rsync
+        sudo apt-get install -y php php-cli php-mbstring php-xml php-mysql rsync openssh-client
+
+    - name: Set up SSH key
+      run: |
+        mkdir -p ~/.ssh
+        echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_rsa
+        chmod 600 ~/.ssh/id_rsa
+        ssh-keyscan -H ${{ secrets.SERVER_IP }} >> ~/.ssh/known_hosts
 
     - name: Run your PHP script (local test)
       run: php administrador/config/bd.php
@@ -28,20 +35,14 @@ jobs:
         DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
 
     - name: Deploy files to Raspberry Pi via SSH
-      env:
-        SERVER_IP: ${{ secrets.SERVER_IP }}
-        USERNAME: ${{ secrets.USERNAME }}
       run: |
         rsync -avz -e "ssh -v -o StrictHostKeyChecking=no -i ~/.ssh/id_rsa" \
           --exclude '.git' \
-          ./ "${{ env.USERNAME }}@${{ env.SERVER_IP }}:/var/www/"
+          ./ "${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}:/var/www/"
 
     - name: Execute post-deployment commands on Raspberry Pi
-      env:
-        SERVER_IP: ${{ secrets.SERVER_IP }}
-        USERNAME: ${{ secrets.USERNAME }}
       run: |
-        ssh -o StrictHostKeyChecking=no "${{ env.USERNAME }}@${{ env.SERVER_IP }}" << 'EOF'
+        ssh -o StrictHostKeyChecking=no "${{ secrets.USERNAME }}@${{ secrets.SERVER_IP }}" << 'EOF'
         cd /var/www/
         # Agrega aquí cualquier comando adicional que necesites ejecutar después del despliegue
         sudo systemctl restart nginx
