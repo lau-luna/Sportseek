@@ -35,7 +35,7 @@ jobs:
           set ssl:verify-certificate no;
           set ftp:passive-mode on;
           open -u ${{ secrets.FTP_USER }},${{ secrets.FTP_PASS }} ${{ secrets.FTP_HOST }};
-          mirror -R --only-newer . /var/www/"
+          mirror -R --only-newer . /var/www/Sportseek"
       env:
         FTP_USER: ${{ secrets.FTP_USER }}
         FTP_PASS: ${{ secrets.FTP_PASS }}
