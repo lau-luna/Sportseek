@@ -24,7 +24,7 @@ jobs:
         echo "set ftp:ssl-force true" >> ~/.lftprc
         echo "set ftp:ssl-protect-data true" >> ~/.lftprc
         echo "set ftp:passive-mode true" >> ~/.lftprc
-        echo "open ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}" > deploy_commands.lftp
+        echo "open ftp://${{ secrets.FTP_USERNAME }}:${{ secrets.FTP_PASSWORD }}@${{ secrets.FTP_SERVER }}:${{ secrets.FTP_PORT }}" > deploy_commands.lftp
         echo "mirror -R ./ /var/www/" >> deploy_commands.lftp
         echo "exit" >> deploy_commands.lftp
 
