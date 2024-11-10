@@ -102,7 +102,7 @@ if ($_POST) {
                     ⚠️ <?php echo htmlspecialchars($mensaje) ?>
                 </div>
             <?php } ?>
-            <div class="d-flex">
+            <div class="div-registro">
                 <div id="informacion-personal">
                     <h3 class="fw-normal " style="font-size:small">Informacion Personal</h3>
                     <hr>

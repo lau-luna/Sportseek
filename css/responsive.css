@@ -18,6 +18,10 @@
     filter: invert(1);
 }
 
+.div-registro{
+    display:flex;
+}
+
 /* Media query para pantallas con un ancho máximo de 768px */
 @media (max-width: 768px) {
     .logoTienda {
@@ -84,4 +88,27 @@
         width: 10%;
     }
 
+    /* Registro */
+    .div-registro{
+        display:block;
+    }
+
+    .div-registro #informacion-personal, .div-registro #informacion-inicio-sesion {
+        width: 100%;
+    }
+
+    .div-registro #informacion-inicio-sesion {
+        margin-top: 10%;
+        padding-left: 0;
+    }
+
+    /* Login */
+
+    .imgIniciarSesion{
+        display: none;
+    }
+
+    .seccion-login{
+        margin-right: 5%;
+    }
 }
