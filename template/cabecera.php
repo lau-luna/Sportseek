@@ -64,13 +64,6 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <span class="sr-only"></span>
             </a>
 
-            <form method="GET" action="productos.php" class="form-inline" id="formulario-busqueda-productos">
-                <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
-                <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
-                    <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
-                </button>
-            </form>
-
             <!-- Contenedor que empuja los botones hacia la derecha -->
             <div class="ml-auto d-flex" id="contenedor-botones-registro-carrito">
                 <!-- Mostar sólo si no se inció la sessión-->
