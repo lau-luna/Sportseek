@@ -37,7 +37,7 @@ if ($_POST) {
 
                         echo '<script type="text/javascript">
                     window.location.href = "index.php";
-                  </script>';
+                    </script>';
                     } else {
                         $_SESSION['usuario'] = "ok";
                         $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
@@ -47,10 +47,10 @@ if ($_POST) {
 
                         echo '<script type="text/javascript">
                     window.location.href = "administrador/index.php";
-                  </script>';
+                    </script>';
                     }
                 } else {
-                    $mensaje = "El nombre de usuario o contraseña es incorrecto.";
+                    $mensaje = "El correo electrónico o contraseña es incorrecto.";
                 }
             } else {
                 $mensaje = "No se encontró el usuario.";
@@ -94,8 +94,8 @@ if ($_POST) {
                 <div data-mdb-input-init class="form-outline mb-2">
                     <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                     <div class="containerr" style="position: relative;">
-                        <input style="width: 100%;" type="password" name="contrasenia" id="contrasenia" class="form-control form-control-md" />
-                        <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                        <input style="width: 100%;" type="password" name="txtContrasenia" id="txtContrasenia" class="form-control form-control-md" />
+                        <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" ></i>
                     </div>
                 </div>
 

@@ -1,6 +1,6 @@
 <?php 
 try {
-    $host = '192.168.0.100';
+    $host = 'lau-raspberry-dev.freemyip.com';
     $port = '3306';
     $bd = 'sportseek';
     $usuario = 'root';
