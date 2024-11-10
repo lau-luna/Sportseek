@@ -37,7 +37,7 @@ if ($_POST) {
 
                         echo '<script type="text/javascript">
                     window.location.href = "index.php";
-                  </script>';
+                    </script>';
                     } else {
                         $_SESSION['usuario'] = "ok";
                         $_SESSION['nombreUsuario'] = $usuario['Nombre_Usuario'];
@@ -47,10 +47,10 @@ if ($_POST) {
 
                         echo '<script type="text/javascript">
                     window.location.href = "administrador/index.php";
-                  </script>';
+                    </script>';
                     }
                 } else {
-                    $mensaje = "El nombre de usuario o contraseña es incorrecto.";
+                    $mensaje = "El correo electrónico o contraseña es incorrecto.";
                 }
             } else {
                 $mensaje = "No se encontró el usuario.";
