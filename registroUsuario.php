@@ -2,18 +2,6 @@
 
 <?php
 if ($_POST) {
-    if (
-        preg_match('/^[0-9a-zA-ZnÑáéíóúÁÉÍÓÚ_: ]+$/',  $_POST['txtUsername']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',   $_POST['txtApellidos']) &&
-        preg_match('/^[0-9.]+$/', $_POST['txtDni']) &&
-        preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',   $_POST['txtEmail']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_POST['txtContrasenia']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtDireccion']) &&
-        preg_match('/^[0-9]+$/',  $_POST['txtTelefono']) &&
-        preg_match('/^[0-9]+$/',  $_POST['txtProvincia']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtLocalidad'])
-    ) {
 
         // Extraer de la bd una lista con todos los usuarios
         $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario LIKE :email");
@@ -99,9 +87,7 @@ if ($_POST) {
                     window.location.href = "loginUsuario.php";
                   </script>';
         } 
-    } else {
-        $mensaje = "Uso de caracteres inválidos.";
-    }
+    
 }
 
 ?>
