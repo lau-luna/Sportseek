@@ -12,9 +12,7 @@
     margin-right: 5px;
 }
 
-#formulario-busqueda-productos-navbar, .text-to-hide, #formulario-busqueda-productos-navbar, aside {
-    display: none;
-}
+
 
 .navbar-toggler-icon {
     filter: invert(1);
@@ -26,12 +24,20 @@
         width: 40%;
         display: grid;
         place-items: center; /* Centra vertical y horizontalmente */
-        height: 75%;
+        height: 70%;
+        padding-top: 0;
+        padding-bottom: 0;
+        padding-right: 0;
     }
 
     header {
         display: grid;
         place-items: center; /* Centra vertical y horizontalmente */
+        height: 75px;
+    }
+
+    #formulario-busqueda-productos-navbar, .text-to-hide, #formulario-busqueda-productos-navbar aside{
+        display: none;
     }
 
     .navbar{
@@ -39,12 +45,21 @@
         padding-bottom: 1%;
     }
 
+    .logotienda{
+        width: 20%;
+    }
+
     .logoTienda img {
         width: 100%;
+        height: 100%;
     }
 
     #contenedor-botones-registro-carrito {
         width: 38%;
+    }
+
+    #formulario-busqueda-productos {
+        display: none;
     }
 
     #formulario-busqueda-productos-navbar {

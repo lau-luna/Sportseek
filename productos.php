@@ -100,7 +100,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
 <div class="" style="display: flex;" id="filtros">
     <!-- Sidebar -->
-    <aside class="ml-4 mr-3" style="width: 13%;">
+    <aside class="ml-4 mr-3" style="width: 13%; display: block;">
         <!-- Formulario de filtros -->
         <form method="GET" action="">
             <div data-mdb-input-init class="categoria mb-2">

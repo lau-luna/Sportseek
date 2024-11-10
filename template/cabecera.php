@@ -39,7 +39,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <link rel="stylesheet" href="css/productoLista.css" type="text/css">
     <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
 
-    <link rel="stylesheet" href="./css/responsive.css" type="text/css">
+    <link rel="stylesheet" href="./css/responsive.css?v=<?php echo time(); ?>" type="text/css">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -120,6 +120,12 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
+                <form method="GET" action="productos.php" class="navbar-toggler" id="formulario-busqueda-productos-navbar">
+                    <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
+                    <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
+                        <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                    </button>
+                </form>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item">

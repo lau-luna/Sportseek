@@ -18,7 +18,7 @@ if ($_POST) {
     if (preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) {
             switch ($accion) {
                 case "Agregar":
-                    if (preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\' ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio)) { 
+                    
                          // Insertar datos a tabla Productos
                     $sentenciaSQL = $conexion->prepare("INSERT INTO Productos (Nombre_Producto, Precio_Producto, Descripcion_Producto, Tiene_Stock_Producto, Imagen_Producto, Especificaciones_Producto, Categorias_ID_Categoria) VALUES (:nombre, :precio, :descripcion, :stock, :imagen, :especificaciones, :IdCategoria);");
                     $sentenciaSQL->bindParam(':nombre', $txtNombre);
@@ -50,14 +50,11 @@ if ($_POST) {
                             element.scrollIntoView({behavior: 'auto'});
                         }
                     };
-                  </script>";
-                    } else {
-                        $mensaje =  "Error en los caracteres de los datos";
-                    }
-                   
+                    </script>";
+                    
                     break;
                 case "Modificar":
-                    if (preg_match('/^[a-zA-Z0-9ñÑáéíóúÁÉÍÓÚ.,: ]+$/',  $txtNombre) && preg_match('/^[0-9]+$/',  $numPrecio)) {
+                    
                     $sentenciaSQL = $conexion->prepare("UPDATE Productos SET Nombre_Producto=:nombre, Precio_Producto=:precio, Descripcion_Producto=:descripcion, Tiene_Stock_Producto=:stock, Especificaciones_Producto=:especificaciones, Categorias_ID_Categoria=:IdCategoria WHERE ID_Producto=:id");
                     $sentenciaSQL->bindParam(':nombre', $txtNombre);
                     $sentenciaSQL->bindParam(':precio', $numPrecio);
@@ -95,9 +92,7 @@ if ($_POST) {
                     }
 
                     header('Location:productos.php');
-                } else {
-                    $mensaje =  "Error en los caracteres de los datos";
-                }
+                
                     break;
                 case "Cancelar":
                     header('Location:productos.php');
