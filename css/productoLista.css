@@ -1,74 +1,117 @@
 .cardProd {
-    
-    max-width: 16rem; /* Disminuir el ancho de la tarjeta */
-    max-height: 20rem; /* Reducir la altura de la tarjeta */
-    margin: 0.5rem; /* Margen entre las tarjetas */
+    margin: 0.5rem; /* Espacio entre las tarjetas */
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid #e0e0e0; /* Borde de la tarjeta */
-    border-radius: 8px; /* Bordes redondeados */
-    overflow: hidden; /* Ocultar cualquier contenido que sobrepase los límites */
-    text-align: center; /* Alineación centrada de texto */
-    background-color: #fff; /* Fondo blanco para la tarjeta */
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Sombra suave */
-    transition: all 0.3s ease-in-out; /* Transición suave para el hover */
+    border: 1px solid #e0e0e0;
+    border-radius: 8px;
+    overflow: hidden;
+    text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    transition: all 0.3s ease-in-out;
+    height: 350px; /* Ajusta la altura total */
 }
 
 .cardProd:hover {
-    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2); /* Sombra más pronunciada al pasar el mouse */
-    transform: translateY(-5px); /* Efecto de elevación al pasar el mouse */
-    cursor: pointer; /* Cambiar el cursor a mano */
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px);
+    cursor: pointer;
 }
 
 .card-img-topProd {
-    width: 100%; /* Asegura que la imagen ocupe todo el ancho de la tarjeta */
-    height: 50%; /* Establece la altura de la imagen al 50% de la tarjeta */
-    object-fit: contain; /* Ajusta la imagen para que quepa completamente sin cortar, manteniendo la proporción */
-    border-bottom: 1px solid #e0e0e0; /* Borde inferior de la imagen */
+    width: 100%;
+    height: 250px; /* Reduce la altura de la imagen */
+    object-fit: contain;
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .card-bodyProd {
-    text-decoration: none;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    padding: 1rem; /* Espaciado interno de la tarjeta */
-    height: 50%; /* Altura del cuerpo de la tarjeta (50% restante) */
+    padding: 1rem;
 }
 
 .card-titleProd {
-    font-size: 1rem; /* Reducir el tamaño del título */
-    margin-bottom: 0.5rem; /* Espaciado inferior */
-    color: #333; /* Color del texto */
-    font-weight: 500; /* Grosor del texto */
-    transition: color 0.3s ease; /* Transición suave al cambiar de color */
+    font-size: 1rem;
+    margin-bottom: 0.5rem;
+    color: #333;
+    font-weight: 500;
+    transition: color 0.3s ease;
 }
 
 .card-titleProd:hover {
-    color: #0073e6; /* Color del título al pasar el mouse */
+    color: #0073e6;
 }
 
 .text-infoProd {
-    font-size: 1.4rem; /* Reducir tamaño del precio */
-    margin-bottom: 0.5rem; /* Espaciado inferior */
-    color: #00a650; /* Color verde para el precio */
-    font-weight: bold; /* Hacer el texto en negrita */
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #00a650;
+    font-weight: bold;
 }
 
 .stock-labelProd {
-    font-size: 0.9rem; /* Tamaño de fuente para el estado de stock */
-    color: #e74c3c; /* Color rojo para el texto de "Sin stock" */
-    font-weight: bold; /* Texto en negrita */
+    font-size: 0.9rem;
+    color: #e74c3c;
+    font-weight: bold;
 }
 
 .cardLista {
-    display: flex;
     flex-wrap: wrap;
-    justify-content: space-between; /* Espaciado entre las tarjetas */
+    padding: 0%;
+    justify-content: space-between;
 }
 
-.cardLista a {
-    text-decoration: none; /* Quitar el subrayado de los enlaces */
+
+
+@media (min-width: 1200px) {
+    .col-md-3 {
+        flex: 0 0 20%; /* Ajuste para mostrar 5 columnas en pantallas grandes */
+        max-width: 20%;
+        padding: 0;
+    }
+
+    .col-md-3 a{
+        margin: 0;
+        padding: 0;
+    }
 }
 
+@media (max-width: 1199px) and (min-width: 768px) {
+    .col-md-3 {
+        flex: 0 0 24%; /* Ajuste para mostrar 4 columnas en pantallas medianas */
+        max-width: 24%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-md-3 a{
+        margin: 0;
+        padding: 0;
+    }
+}
+
+@media (max-width: 767px) {
+    .col-md-3 {
+        flex: 0 0 50%; /* Ajuste para mostrar 2 columnas en pantallas pequeñas */
+        max-width: 50%;
+        padding: 0;
+        margin: 0;
+    }
+
+    .col-md-3 a{
+        margin: 0;
+        padding: 0;
+    }
+
+    .cardProd {
+        height: 300px;
+        
+    }
+
+    .card-img-topProd {
+        height: 150px;
+    }
+}

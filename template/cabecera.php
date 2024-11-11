@@ -34,10 +34,10 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 
 
     <link rel="stylesheet" href="./css/styles.css?v=<?php echo time(); ?>" type="text/css">
-    <link rel="stylesheet" href="./css/loginUsuario.css" type="text/css">
-    <link rel="stylesheet" href="./css/registroUsuario.css" type="text/css">
-    <link rel="stylesheet" href="css/productoLista.css" type="text/css">
-    <link rel="icon" href="./img/LogoTiendaIconVersion.png" type="image/x-icon">
+    <link rel="stylesheet" href="./css/loginUsuario.css?v=<?php echo time(); ?>" type="text/css">
+    <link rel="stylesheet" href="./css/registroUsuario.css?v=<?php echo time(); ?>" type="text/css">
+    <link rel="stylesheet" href="css/productoLista.css?v=<?php echo time(); ?>" type="text/css">
+    <link rel="icon" href="./formatoAvif/imgCarpeta/LogoTiendaIconVersion.avif" type="image/x-icon">
 
     <link rel="stylesheet" href="./css/responsive.css?v=<?php echo time(); ?>" type="text/css">
 
@@ -60,14 +60,14 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <div style="position: fixed; width: 100%; z-index: 999;">
         <header class="d-flex" style="background-color: white;">
             <a class="nav-link logoTienda" href="index.php">
-                <img src="./img/LogoTiendaHeader.png" alt="Deportes">
+                <img src="./formatoAvif/imgCarpeta/LogoTiendaHeader.avif" alt="Deportes">
                 <span class="sr-only"></span>
             </a>
 
             <form method="GET" action="productos.php" class="form-inline" id="formulario-busqueda-productos">
                 <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
                 <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
-                    <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                    <img src="./formatoAvif/imgCarpeta/logoBuscador.avif" style="height: 1.5rem; width: auto;" />
                 </button>
             </form>
 
@@ -84,7 +84,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <a class="form-inline my-2 my-lg-0" href="./carrito.php">
                         <button class="btn btn-outline-info my-2 my-sm-0 btn-carrito" type="submit">
-                            <img src="./img/CarritoIcon.png" alt="Carrito" class="btn-img">
+                            <img src="./formatoAvif/imgCarpeta/CarritoIcon.avif" alt="Carrito" class="btn-img">
                             <span class="text-to-hide">MI CARRITO</span>
                         </button>
                     </a>
@@ -94,7 +94,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <div class="form-inline my-2 my-lg-0">
                         <button type="button" class="btn btn-outline-success dropdown-toggle btn-cuenta" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
-                            <img src="./img/CuentaIcon.png" alt="Cuenta" class="btn-img">
+                            <img src="./formatoAvif/imgCarpeta/CuentaIcon.avif" alt="Cuenta" class="btn-img">
                             <span class="text-to-hide">MI CUENTA</span>
                         </button>
                         <div class="dropdown-menu">
@@ -123,7 +123,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <form method="GET" action="productos.php" class="navbar-toggler" id="formulario-busqueda-productos-navbar">
                     <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
                     <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
-                        <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                        <img src="./formatoAvif/imgCarpeta/logoBuscador.avif" style="height: 1.5rem; width: auto;" />
                     </button>
                 </form>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">
