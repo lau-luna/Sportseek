@@ -1,32 +1,46 @@
 .cardProd {
-    width: 20rem;
-    height: 22rem;
-    margin: 0.2rem;
+    width: 100%;
+    max-width: 18rem; 
+    height: 24rem; 
+    margin: 1rem;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    border: 1px solid #ddd;
-    border-radius: 0.25rem;
+    border: 1px solid #e0e0e0; 
+    border-radius: 8px; 
     overflow: hidden;
     text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease-in-out;
 }
 
 .cardProdInicio {
-    height: 22rem;
+    height: 24rem;
     margin: 1.2vh;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     border: 1px solid #ddd;
-    border-radius: 0.25rem;
+    border-radius: 8px;
     overflow: hidden;
     text-align: center;
+    background-color: #fff;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); 
+    transition: all 0.3s ease-in-out;
+}
+
+.cardProd:hover {
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    transform: translateY(-5px); 
+    cursor: pointer;
 }
 
 .card-img-topProd {
     width: 100%;
-    height: 55%;
-    object-fit:contain; 
+    height: 60%; 
+    object-fit: cover; 
+    border-bottom: 1px solid #e0e0e0;
 }
 
 .card-bodyProd {
@@ -35,34 +49,46 @@
     flex-direction: column;
     justify-content: space-between;
     padding: 1rem;
+    height: 40%; 
 }
 
 .card-titleProd {
-    text-decoration: none;
-    font-size: 1.25rem;
+    font-size: 1.2rem;
     margin-bottom: 0.5rem;
+    color: #333; 
+    font-weight: 500;
+    transition: color 0.3s ease;
+}
+
+.card-titleProd:hover {
+    color: #0073e6; 
 }
 
 .text-infoProd {
-    font-size: 1rem;
+    font-size: 1.1rem;
     margin-bottom: 0.5rem;
+    color: #27ae60; 
+    font-weight: bold;
 }
 
 .stock-labelProd {
-    font-size: 0.875rem;
-    color: #dc3545;
+    font-size: 0.9rem;
+    color: #e74c3c;
+    font-weight: bold;
 }
 
 .cardLista {
     display: flex;
     flex-wrap: wrap;
-box-shadow: 0px 1px 10px rgba(0,0,0,0.2);
-transition: all 400ms ease;
-
+    justify-content: space-between;
 }
 
-.cardLista:hover{
-    box-shadow: 5px 5px 20px rgba(0,0,0,0.4);
-    transform: translateY(-3%);
+.cardLista a {
+    text-decoration: none;
+}
 
+.cardLista:hover {
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2); 
+    transform: translateY(-5px);
+    cursor: pointer;
 }
