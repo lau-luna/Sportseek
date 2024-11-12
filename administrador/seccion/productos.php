@@ -2,15 +2,15 @@
 
 <?php
 // Recibir los datos del formulario y guardarlo en variables. Si no hay datos se guardan vacías
-$txtID = (isset($_POST['txtID']) && preg_match('/^[0-9]+$/',  $_POST['txtID'])) ? $_POST['txtID'] : "";
-$txtNombre = (isset($_POST['txtNombre']) && preg_match('/^[a-zA-ZñÑáéíóúÁÉÍÓÚ,.0-9:\/\[\]\"\'()% ]+$/',  $_POST['txtNombre'])) ? $_POST['txtNombre'] : "";
-$numPrecio = (isset($_POST['numPrecio']) && preg_match('/^[0-9]+$/',  $_POST['numPrecio'])) ? $_POST['numPrecio'] : "";
-$boolStock = (isset($_POST['boolStock'])) ? 1 : 0;
-$txtDescripcion = (isset($_POST['txtDescripcion'])) ? $_POST['txtDescripcion'] : "";
-$txtImagen = (isset($_FILES['txtImagen']['name'])) ? $_FILES['txtImagen']['name'] : "";
-$txtEspecificaciones = (isset($_POST['txtEspecificaciones'])) ? $_POST['txtEspecificaciones'] : "";
-$txtCategoria = (isset($_POST['txtCategoria'])) ? $_POST['txtCategoria'] : "";
-$accion = (isset($_POST['accion']) && preg_match('/^[a-zA-Z]+$/',  $_POST['accion'])) ? $_POST['accion'] : "";
+$txtID = isset($_POST['txtID']) ? $_POST['txtID'] : "";
+$txtNombre = isset($_POST['txtNombre']) ? $_POST['txtNombre'] : "";
+$numPrecio = isset($_POST['numPrecio'])  ? $_POST['numPrecio'] : "";
+$boolStock = isset($_POST['boolStock']) ? 1 : 0;
+$txtDescripcion = isset($_POST['txtDescripcion']) ? $_POST['txtDescripcion'] : "";
+$txtImagen = isset($_FILES['txtImagen']['name']) ? $_FILES['txtImagen']['name'] : "";
+$txtEspecificaciones = isset($_POST['txtEspecificaciones']) ? $_POST['txtEspecificaciones'] : "";
+$txtCategoria = isset($_POST['txtCategoria']) ? $_POST['txtCategoria'] : "";
+$accion = isset($_POST['accion']) ? $_POST['accion'] : "";
 
 include('../config/bd.php');
 

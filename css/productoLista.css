@@ -18,7 +18,7 @@
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
-    height: 350px; /* Ajusta la altura total */
+    height: 40vh; /* Ajusta la altura total */
 }
 
 .cardProd:hover {
@@ -29,7 +29,7 @@
 
 .card-img-topProd {
     width: 100%;
-    height: 250px; /* Reduce la altura de la imagen */
+    height: 25vh; /* Reduce la altura de la imagen */
     object-fit: contain;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -81,7 +81,7 @@
     background-color: #fff;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
     transition: all 0.3s ease-in-out;
-    height: 350px; /* Ajusta la altura total */
+    height: 40vh; /* Ajusta la altura total */
 }
 
 .cardProd-productos:hover {
@@ -92,7 +92,7 @@
 
 .card-img-topProd-productos {
     width: 100%;
-    height: 225px; /* Reduce la altura de la imagen */
+    height: 25vh; /* Reduce la altura de la imagen */
     object-fit: contain;
     border-bottom: 1px solid #e0e0e0;
 }
@@ -174,11 +174,4 @@
         padding: 0;
     }
 
-    .cardProd-productos { 
-        height: 300px;
-    }
-
-    .card-img-topProd-productos {
-        height: 150px;
-    }
 }
