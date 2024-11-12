@@ -12,101 +12,86 @@ $txtNombreUsuario = $usuario['Nombre_Usuario'];
 $txtApellidosUsuario = $usuario['Apellidos_Usuario'];
 $txtDni = $usuario['DNI_Usuario'];
 $txtEmail = $usuario['Email_Usuario'];
-$txtContrasenia = $usuario['Contrasenia_Usuario'];
+$txtContrasenia = ''; // Dejar vacío para no mostrar la contraseña
 $txtDireccion = $usuario['Direccion_Usuario'];
 $txtTelefono = $usuario['Telefono_Usuario'];
-$txtIdProvincia = (isset($_POST['txtProvincia'])) ? $_POST['txtProvincia'] : "";
-$txtLocalidad = $usuario['Localidades_ID_Localidades'];
+$txtIdProvincia = (isset($_POST['txtProvincia'])) ? $_POST['txtProvincia'] : $usuario['Provincias_ID_Provincia'];
+$txtLocalidad = (isset($_POST['txtLocalidad'])) ? $_POST['txtLocalidad'] : $usuario['Localidades_ID_Localidades'];
 
+// Obtener la localidad y provincia asociada
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades INNER JOIN Provincias ON Localidades.Provincias_ID_Provincia=Provincias.ID_Provincia WHERE Localidades.ID_Localidades=:IdLocalidad");
 $sentenciaSQL->bindParam(":IdLocalidad", $txtLocalidad);
 $sentenciaSQL->execute();
 $localidadProvincia = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
 if ($_POST) {
-    if (
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_POST['txtNombre']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',   $_POST['txtApellidos']) &&
-        preg_match('/^[0-9.]+$/', $_POST['txtDni']) &&
-        preg_match('/^[_a-z0-9-]+(\.[_a-z0-9-]+)*@[a-z0-9-]+(\.[a-z0-9-]+)*(\.[a-z]{2,})$/i',   $_POST['txtEmail']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ0-9 ]+$/',  $_POST['txtContrasenia']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtDireccion']) &&
-        preg_match('/^[0-9]+$/',  $_POST['txtTelefono']) &&
-        preg_match('/^[0-9]+$/',  $_POST['txtProvincia']) &&
-        preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ., ]+$/',  $_POST['txtLocalidad'])
-    ) {
-        // Verificar si el correo electrónico ya está registrado
-        $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
-        $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
-        $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
+    // Verificar si el correo electrónico ya está registrado
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Usuarios WHERE Email_Usuario = :email AND ID_Usuario != :id_usuario");
+    $sentenciaSQL->bindParam(':email', $_POST['txtEmail']);
+    $sentenciaSQL->bindParam(':id_usuario', $_SESSION['ID_Usuario']);
+    $sentenciaSQL->execute();
+    $emailRegistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+
+    if ($emailRegistrado) {
+        $mensaje = "Este correo ya está registrado.";
+    } else {
+        // Recibir los datos del formulario y guardarlos en variables
+        $txtUsername = $_POST['txtUsername'];
+        $txtNombreUsuario = $_POST['txtNombre'];
+        $txtApellidosUsuario = $_POST['txtApellidos'];
+        $txtDni = $_POST['txtDni'];
+        $txtEmail = $_POST['txtEmail'];
+        $txtContrasenia = $_POST['txtContrasenia'];
+        $txtDireccion = $_POST['txtDireccion'];
+        $txtTelefono = $_POST['txtTelefono'];
+        $txtIdProvincia = $_POST['txtProvincia'];
+        $txtLocalidad = $_POST['txtLocalidad'];
+
+        // Verificar la localidad
+        $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
+        $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
+        $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
         $sentenciaSQL->execute();
-        $emailResgistrado = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+        $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 
-        if ($emailResgistrado) {
-            $mensaje = "Este correo ya está registrado.";
+        if ($localidad) {
+            $txtIdLocalidad = $localidad['ID_Localidades'];
         } else {
-
-            // Recibir los datos del formulario y guardarlo en variables
-            $txtUsername = $_POST['txtUsername'];
-            $txtNombreUsuario = $_POST['txtNombre'];
-            $txtApellidosUsuario = $_POST['txtApellidos'];
-            $txtDni = $_POST['txtDni'];
-            $txtEmail = $_POST['txtEmail'];
-            $txtContrasenia = $_POST['txtContrasenia'];
-            $txtDireccion = $_POST['txtDireccion'];
-            $txtTelefono = $_POST['txtTelefono'];
-            $txtIdProvincia = $_POST['txtProvincia'];
-            $txtLocalidad = $_POST['txtLocalidad'];
-
-            // Verificar la localidad
-            $sentenciaSQL = $conexion->prepare("SELECT * FROM Localidades WHERE Provincias_ID_Provincia = :IdProvincia AND Nombre_Localidad = :nombreLocalidad");
+            // Insertar nueva localidad
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
+            $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
             $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-            $sentenciaSQL->bindParam(':nombreLocalidad', $txtLocalidad);
             $sentenciaSQL->execute();
-            $localidad = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
-
-            if ($localidad) {
-                $txtIdLocalidad = $localidad['ID_Localidades'];
-            } else {
-                // Insertar nueva localidad
-                $sentenciaSQL = $conexion->prepare("INSERT INTO Localidades (Nombre_Localidad, Provincias_ID_Provincia) VALUES (:NombreLocalidad, :IdProvincia)");
-                $sentenciaSQL->bindParam(':NombreLocalidad', $txtLocalidad);
-                $sentenciaSQL->bindParam(':IdProvincia', $txtIdProvincia);
-                $sentenciaSQL->execute();
-                $txtIdLocalidad = $conexion->lastInsertId();
-            }
-
-            // Actualizar datos del usuario
-            $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
-                Username_Usuario = :username, 
-                Nombre_Usuario = :nombre_usuario, 
-                Apellidos_Usuario = :apellidos_usuario, 
-                DNI_Usuario = :dni, 
-                Email_Usuario = :email, 
-                Contrasenia_Usuario = :txtcontrasenia, 
-                Direccion_Usuario = :direccion, 
-                Telefono_Usuario = :telefono, 
-                Localidades_ID_Localidades = :id_localidad 
-                WHERE ID_Usuario = :id_usuario");
-
-            $sentenciaSQL->execute([
-                ':username' => $txtUsername,
-                ':nombre_usuario' => $txtNombreUsuario,
-                ':apellidos_usuario' => $txtApellidosUsuario,
-                ':dni' => $txtDni,
-                ':email' => $txtEmail,
-                ':txtcontrasenia' => $txtContrasenia,
-                ':direccion' => $txtDireccion,
-                ':telefono' => $txtTelefono,
-                ':id_localidad' => $txtIdLocalidad,
-                ':id_usuario' => $_SESSION['ID_Usuario']
-            ]);
+            $txtIdLocalidad = $conexion->lastInsertId();
         }
-    }   else {
-        $mensaje = "Uso de caracteres inválidos.";
+
+        // Actualizar datos del usuario
+        $sentenciaSQL = $conexion->prepare("UPDATE Usuarios SET 
+            Username_Usuario = :username, 
+            Nombre_Usuario = :nombre_usuario, 
+            Apellidos_Usuario = :apellidos_usuario, 
+            DNI_Usuario = :dni, 
+            Email_Usuario = :email, 
+            Contrasenia_Usuario = :txtcontrasenia, 
+            Direccion_Usuario = :direccion, 
+            Telefono_Usuario = :telefono, 
+            Localidades_ID_Localidades = :id_localidad 
+            WHERE ID_Usuario = :id_usuario");
+
+        $sentenciaSQL->execute([
+            ':username' => $txtUsername,
+            ':nombre_usuario' => $txtNombreUsuario,
+            ':apellidos_usuario' => $txtApellidosUsuario,
+            ':dni' => $txtDni,
+            ':email' => $txtEmail,
+            ':txtcontrasenia' => $txtContrasenia, // Mantener la contraseña vacía si no se va a cambiar
+            ':direccion' => $txtDireccion,
+            ':telefono' => $txtTelefono,
+            ':id_localidad' => $txtIdLocalidad,
+            ':id_usuario' => $_SESSION['ID_Usuario']
+        ]);
     }
 }
-
 ?>
 
 <form action="" method="post">
@@ -157,38 +142,44 @@ if ($_POST) {
                         <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtDireccion); ?>" name="txtDireccion" required class="form-control form-control-md" />
                     </div>
 
-                    <div id="div-provincia-localidad">
-                        <div data-mdb-input-init class="Provincia mb-4">
-                            <label class="form-label" style="font-size:small;">Provincia</label>
-                            <select name="txtProvincia" id="provincia" class="form-control" required>
-                                <option value="<?php echo htmlspecialchars($localidadProvincia['ID_Provincia']) ?>"><?php echo htmlspecialchars($localidadProvincia['Nombre_Provincia']); ?></option>
-                                <?php
-                                $sentenciaSQL = $conexion->prepare("SELECT * FROM Provincias");
-                                $sentenciaSQL->execute();
-                                $listaProvincias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                    
 
-                                foreach ($listaProvincias as $provincia) {
-                                ?>
-                                    <option value="<?php echo $provincia['ID_Provincia'] ?>"><?php echo $provincia['Nombre_Provincia'] ?></option>
-                                <?php } ?>
-                            </select>
-                        </div>
-                        <div data-mdb-input-init class="Localidad mb-4">
-                            <label class="form-label" style="font-size:small;">Localidad</label>
-                            <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($localidadProvincia['Nombre_Localidad']); ?>" name="txtLocalidad" required class="form-control" />
-                        </div>
+                    <div class="form-group mb-2">
+                        <label class="form-label" style="font-size:small;">Provincia</label>
+                        <select name="txtProvincia" class="form-control">
+                            <option value="">Seleccionar Provincia</option>
+                            <?php
+                            $consultaProvincias = $conexion->prepare("SELECT * FROM Provincias");
+                            $consultaProvincias->execute();
+                            $provincias = $consultaProvincias->fetchAll(PDO::FETCH_ASSOC);
+                            foreach ($provincias as $provincia) {
+                            ?>
+                                <option value="<?php echo $provincia['ID_Provincia']; ?>" <?php echo ($txtIdProvincia == $provincia['ID_Provincia']) ? 'selected' : ''; ?>>
+                                    <?php echo $provincia['Nombre_Provincia']; ?>
+                                </option>
+                            <?php } ?>
+                        </select>
+                    </div>
+
+                    <div data-mdb-input-init class="Localidad mb-2">
+                        <label class="form-label" style="font-size:small;">Localidad</label>
+                        <input type="text" value="<?php echo htmlspecialchars($txtLocalidad); ?>" name="txtLocalidad" required class="form-control" />
                     </div>
                 </div>
+
+                
+
+                
             </div>
 
             <div class="col-md-4">
-                <div class="p-3 py-5">
-                    <div class="d-flex justify-content-between mb-3">
-                        <h4 class="text-right">Datos de la cuenta</h4>
-                    </div>
-                    <hr style="margin-top: 0.5%;">
+                    <div class="p-3 py-5">
+                        <div class="d-flex justify-content-between mb-3">
+                            <h4 class="text-right">Datos de la cuenta</h4>
+                        </div>
+                        <hr style="margin-top: 0.5%;">
 
-                    <div data-mdb-input-init class="form-outline mb-2">
+                        <div data-mdb-input-init class="form-outline mb-2">
                         <label class="form-label" style="font-size:small;">Nombre de Usuario</label>
                         <input style="width: 100%;" type="text" value="<?php echo htmlspecialchars($txtUsername); ?>" name="txtUsername" required class="form-control form-control-md" />
                     </div>
@@ -198,24 +189,18 @@ if ($_POST) {
                         <input style="width: 100%;" type="email" value="<?php echo htmlspecialchars($txtEmail); ?>" name="txtEmail" required class="form-control form-control-md" />
                     </div>
 
+                    <div data-mdb-input-init class="form-outline mb-2">
+                        <label class="form-label" style="font-size:small;">Contraseña (dejar vacío si no deseas cambiarla)</label>
+                        <input type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" class="form-control" />
+                    </div>
 
-                    <div data-mdb-input-init class="form-outline mb-4">
-                        <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
-                        <div class="containerr" style="position: relative;">
-                            <input style="width: 100%;" type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="txtContrasenia" class="form-control form-control-md" />
-                            <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
+                        <div id="btn-registro">
+                            <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Guardar cambios</button>
                         </div>
                     </div>
-
-
-
-                    <div id="btn-registro">
-                        <button data-mdb-button-init data-mdb-ripple-init class="btn btn-info btn-md btn-block" type="submit">Guardar cambios</button>
-                    </div>
                 </div>
-            </div>
         </div>
     </div>
 </form>
-<script src="./js/ContraOcultar.js"></script>
+
 <?php include('template/pie.php'); ?>
