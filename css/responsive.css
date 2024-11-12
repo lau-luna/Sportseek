@@ -111,4 +111,38 @@
     .seccion-login{
         margin-right: 5%;
     }
+
+    /* Sección Productos */
+    .contenedorProductos{
+        display: block;
+    }
+    
+    .aside-desktop {
+        display: none;
+    }
+
+    .aside-mobile {
+        display: flex;
+    }
+
+    .dropdown-menu{
+        z-index: 1;
+        width: 250px;
+    }
+
+    .filtros{
+        width: 46%;
+        margin-right: 2%;
+    }
+
+    .categorias {
+        margin-left: 3%;
+        margin-right: 1%;
+        width: 48%;
+    }
+
+    .dropdown-toggle{
+        margin-top: 18%;
+        width: 100%;
+    }
 }

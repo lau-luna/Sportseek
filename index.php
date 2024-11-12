@@ -38,7 +38,7 @@
         // Generar un ID único para cada formulario
         $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
       ?>
-        <div class="mb-4 col-md-3">
+        <div class="mb-2 col-md-3">
           <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
             <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
@@ -46,7 +46,7 @@
             <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
               <div class="cardLista">
                 <div class="cardProd">
-                  <img class="card-img-topProd w" src="./comprimidas/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                  <img class="card-img-topProd w" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
                   <div class="card-bodyProd">
                     <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                     <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
@@ -90,7 +90,7 @@
               <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
                 <div class="cardLista">
                   <div class="cardProd">
-                    <img class="card-img-topProd w" src="./comprimidas/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                    <img class="card-img-topProd w" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
                     <div class="card-bodyProd">
                       <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                       <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>

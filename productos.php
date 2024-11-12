@@ -5,7 +5,7 @@
 
 // Verifica si se ha enviado una búsqueda
 
-$busqueda = (isset($_GET['busqueda']) && preg_match('/^[a-zA-ZnÑáéíóúÁÉÍÓÚ ]+$/',  $_GET['busqueda'])) ? $_GET['busqueda'] : '';
+$busqueda = isset($_GET['busqueda']) ? $_GET['busqueda'] : '';
 
 
 // Dividir la búsqueda en palabras (si hay más de una)
@@ -26,12 +26,12 @@ if ($busqueda) {
 }
 
 // Configuración de paginación
-$productosPorPagina = 12;
-$paginaActual = (isset($_GET['pagina']) && preg_match('/^[0-9]+$/',  $_GET['pagina'])) ? intval($_GET['pagina']) : 1;
+$productosPorPagina = 15;
+$paginaActual = isset($_GET['pagina']) ? intval($_GET['pagina']) : 1;
 $offset = ($paginaActual - 1) * $productosPorPagina;
 
 // Obtener la categoría seleccionada y el filtro desde GET
-$categoriaSeleccionada = (isset($_GET['txtCategoria']) ) ? $_GET['txtCategoria'] : 'todas';
+$categoriaSeleccionada = (isset($_GET['txtCategoria'])) ? $_GET['txtCategoria'] : 'todas';
 $filtroSeleccionado = (isset($_GET['txtFiltro']) && preg_match('/^[a-zA-Z]+$/',  $_GET['txtFiltro'])) ? $_GET['txtFiltro'] : 'ninguno';
 
 
@@ -78,8 +78,8 @@ $listaProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
 // Obtener el número total de productos que coinciden con la búsqueda
 $sqlCount = "SELECT COUNT(*) FROM Productos
-             INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
-             WHERE $condicionesStr";
+            INNER JOIN Categorias ON Productos.Categorias_ID_Categoria = Categorias.ID_Categoria
+            WHERE $condicionesStr";
 if ($categoriaSeleccionada != 'todas') {
     $sqlCount .= " AND Productos.Categorias_ID_Categoria = :IdCategoria";
 }
@@ -98,9 +98,9 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
 <br>
 
-<div class="" style="display: flex;" id="filtros">
+<div class="contenedorProductos" id="filtros">
     <!-- Sidebar -->
-    <aside class="ml-4 mr-3" style="width: 13%; display: block;">
+    <aside class="ml-4 mr-3 aside-desktop">
         <!-- Formulario de filtros -->
         <form method="GET" action="">
             <div data-mdb-input-init class="categoria mb-2">
@@ -139,11 +139,77 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                     <?php } ?>
                     <!-- Mantener el filtro seleccionado en la URL -->
                     <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
-                    <input type="hidden" name="pagina" value="<?php if($categoriaSeleccionada == 'todas' && $paginaActual != 1) { echo htmlspecialchars(1); }  else { echo htmlspecialchars($paginaActual); } ?>">
+                    <input type="hidden" name="pagina" value="<?php if ($categoriaSeleccionada == 'todas' && $paginaActual != 1) {
+                                                                    echo htmlspecialchars(1);
+                                                                } else {
+                                                                    echo htmlspecialchars($paginaActual);
+                                                                } ?>">
 
                 </form>
             </div>
         </div>
+    </aside>
+
+    <aside class="ml-4 mr-3 aside-mobile">
+        <!-- Formulario de filtros -->
+        <div class="filtros">
+            <form method="GET" action="">
+                <div data-mdb-input-init class="mb-2">
+                    <label class="form-label">Filtrar por:</label>
+                    <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                        <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
+                        <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más alto</option>
+                        <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más bajo</option>
+                    </select>
+                    <!-- Campo oculto para mantener la búsqueda -->
+                    <input type="hidden" name="busqueda" value="<?php echo htmlspecialchars($busqueda); ?>">
+                    <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                    <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
+                </div>
+            </form>
+        </div>
+
+        <div class="categorias">
+            <form method="GET">
+                <div class="dropdown dropdownCategorias">
+                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorías
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
+                                Todas las categorías
+                            </button>
+                        </li>
+
+                        <?php
+
+                        $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
+                        $sentenciaSQL->execute();
+                        $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($listaCategorias as $categoria) { ?>
+                            <li>
+                                <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
+                                    <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
+                                </button>
+                            </li>
+
+                        <?php } ?>
+                        <!-- Mantener el filtro seleccionado en la URL -->
+                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                        <input type="hidden" name="pagina" value="<?php if ($categoriaSeleccionada == 'todas' && $paginaActual != 1) {
+                                                                        echo htmlspecialchars(1);
+                                                                    } else {
+                                                                        echo htmlspecialchars($paginaActual);
+                                                                    } ?>">
+                    </ul>
+                </div>
+            </form>
+
+
+        </div>
+
     </aside>
 
     <!-- Productos -->
@@ -154,18 +220,18 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                     // Generar un ID único para cada formulario
                     $formId = 'postForm' . htmlspecialchars($producto['ID_Producto']);
                 ?>
-                    <div class="mb-4 col-md-3" style="padding-left: 1vh; padding-right: 1vh;">
+                    <div class=" col-md-3">
                         <form id="<?php echo $formId; ?>" action="productoDetalle.php" method="GET">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
                             <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
                             <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
-                                <div class="cardLista">
-                                    <div class="cardProd">
-                                        <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="Imagen del producto">
-                                        <div class="card-bodyProd">
-                                            <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
-                                            <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
+                                <div class="cardLista-productos">
+                                    <div class="cardProd-productos">
+                                        <img class="card-img-topProd-productos w" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                                        <div class="card-bodyProd-productos">
+                                            <h5 class="card-titleProd-productos"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
+                                            <p class="text-infoProd-productos text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
                                             <?php if ($producto['Tiene_Stock_Producto'] == 0) { ?>
                                                 <p class="text-danger stock-labelProd"><?php echo "Sin Stock" ?></p>
                                             <?php } ?>
@@ -183,7 +249,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
 
         <!-- Navegación de páginas -->
         <nav aria-label="Page navigation">
-            <ul class="pagination">
+            <ul class="pagination mt-4">
                 <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
                     <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
                 </li>
