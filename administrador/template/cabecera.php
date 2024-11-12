@@ -71,7 +71,7 @@ if (!isset($_SESSION['usuario'])) {
                         <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/ventas.php"; ?>">Ventas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url; ?>">Ver sitio web</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url; ?>">Ver sitio</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/cerrar.php"; ?>">Cerrar sesión</a>
