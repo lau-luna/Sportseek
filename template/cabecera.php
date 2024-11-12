@@ -60,14 +60,14 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <div style="position: fixed; width: 100%; z-index: 999;">
         <header class="d-flex" style="background-color: white;">
             <a class="nav-link logoTienda" href="index.php">
-                <img src="./img/LogoTiendaHeader.png" alt="Deportes">
+                <img src="./img/LogoTiendaHeader.png" alt="Sportseek Logo">
                 <span class="sr-only"></span>
             </a>
 
             <form method="GET" action="productos.php" class="form-inline" id="formulario-busqueda-productos">
                 <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
                 <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
-                    <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                    <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" alt="Buscar"/>
                 </button>
             </form>
 
@@ -123,7 +123,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <form method="GET" action="productos.php" class="navbar-toggler" id="formulario-busqueda-productos-navbar">
                     <input class="form-control" name="busqueda" type="text" placeholder="¿Qué estás buscando?">
                     <button class="btn btn-primary" type="submit" style="display: flex; align-items: center; justify-content: center; padding: 0.39rem;">
-                        <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" />
+                        <img src="./img/logoBuscador.png" style="height: 1.5rem; width: auto;" alt="Buscar"/>
                     </button>
                 </form>
                 <div class="collapse navbar-collapse" id="navbarSupportedContent">

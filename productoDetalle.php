@@ -29,7 +29,7 @@ if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
         <div class="col-md-5">
             <div class="card">
                 <div class="card-body">
-                    <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="Sin Imagen.">
+                    <img class="card-img-top" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="Imagen del producto">
                 </div>
             </div>
         </div>

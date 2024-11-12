@@ -104,8 +104,7 @@ if ($_POST) {
     </div>
 </section>
 <div class="imgIniciarSesion">
-    <img src="./img/lionel-messi.2183aef8.jpg"
-        alt="Login image" style="object-fit: cover; object-position: left;">
+    <img src="./img/lionel-messi.2183aef8.jpg" alt="Login image" style="object-fit: cover; object-position: left;">
 </div>
 <br>
 <br>

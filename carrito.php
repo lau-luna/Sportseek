@@ -122,7 +122,7 @@ switch ($accion) {
                 <tr>
                     <td class="text-info">
                         <?php if ($producto['Imagen_Producto'] != 'imagen.jpg') { ?>
-                            <img class="img-thumbnail rounded" style="margin-right: 2%;" src="imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']); ?>" width="50">
+                            <img class="img-thumbnail rounded" style="margin-right: 2%;" src="imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']); ?>" width="50" alt="Imagen del producto">
                         <?php } ?>
                         <?php echo htmlspecialchars($producto['Nombre_Producto']); ?>
                     </td>

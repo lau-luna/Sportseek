@@ -3,19 +3,19 @@
 <div id="carouselExampleSlidesOnly" class="carousel slide" data-bs-ride="carousel" >
   <div class="carousel-inner">
     <div class="carousel-item active">
-      <img src="./img/carrusel5.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
+      <img src="./img/carrusel5.png" class="d-block w-100" style=" object-fit:cover;" alt="Banner">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel1.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
+      <img src="./img/carrusel1.png" class="d-block w-100" style=" object-fit:cover;" alt="Banner">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel2.png" class="d-block w-100" style=" object-fit:cover;" alt="...">
+      <img src="./img/carrusel2.png" class="d-block w-100" style=" object-fit:cover;" alt="Banner">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel3.png" class="d-block w-100" style=" object-fit:contain;" alt="...">
+      <img src="./img/carrusel3.png" class="d-block w-100" style=" object-fit:contain;" alt="Banner">
     </div>
     <div class="carousel-item">
-      <img src="./img/carrusel4.png" class="d-block w-100" style=" object-fit:contain;" alt="...">
+      <img src="./img/carrusel4.png" class="d-block w-100" style=" object-fit:contain;" alt="Banner">
     </div>
   </div>
 </div>
@@ -46,7 +46,7 @@
               <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
                 <div class="cardLista">
                   <div class="cardProd" style="width: 100%;">
-                    <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                    <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="Imagen del producto">
                     <div class="card-bodyProd">
                       <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                       <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
@@ -90,7 +90,7 @@
               <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
                 <div class="cardLista">
                   <div class="cardProd" style="width: 100%;">
-                    <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                    <img class="card-img-topProd img-square" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="Imagen del producto">
                     <div class="card-bodyProd">
                       <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                       <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>

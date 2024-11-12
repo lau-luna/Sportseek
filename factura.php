@@ -25,10 +25,10 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 <!-- Agregamos la clase d-flex y justify-content-end para alinear a la derecha -->
 <div class="div-botones-imprimir-descargar mb-2 d-flex justify-content-end">
         <button class="btn btn-outline-primary mr-2 col-md-2" id="boton-imprimir" onclick="imprimirPedido()">
-            <img style="width: 10%;" src="./img/impresora.png" alt="">
+            <img style="width: 10%;" src="./img/impresora.png" alt="Imprimir">
             Imprimir Factura</button>
         <button class="btn btn-outline-danger col-md-2" id="boton-descargar" onclick="descargarPDF()">
-            <img style="width: 10%;" src="./img/pdf.png" alt="">
+            <img style="width: 10%;" src="./img/pdf.png" alt="PDF">
             Descargar como PDF</button>
     </div>
 
@@ -36,7 +36,7 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
     <div class="invoice-box" id="factura">
         <div class="row">
             <div class="col-md-6">
-                <img src="./img/LogoTiendaHeader.png" alt="Logo de la empresa" class="logo">
+                <img src="./img/LogoTiendaHeader.png" alt="Sportseek Logo" class="logo">
                 <p>
                     Independencia 590<br>
                     Laboulaye, Córdoba.
