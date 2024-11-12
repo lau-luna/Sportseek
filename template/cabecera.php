@@ -36,7 +36,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
     <link rel="stylesheet" href="./css/styles.css?v=<?php echo time(); ?>" type="text/css">
     <link rel="stylesheet" href="./css/loginUsuario.css?v=<?php echo time(); ?>" type="text/css">
     <link rel="stylesheet" href="./css/registroUsuario.css?v=<?php echo time(); ?>" type="text/css">
-    <link rel="stylesheet" href="css/productoLista.css?v=<?php echo time(); ?>" type="text/css">
+    <link rel="stylesheet" href="./css/productoLista.css?v=<?php echo time(); ?>" type="text/css">
     <link rel="icon" href="./formatoAvif/imgCarpeta/LogoTiendaIconVersion.avif" type="image/x-icon">
 
     <link rel="stylesheet" href="./css/responsive.css?v=<?php echo time(); ?>" type="text/css">
