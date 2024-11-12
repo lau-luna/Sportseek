@@ -6,7 +6,7 @@
 
 include("administrador/config/bd.php");
 
-if (!isset($_SESSION['ID_Usuario'])){
+if (!isset($_SESSION['ID_Usuario'])) {
     echo "<script>window.location.href='loginUsuario.php';</script>";
 }
 
@@ -73,8 +73,8 @@ $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
 $sentenciaSQL->execute();
 $listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 
-$txtID = (isset($_GET['txtID'] ) && preg_match('/^[0-9]+$/', $_GET['txtID'])) ? $_GET['txtID'] : "";
-$accion = (isset($_GET['accion']) && preg_match('/^[a-zA-Z ]+$/', $_GET['accion']))? $_GET['accion'] : "";
+$txtID = (isset($_GET['txtID']) && preg_match('/^[0-9]+$/', $_GET['txtID'])) ? $_GET['txtID'] : "";
+$accion = (isset($_GET['accion']) && preg_match('/^[a-zA-Z ]+$/', $_GET['accion'])) ? $_GET['accion'] : "";
 
 switch ($accion) {
     case 'Quitar del carrito':
@@ -86,7 +86,7 @@ switch ($accion) {
 
         echo '<script type="text/javascript">
         window.location.href = "carrito.php";
-      </script>';
+        </script>';
         break;
     case 'Continuar con la compra':
         $_SESSION['ID_Carrito'] = $carrito['ID_Carrito'];
@@ -122,7 +122,7 @@ switch ($accion) {
                 <tr>
                     <td class="text-info">
                         <?php if ($producto['Imagen_Producto'] != 'imagen.jpg') { ?>
-                            <img class="img-thumbnail rounded" style="margin-right: 2%;" src="imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']); ?>" width="50">
+                            <img class="img-thumbnail rounded" style="margin-right: 2%;" src="imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']); ?>" width="50" alt="Imagen del producto">
                         <?php } ?>
                         <?php echo htmlspecialchars($producto['Nombre_Producto']); ?>
                     </td>
@@ -130,7 +130,7 @@ switch ($accion) {
                     <td><?php echo htmlspecialchars($producto['Cantidad_Productos']); ?></td>
                     <td>
                         <form method="GET">
-                            <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']) ; ?>">
+                            <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']); ?>">
                             <input type="submit" name="accion" value="Quitar del carrito" class="btn btn-danger">
                         </form>
                     </td>
