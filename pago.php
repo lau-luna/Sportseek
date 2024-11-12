@@ -104,6 +104,8 @@ if ($_POST) {
 }
 ?>
 
+<link href="/css/metodoPago.css" rel="stylesheet">
+
 <div class="container">
     <div class="text-center">
         <h2>Método de pago</h2>
@@ -115,15 +117,18 @@ if ($_POST) {
                     <span class="text-muted">Resumen de compra</span>
                 </h4>
                 <ul class="list-group mb-3">
-                    <?php foreach ($listaCarritosProductos as $producto) { ?>
-
+                    <?php foreach ($listaCarritosProductos as $producto) {
+                        $precioTotalProducto = $producto['Cantidad_Productos'] * $producto['Precio_Producto'];
+                    ?>
                         <li class="list-group-item d-flex justify-content-between lh-condensed">
                             <div>
                                 <h6 class="my-0"><?php echo htmlspecialchars($producto['Nombre_Producto']); ?></h6>
+                                <small class="text-muted">Cantidad: <?php echo htmlspecialchars($producto['Cantidad_Productos']); ?></small>
                             </div>
-                            <span class="text-muted">$ <?php echo htmlspecialchars($producto['Precio_Producto']); ?></span>
+                            <span class="text-muted">$ <?php echo htmlspecialchars($precioTotalProducto); ?></span>
                         </li>
                     <?php } ?>
+
                     <li class="list-group-item d-flex justify-content-between lh-condensed">
                         <div>
                             <h6 class="my-0">IVA 21%</h6>
