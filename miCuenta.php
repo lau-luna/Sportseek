@@ -83,7 +83,7 @@ if ($_POST) {
                 Apellidos_Usuario = :apellidos_usuario, 
                 DNI_Usuario = :dni, 
                 Email_Usuario = :email, 
-                Contrasenia_Usuario = :contrasenia, 
+                Contrasenia_Usuario = :txtcontrasenia, 
                 Direccion_Usuario = :direccion, 
                 Telefono_Usuario = :telefono, 
                 Localidades_ID_Localidades = :id_localidad 
@@ -95,7 +95,7 @@ if ($_POST) {
                 ':apellidos_usuario' => $txtApellidosUsuario,
                 ':dni' => $txtDni,
                 ':email' => $txtEmail,
-                ':contrasenia' => $txtContrasenia,
+                ':txtcontrasenia' => $txtContrasenia,
                 ':direccion' => $txtDireccion,
                 ':telefono' => $txtTelefono,
                 ':id_localidad' => $txtIdLocalidad,
@@ -202,7 +202,7 @@ if ($_POST) {
                     <div data-mdb-input-init class="form-outline mb-4">
                         <label class="form-label" style="font-size:small;" for="form2Example28">Contraseña</label>
                         <div class="containerr" style="position: relative;">
-                            <input style="width: 100%;" type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="contrasenia" class="form-control form-control-md" />
+                            <input style="width: 100%;" type="password" value="<?php echo htmlspecialchars($txtContrasenia); ?>" name="txtContrasenia" id="txtContrasenia" class="form-control form-control-md" />
                             <i class="bx bx-show-alt" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;" onclick="togglePasswordVisibility()"></i>
                         </div>
                     </div>
