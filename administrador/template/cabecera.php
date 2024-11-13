@@ -25,11 +25,11 @@ if (!isset($_SESSION['usuario'])) {
 
     <!-- Styles -->
     <link rel="stylesheet" href="../../css/styles.css" type="text/css">
-    <link rel="stylesheet" href="../../administrador.css" type="text/css">
-    <link rel="stylesheet" href="../../css/styles.css" type="text/css">
     <link rel="stylesheet" href="../../css/loginUsuario.css" type="text/css">
     <link rel="stylesheet" href="../../css/registroUsuario.css" type="text/css">
     <link rel="icon" href="../../img/LogoTiendaIconVersion.png" type="image/x-icon">
+    <link rel="stylesheet" href="../administrador.css" type="text/css">
+
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
@@ -62,28 +62,28 @@ if (!isset($_SESSION['usuario'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/index.php"; ?>">Inicio</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/index.php"; ?>">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/productos.php"; ?>">Productos</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/productos.php"; ?>">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/categorias.php"; ?>">Categorias</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/categorias.php"; ?>">Categorias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaPedidos.php"; ?>">Pedidos</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/listaPedidos.php"; ?>">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaFacturas.php"; ?>">Facturas</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/listaFacturas.php"; ?>">Facturas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/ventas.php"; ?>">Ventas</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/ventas.php"; ?>">Ventas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url; ?>">Ver sitio</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url; ?>">Ver sitio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/cerrar.php"; ?>">Cerrar sesión</a>
+                        <a class="nav-item nav-link text-white ml-0 mr-0" href="<?php echo $url . "/administrador/seccion/cerrar.php"; ?>">Cerrar sesión</a>
                     </li>
 
                 </ul>
