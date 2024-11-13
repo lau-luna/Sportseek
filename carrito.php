@@ -131,7 +131,7 @@ switch ($accion) {
                         <?php } ?>
                         <?php echo htmlspecialchars($producto['Nombre_Producto']); ?>
                     </td>
-                    <td class="text-success">$ <?php echo htmlspecialchars($precioFormateado); ?></td>
+                    <td class="text-success precioCarrito">$ <?php echo htmlspecialchars($precioFormateado); ?></td>
                     <td><?php echo htmlspecialchars($producto['Cantidad_Productos']); ?></td>
                     <td>
                         <form method="GET">

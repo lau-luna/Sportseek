@@ -215,4 +215,8 @@
         text-align: center; /* Centramos los encabezados */
     }
 
+    .precioCarrito{
+        font-size: 11px;
+    }
+
 }
