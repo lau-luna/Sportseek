@@ -20,8 +20,6 @@ if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
     // Formatear el precio del producto
     $precioFormateado = number_format($producto['Precio_Producto'], 0, ',', '.');
 }
-
-
 ?>
 
 <div class="container">
@@ -48,10 +46,10 @@ if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
                         </div>
                     <?php } else { ?>
 
-                        <form id="form" action="carrito.php" method="GET">
+                        <form id="form" action="carrito.php" method="POST" onsubmit="return validateForm()">
                             <input type="hidden" name="IdProducto" value="<?php echo htmlspecialchars($producto['ID_Producto']) ?>">
                             <label for="cantidad">Cantidad:</label>
-                            <input type="number" min="1" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto">
+                            <input type="number" min="1" value="1" id="cantidad" class="form-control col-md-2 mb-2" name="cantidadProducto" required oninput="this.value = this.value.replace(/[^0-9]/g, '')">
 
                             <a href="#" onclick="document.getElementById('form').submit();">
                                 <button type="button" class="btn btn-success mb-4">Agregar al carrito</button>
@@ -75,4 +73,91 @@ if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
     </div>
 </div>
 
+<script>
+function validateForm() {
+    var cantidad = document.getElementById("cantidad").value;
+    if (isNaN(cantidad) || cantidad <= 0) {
+        alert("Por favor, ingrese una cantidad válida.");
+        return false; // Evita que el formulario se envíe si la cantidad no es válida
+    }
+    return true; // Permite que el formulario se envíe si la cantidad es válida
+}
+</script>
+
 <?php include("template/pie.php"); ?>
+
+<?php include("template/cabecera.php"); ?>
+
+<br><br>
+
+<?php
+
+include("administrador/config/bd.php");
+
+if (!isset($_SESSION['ID_Usuario'])) {
+    echo "<script>window.location.href='loginUsuario.php';</script>";
+}
+
+// Obtener carrito del usuario
+$sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos INNER JOIN Usuarios ON Usuarios.ID_Usuario = Carritos.Usuarios_ID_Usuario WHERE Usuarios.ID_Usuario = :IdUsuario");
+$sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
+$sentenciaSQL->execute();
+$carrito = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+
+// Si el usuario tiene un carrito guardado
+if (isset($carrito['ID_Carrito'])) {
+
+    // Si se manda un producto desde productoDetalle.php
+    if (isset($_POST['IdProducto']) && preg_match('/^[0-9]+$/', $_POST['IdProducto'])) {
+        // Comprobar si ya tiene el producto seleccionado para aumentar su cantidad
+        $sentenciaSQL = $conexion->prepare("SELECT Productos_ID_Producto, Cantidad_Productos FROM Carritos_Productos WHERE Carritos_ID_Carrito = :IdCarrito AND Productos_ID_Producto = :IdProducto");
+        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+        $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+        $sentenciaSQL->execute();
+        $productoExistente = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
+
+        if (isset($productoExistente['Productos_ID_Producto'])) {
+            $cantidad = intval($productoExistente['Cantidad_Productos']) + intval($_POST['cantidadProducto']);
+            $sentenciaSQL = $conexion->prepare("UPDATE Carritos_Productos SET Cantidad_Productos = :cantidad WHERE Carritos_ID_Carrito = :IdCarrito AND Productos_ID_Producto = :IdProducto");
+            $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+            $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+            $sentenciaSQL->bindParam(":cantidad", $cantidad);
+            $sentenciaSQL->execute();
+        } else {
+            // Insertar el nuevo producto seleccionado en el carrito
+            $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos_Productos (Carritos_ID_Carrito, Productos_ID_Producto, Cantidad_Productos) VALUES (:IdCarrito, :IdProducto, :cantidad)");
+            $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+            $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+            $sentenciaSQL->bindParam(":cantidad", $_POST['cantidadProducto']);
+            $sentenciaSQL->execute();
+        }
+    }
+} else {
+    // Crear nuevo carrito si no existe
+    $fecha = new DateTime();
+    $fechaCarrito = date('Y-m-d H:i:s', $fecha->getTimestamp());
+
+    $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos (Fecha_Creacion_Carrito, Usuarios_ID_Usuario) VALUES (:fecha, :IdUsuario)");
+    $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
+    $sentenciaSQL->bindParam(":fecha", $fechaCarrito);
+    $sentenciaSQL->execute();
+
+    // Obtener el ID del carrito recién creado
+    $carrito['ID_Carrito'] = $conexion->lastInsertId();
+
+    if (isset($_POST['IdProducto']) && preg_match('/^[0-9]+$/', $_POST['IdProducto'])) {
+        // Insertar productos en el nuevo carrito
+        $sentenciaSQL = $conexion->prepare("INSERT INTO Carritos_Productos (Carritos_ID_Carrito, Productos_ID_Producto, Cantidad_Productos) VALUES (:IdCarrito, :IdProducto, :cantidad)");
+        $sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+        $sentenciaSQL->bindParam(":IdProducto", $_POST['IdProducto']);
+        $sentenciaSQL->bindParam(":cantidad", $_POST['cantidadProducto']);
+        $sentenciaSQL->execute();
+    }
+}
+
+// Obtener lista de productos en el carrito
+$sentenciaSQL = $conexion->prepare("SELECT Productos.*, Carritos_Productos.Cantidad_Productos FROM Carritos_Productos INNER JOIN Productos ON Carritos_Productos.Productos_ID_Producto = Productos.ID_Producto WHERE Carritos_Productos.Carritos_ID_Carrito = :IdCarrito");
+$sentenciaSQL->bindParam(":IdCarrito", $carrito['ID_Carrito']);
+$sentenciaSQL->execute();
+$listaCarritosProductos = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+?>
