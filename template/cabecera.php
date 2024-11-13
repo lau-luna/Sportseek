@@ -93,7 +93,7 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
                 <!-- Mostar sólo si se inició la sesión-->
                 <?php if (isset($_SESSION['usuario']) && preg_match('/^[a-z]+$/', $_SESSION['usuario'])) { ?>
                     <div class="form-inline my-2 my-lg-0">
-                        <button type="button" class="btn btn-outline-success dropdown-toggle btn-cuenta" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
+                        <button type="button" style="margin: 0;" class="btn btn-outline-success dropdown-toggle btn-cuenta" data-bs-toggle='dropdown' aria-haspopup="true" aria-expanded="false">
                             <img src="./formatoAvif/imgCarpeta/CuentaIcon.avif" alt="Cuenta" class="btn-img">
                             <span class="text-to-hide">MI CUENTA</span>
                         </button>
@@ -148,4 +148,4 @@ date_default_timezone_set('America/Argentina/Buenos_Aires');
 
     <div class="contenedor">
 
-        <br> <br> <br> <br> <br>
+        <br> <br> <br> <br> <br class="ultimo-br">
