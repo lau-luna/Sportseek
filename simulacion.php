@@ -154,21 +154,21 @@ if ($_POST) {
                 <h4 class="mb-3">Elegí cómo pagar</h4>
 
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="metodoPago" id="paymentMethod1" value="1">
-                    <label class="form-check-label" for="paymentMethod1">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="metodo1" value="1">
+                    <label class="form-check-label" for="metodo1">
                         Tarjeta
                     </label>
                 </div>
 
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="metodoPago" id="paymentMethod2" value="2">
-                    <label class="form-check-label" for="paymentMethod2">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="metodo2" value="2">
+                    <label class="form-check-label" for="metodo2">
                         Transferencia Bancaria
                     </label>
                 </div>
 
                 <div class="form-check mb-3">
-                    <input class="form-check-input" type="radio" name="metodoPago" id="paymentMethod5" value="3">
+                    <input class="form-check-input" type="radio" name="metodoPago" id="metodo5" value="3">
                     <label class="form-check-label" for="paymentMethod5">
                         Efectivo en puntos de pago
                     </label>

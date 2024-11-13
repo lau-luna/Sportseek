@@ -94,7 +94,7 @@ switch ($accion) {
     case 'Continuar con la compra':
         $_SESSION['ID_Carrito'] = $carrito['ID_Carrito'];
         
-        echo "<script>window.location.href='pago.php';</script>";
+        echo "<script>window.location.href='simulacion.php';</script>";
         exit;
         break;
 }

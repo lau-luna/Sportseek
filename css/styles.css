@@ -56,8 +56,8 @@ h2{
 }
 
 .carousel.carousel-fade .item {
-  opacity:0;
-  filter: alpha(opacity=0); /* ie fix */
+    opacity:0;
+    filter: alpha(opacity=0); /* ie fix */
 }
 
 .carousel.carousel-fade .active.item {

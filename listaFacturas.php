@@ -13,7 +13,7 @@ if ($filtroSeleccionado == 'ninguno') {
     $sentenciaSQL->execute();
     $listaFacturas = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
 } else {
-    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE Usuarios_ID_Usuario=:IdUsuario AND Estados_Facturas_ID_Estado_Factura=:estado ORDER BY Fecha_Emision_Factura DESC");
+    $sentenciaSQL = $conexion->prepare("SELECT * FROM Facturas WHERE Usuarios_ID_Usuario=:IdUsuario AND Estados_Facturas_ID_Estados_Factura=:estado ORDER BY Fecha_Emision_Factura DESC");
     $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);
     $sentenciaSQL->bindParam(":estado", $filtroSeleccionado);
     $sentenciaSQL->execute();
