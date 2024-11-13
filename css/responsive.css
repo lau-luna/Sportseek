@@ -27,6 +27,16 @@
     margin-top: 50%;
 }
 
+#carrito-table {
+    width: 100%; /* Asegura que la tabla ocupe todo el ancho disponible */
+    overflow-x: auto; /* Permite desplazamiento horizontal si es necesario */
+}
+
+.img-thumbnail {
+    max-width: 100%; /* Asegura que las imágenes no excedan el contenedor */
+    height: auto; /* Mantiene la proporción de aspecto */
+}
+
 /* Media query para pantallas con un ancho máximo de 768px */
 @media (max-width: 768px) {
     .logoTienda {
@@ -165,4 +175,44 @@
         width: 45%;
         margin-top: 2%;
     }
+
+    /* Carrito */
+    .table #precioCarrito{
+        width: 10%;
+    }
+
+    #cantidadCarrito {
+        width: 3%;
+    }
+
+    .btnQuitarCarrito {
+        font-size: 0.7rem;
+    }
+
+    .continuarCompra {
+        width: 100%;
+    }
+}
+
+/* Media query para pantallas con un ancho máximo de 768px */
+@media (max-width: 768px) {
+
+
+    #carrito-table {
+        font-size: 14px; /* Ajustar tamaño de fuente para mejor legibilidad */
+    }
+
+    .table th, .table td {
+        padding: 8px; /* Espaciado interno en celdas */
+    }
+
+    .btnQuitarCarrito {
+        width: 100%; /* Botones ocupan todo el ancho */
+        margin-top: 5px; /* Espaciado entre botones */
+    }
+
+    h3, h4 {
+        text-align: center; /* Centramos los encabezados */
+    }
+
 }

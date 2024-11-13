@@ -101,20 +101,21 @@ switch ($accion) {
 
 ?>
 
+
 <div class="container">
     <h3>Carrito de compras</h3>
-
-    <table id="carrito-table" class="table">
-        <thead>
-            <tr>
-                <th>Producto</th>
-                <th style="width: 20%;">Precio Unitario</th>
-                <th style="width: 10%;">Cantidad</th>
-                <th style="width: 25%;"></th>
-            </tr>
-        </thead>
-        <tbody>
-            <?php
+    <div class="table-responsive"> <!-- Contenedor responsivo -->
+        <table id="carrito-table" class="table">
+            <thead>
+                <tr>
+                    <th>Producto</th>
+                    <th id="precioCarrito">Precio Unitario</th>
+                    <th id="cantidadCarrito">Cantidad</th>
+                    <th id="quitarCarrito"></th>
+                </tr>
+            </thead>
+            <tbody>
+                <?php
             $_SESSION['total'] = 0;
             foreach ($listaCarritosProductos as $producto) {
                 // Formatear precios y calcular el total
@@ -135,22 +136,22 @@ switch ($accion) {
                     <td>
                         <form method="GET">
                             <input type="hidden" name="txtID" id="txtID" value="<?php echo htmlspecialchars($producto['ID_Producto']); ?>">
-                            <input type="submit" name="accion" value="Quitar del carrito" class="btn btn-danger">
+                            <input type="submit"  name="accion" value="Quitar del carrito" class="btn btn-danger btnQuitarCarrito">
                         </form>
                     </td>
                 </tr>
             <?php } ?>
-        </tbody>
-    </table>
-
+            </tbody>
+        </table>
+    </div>
     <h4>Total: $<span id="total"> <?php echo htmlspecialchars(number_format($_SESSION['total'], 0, ',', '.'));  ?> </span></h4>
-
+    
     <?php if (isset($carrito['ID_Carrito'])) { ?>
         <form method="GET">
-            <input type="submit" name="accion" value="Continuar con la compra" class="btn btn-success">
+            <input type="submit" name="accion" value="Continuar con la compra" class="btn btn-success continuarCompra">
         </form>
     <?php } ?>
-
 </div>
+
 
 <?php include("template/pie.php"); ?>
