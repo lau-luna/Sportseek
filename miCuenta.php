@@ -345,4 +345,4 @@ if ($_POST) {
 <script src="./js/ContraOcultar.js"></script>
 
 
-<?php include('template/pie.php'); ?>
+<?php include('template/pie.php'); ?> 
