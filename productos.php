@@ -93,6 +93,8 @@ foreach ($params as $param => $value) {
 $sentenciaSQLCount->execute();
 $totalProductos = $sentenciaSQLCount->fetchColumn();
 $totalPaginas = ceil($totalProductos / $productosPorPagina);
+
+
 ?>
 
 <br>
@@ -190,6 +192,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                         $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
                         foreach ($listaCategorias as $categoria) { ?>
                             <li>
+                                
                                 <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
                                     <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
                                 </button>
@@ -250,18 +253,27 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
         <!-- Navegación de páginas -->
         <nav aria-label="Page navigation">
             <ul class="pagination mt-4">
+                <!-- Enlace a la página anterior -->
                 <li class="page-item <?php if ($paginaActual <= 1) echo 'disabled'; ?>">
-                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $paginaActual - 1; ?>" tabindex="-1">Anterior</a>
+                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo max(1, $paginaActual - 1); ?>">
+                        Anterior
+                    </a>
                 </li>
+
+                <!-- Enlaces para todas las páginas -->
                 <?php for ($i = 1; $i <= $totalPaginas; $i++) { ?>
-                    <li class="page-item <?php if ($i == $paginaActual) echo 'active'; ?>">
+                    <li class="page-item <?php if ($paginaActual == $i) echo 'active'; ?>">
                         <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $i; ?>">
                             <?php echo $i; ?>
                         </a>
                     </li>
                 <?php } ?>
+
+                <!-- Enlace a la siguiente página -->
                 <li class="page-item <?php if ($paginaActual >= $totalPaginas) echo 'disabled'; ?>">
-                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo $paginaActual + 1; ?>">Siguiente</a>
+                    <a class="page-link" href="?busqueda=<?php echo htmlspecialchars($busqueda); ?>&txtCategoria=<?php echo htmlspecialchars($categoriaSeleccionada); ?>&txtFiltro=<?php echo htmlspecialchars($filtroSeleccionado); ?>&pagina=<?php echo min($totalPaginas, $paginaActual + 1); ?>">
+                        Siguiente
+                    </a>
                 </li>
             </ul>
         </nav>
