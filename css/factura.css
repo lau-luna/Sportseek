@@ -1,36 +1,36 @@
 .invoice-box {
-    padding: 30px;
-    border: 1px solid #dee2e6;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-    font-size: 16px;
-    line-height: 24px;
-    color: #495057;
-}
-
-.invoice-box table {
-    width: 100%;
-    line-height: inherit;
-    text-align: left;
-}
-
-.invoice-box .logo {
-    max-height: 4.5rem;
-    height: auto;
-    width: auto;
-}
-
-.invoice-box table td {
-    padding: 10px;
-    vertical-align: top;
-}
-
-.invoice-box .title {
-    font-size: 36px;
-    line-height: 1.2;
-    color: #007bff;
-}
-
-.invoice-box .total-row {
-    font-weight: bold;
-    border-top: 2px solid #dee2e6;
-}
+    padding:30px;
+    border:1px solid #dee2e6;
+    box-shadow:0 0 10px rgba(0,0,0,0.15);
+    font-size:16px;
+    line-height:24px;
+    color:#495057
+    }
+    
+    .invoice-box table {
+    width:100%;
+    line-height:inherit;
+    text-align:left
+    }
+    
+    .invoice-box .logo {
+    max-height:4.5rem;
+    height:auto;
+    width:auto
+    }
+    
+    .invoice-box table td {
+    padding:10px;
+    vertical-align:top
+    }
+    
+    .invoice-box .title {
+    font-size:36px;
+    line-height:1.2;
+    color:#007bff
+    }
+    
+    .invoice-box .total-row {
+    font-weight:700;
+    border-top:2px solid #dee2e6
+    }

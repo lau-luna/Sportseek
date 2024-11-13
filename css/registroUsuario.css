@@ -1,50 +1,52 @@
 .registroUsuario {
-    width: 85%;
-    margin-left: 4%;
-    height: 100%;
-}
-.seccion-registro-usuario{
-    margin-left: 5%;
-    margin-top: 2%;
-}
-#informacion-personal{
-    padding-top: 2.5%;
-    width: 60%;
-}
-
-#div-dni-telefono {
-    display: flex;
-    width: 100%;
-}
-
-.DNI, .Telefono, .Telefono input, .Telefono label, .Localidad, .Localidad select, .Localidad label, .Localidad option {
-    width: 100%;
-}
-
-.DNI input, .DNI label {
-    width: 95%;
-}
-
-#div-provincia-localidad {
-    display: flex;
-    width: 100%;
-}
-
-.Provincia {
-    width: 65%;
-}
-
-.Provincia select, .Provincia label, .Provincia option {
-    width: 95%;
-}
-
-
-#informacion-inicio-sesion{
-    padding-left: 5%;
-    padding-top: 2.5%;
-    width: 40%;
-}
-#btn-registro{
-    width: 100%;
-    margin-top: 12%;
-}
+    width:85%;
+    margin-left:4%;
+    height:100%
+    }
+    
+    .seccion-registro-usuario {
+    margin-left:5%;
+    margin-top:2%
+    }
+    
+    #informacion-personal {
+    padding-top:2.5%;
+    width:60%
+    }
+    
+    #div-dni-telefono {
+    display:flex;
+    width:100%
+    }
+    
+    .DNI,.Telefono,.Telefono input,.Telefono label,.Localidad,.Localidad select,.Localidad label,.Localidad option {
+    width:100%
+    }
+    
+    .DNI input,.DNI label {
+    width:95%
+    }
+    
+    #div-provincia-localidad {
+    display:flex;
+    width:100%
+    }
+    
+    .Provincia {
+    width:65%
+    }
+    
+    .Provincia select,.Provincia label,.Provincia option {
+    width:95%
+    }
+    
+    #informacion-inicio-sesion {
+    padding-left:5%;
+    padding-top:2.5%;
+    width:40%
+    }
+    
+    #btn-registro {
+    width:100%;
+    margin-top:12%
+    }
