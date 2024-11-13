@@ -20,6 +20,8 @@ $factura = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 <link href="./css/factura.css" rel="stylesheet">
 
 <br>
+<br>
+<br>
 
 <div class="container mt-2">
 <!-- Agregamos la clase d-flex y justify-content-end para alinear a la derecha -->

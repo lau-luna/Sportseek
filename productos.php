@@ -101,6 +101,7 @@ if ($paginaActual > $totalPaginas) {
 
 <br>
 <br>
+<br>
 
 <div class="contenedorProductos" id="filtros">
     <!-- Sidebar -->

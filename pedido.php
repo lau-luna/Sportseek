@@ -20,6 +20,8 @@ $pedido = $sentenciaSQL->fetch(PDO::FETCH_ASSOC);
 <link href="./css/factura.css" rel="stylesheet">
 
 <br>
+<br>
+<br>
 
 <div class="container mt-2">
     <div class="div-botones-imprimir-descargar mb-2 d-flex justify-content-end">

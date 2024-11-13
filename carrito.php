@@ -101,6 +101,7 @@ switch ($accion) {
 
 ?>
 
+<br>
 
 <div class="container">
     <h3>Carrito de compras</h3>
@@ -146,12 +147,13 @@ switch ($accion) {
     </div>
     <h4>Total: $<span id="total"> <?php echo htmlspecialchars(number_format($_SESSION['total'], 0, ',', '.'));  ?> </span></h4>
     
-    <?php if (isset($carrito['ID_Carrito'])) { ?>
-        <form method="GET">
-            <input type="submit" name="accion" value="Continuar con la compra" class="btn btn-success continuarCompra">
-        </form>
-    <?php } ?>
+    <?php if (isset($carrito['ID_Carrito']) && count($listaCarritosProductos) > 0) { ?>
+    <form method="GET">
+        <input type="submit" name="accion" value="Continuar con la compra" class="btn btn-success continuarCompra">
+    </form>
+<?php } ?>
 </div>
 
+<br>
 
 <?php include("template/pie.php"); ?>
