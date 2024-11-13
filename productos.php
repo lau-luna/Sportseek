@@ -149,6 +149,68 @@ if ($paginaActual > $totalPaginas) {
         </div>
     </aside>
 
+    <aside class="ml-4 mr-3 aside-mobile">
+        <!-- Formulario de filtros -->
+        <div class="filtros">
+            <form method="GET" action="">
+                <div data-mdb-input-init class="mb-2">
+                    <label class="form-label">Filtrar por:</label>
+                    <select name="txtFiltro" id="filtro" class="form-control" onchange="this.form.submit()">
+                        <option value="ninguno" <?php if ($filtroSeleccionado == 'ninguno') echo 'selected'; ?>>Sin filtro</option>
+                        <option value="precioMasBajo" <?php if ($filtroSeleccionado == 'precioMasBajo') echo 'selected'; ?>>Precio más alto</option>
+                        <option value="precioMasAlto" <?php if ($filtroSeleccionado == 'precioMasAlto') echo 'selected'; ?>>Precio más bajo</option>
+                    </select>
+                    <!-- Campo oculto para mantener la búsqueda -->
+                    <input type="hidden" name="busqueda" value="<?php echo htmlspecialchars($busqueda); ?>">
+                    <input type="hidden" name="txtCategoria" value="<?php echo htmlspecialchars($categoriaSeleccionada); ?>">
+                    <input type="hidden" name="pagina" value="<?php echo htmlspecialchars($paginaActual); ?>">
+                </div>
+            </form>
+        </div>
+
+        <div class="categorias">
+            <form method="GET">
+                <div class="dropdown dropdownCategorias">
+                    <a class="btn btn-outline-secondary dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Categorías
+                    </a>
+
+                    <ul class="dropdown-menu">
+                        <li>
+                            <button type="submit" class="btn text-secondary" style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == 'todas') echo 'font-weight: bold;'; ?>" name="txtCategoria" value="todas">
+                                Todas las categorías
+                            </button>
+                        </li>
+
+                        <?php
+
+                        $sentenciaSQL = $conexion->prepare("SELECT * FROM Categorias");
+                        $sentenciaSQL->execute();
+                        $listaCategorias = $sentenciaSQL->fetchAll(PDO::FETCH_ASSOC);
+                        foreach ($listaCategorias as $categoria) { ?>
+                            <li>
+                                <button style="width: 100%; text-align:left; <?php if ($categoriaSeleccionada == $categoria['ID_Categoria']) echo 'font-weight: bold;'; ?>" type="submit" class="btn text-secondary" name="txtCategoria" value="<?php echo htmlspecialchars($categoria['ID_Categoria']); ?>">
+                                    <?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?>
+                                </button>
+                            </li>
+
+                        <?php } ?>
+                        <!-- Mantener el filtro seleccionado en la URL -->
+                        <input type="hidden" name="txtFiltro" value="<?php echo htmlspecialchars($filtroSeleccionado); ?>">
+                        <input type="hidden" name="pagina" value="<?php if ($categoriaSeleccionada == 'todas' && $paginaActual != 1) {
+                                                                        echo htmlspecialchars(1);
+                                                                    } else {
+                                                                        echo htmlspecialchars($paginaActual);
+                                                                    } ?>">
+                    </ul>
+                </div>
+            </form>
+
+
+        </div>
+
+    </aside>
+
     <!-- Productos -->
     <div class="col-md-10">
         <div class="row">
