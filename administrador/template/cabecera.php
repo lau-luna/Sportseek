@@ -41,7 +41,17 @@ if (!isset($_SESSION['usuario'])) {
     <script type="text/javascript" src="Scripts/jquery-2.1.1.min.js"></script>
     <script type="text/javascript" src="Scripts/bootstrap.min.js"></script>
 
-    
+    <!-- Esto guard una variable con la url del sitio web principal, luego habría que cambiarle el nombre al sitio -->
+    <?php 
+        $host = $_SERVER['HTTP_HOST'];
+        $proyecto = "/Sportseek"; // Cambia esto al nombre de tu carpeta en localhost
+        
+        if ($host == 'localhost') {
+            $url = "http://$host$proyecto";
+        } else {
+            $url = "http://$host";
+        }
+    ?>
 
     <nav class="navbar navbar-expand-lg navbar-light bg-primary">
         <div class="container-fluid">
@@ -52,28 +62,28 @@ if (!isset($_SESSION['usuario'])) {
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./index.php">Inicio</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/index.php"; ?>">Inicio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/productos.php">Productos</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/productos.php"; ?>">Productos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/categorias.php">Categorias</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/categorias.php"; ?>">Categorias</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/listaPedidos.php">Pedidos</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaPedidos.php"; ?>">Pedidos</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/listaFacturas.php">Facturas</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/listaFacturas.php"; ?>">Facturas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/ventas.php">Ventas</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/ventas.php"; ?>">Ventas</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="../../index.php">Ver sitio</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url; ?>">Ver sitio</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-item nav-link text-white" href="./seccion/cerrar.php">Cerrar sesión</a>
+                        <a class="nav-item nav-link text-white" href="<?php echo $url . "/administrador/seccion/cerrar.php"; ?>">Cerrar sesión</a>
                     </li>
 
                 </ul>
