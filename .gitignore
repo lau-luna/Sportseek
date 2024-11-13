@@ -1,3 +1,4 @@
 /vendor/
 administrador/config/bd.php
 .github/workflows/deploy.yml
+administrador/config/bd.php

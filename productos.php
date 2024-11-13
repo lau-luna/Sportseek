@@ -95,7 +95,7 @@ $totalProductos = $sentenciaSQLCount->fetchColumn();
 $totalPaginas = ceil($totalProductos / $productosPorPagina);
 ?>
 
-
+<br>
 <br>
 
 <div class="contenedorProductos" id="filtros">
