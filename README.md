@@ -1,10 +1,12 @@
 
-# <img src="https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaColor.png" style="width: 50px; vertical-align: middle;"> SPORTSEEK
+# SPORTSEEK
 
-> [Sportseek](https://sportseek.great-site.net/) es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
+> [Sportseek](https://sportseek.com.ar/) es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
 
-
-![Logo](https://raw.githubusercontent.com/lau-luna/Olimpiada/main/img/LogoTiendaHeader.png)
+<br>
+<div align="center">
+<img src="https://github.com/user-attachments/assets/c4539b7b-fc39-4fef-9a09-f80cb5e52e90" alt="logo" width="60%">
+</div>
 
 ## Funcionalidades
 
