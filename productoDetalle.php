@@ -2,7 +2,7 @@
 
 <!-- Conexión a base de datos -->
 <?php include("administrador/config/bd.php"); ?>
-<br>
+<br> <br>
 <?php
 if (preg_match('/^[0-9]+$/', $_GET['IdProducto'])) {
     $sentenciaSQL = $conexion->prepare("SELECT * FROM Productos WHERE ID_Producto = :id");
@@ -86,9 +86,7 @@ function validateForm() {
 
 include("administrador/config/bd.php");
 
-if (!isset($_SESSION['ID_Usuario'])) {
-    echo "<script>window.location.href='loginUsuario.php';</script>";
-}
+
 
 $sentenciaSQL = $conexion->prepare("SELECT * FROM Carritos INNER JOIN Usuarios ON Usuarios.ID_Usuario = Carritos.Usuarios_ID_Usuario WHERE Usuarios.ID_Usuario = :IdUsuario");
 $sentenciaSQL->bindParam(":IdUsuario", $_SESSION['ID_Usuario']);

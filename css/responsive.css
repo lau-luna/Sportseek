@@ -212,8 +212,8 @@
     }
     }
 
-    @media (min-width: 1400px) {
-        .ultimo-br{
+    @media (min-width: 1080px) {
+        .ultimo-br {
             display: none;
         }
     }
