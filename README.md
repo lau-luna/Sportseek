@@ -26,9 +26,9 @@
 
 ## Documentación
 
-[Tesis](https://docs.google.com/document/d/18w_2Bf1TiDeWSs-iuIPJxacSwViN8vgh/edit?usp=sharing&ouid=101879044003255701339&rtpof=true&sd=truen)
+[Tesis](<./docs/CRD-PRGR-140141700-005 - Proyecto.pdf>)
 
-[Manual de uso](https://docs.google.com/document/d/1JBjGBq4Kms9aHjZihXW_bNV5beE2SI_75tImMxC1bb8/edit?usp=sharing)
+[Manual de uso](<./docs/Manual de Usuario_Administrador Sportseek.pdf>)
 
 [Videotutorial de uso](https://drive.google.com/file/d/1JtNhUuLcIp1fQte6wDa5UGG5UBZDilaW/view?usp=sharing)
 
