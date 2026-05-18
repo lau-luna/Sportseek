@@ -1,7 +1,7 @@
 
 # SPORTSEEK
 
-> [Sportseek](https://sportseek.great-site.net/) es un sitio de E-commerce, desarrollado para las Olimpíada Nacional ETP 2024, instancia institucional de Laboulaye.
+> [Sportseek](https://sportseek.great-site.net/) es un sitio de E-commerce, desarrollado para las [Olimpíada Nacional ETP INET 2024](https://www.inet.edu.ar/index.php/industria-de-los-procesos-y-programacion-en-la-instancia-nacional-de-olimpiadas/), instancia institucional de Laboulaye.
 
 <br>
 <div align="center">
