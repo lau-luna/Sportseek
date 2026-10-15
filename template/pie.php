@@ -10,4 +10,11 @@
   </footer>
 </body>
 
+<script>
+    const lazy = new LazyLoad({
+      elements_selector: ".lazy",
+      threshold: 300
+    });
+</script>
+
 </html>
