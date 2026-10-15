@@ -327,7 +327,7 @@ $totalPaginas = ceil($totalProductos / $productosPorPagina);
                             <td><?php echo htmlspecialchars($producto['Descripcion_Producto']); ?></td>
                             <td><?php echo htmlspecialchars($producto['Tiene_Stock_Producto'] ? 'Sí' : 'No'); ?></td>
                             <td>
-                                <img src="../../imgProductos/<?php echo $producto['Imagen_Producto']; ?>" width="50" alt="">
+                                <img class="lazy" data-src="../../imgProductos/<?php echo $producto['Imagen_Producto']; ?>" width="50" alt="">
                             </td>
                             <td><?php echo htmlspecialchars($producto['Especificaciones_Producto']); ?></td>
                             <td><?php echo htmlspecialchars($categoria['Nombre_Categoria']); ?></td>
