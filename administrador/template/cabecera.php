@@ -3,9 +3,11 @@ session_start();
 
 if (!isset($_SESSION['usuario'])) {
     header('Location:../index.php');
+    exit;
 } 
 if ($_SESSION['Tipo_Usuario'] != "Administrador") {
     header('Location:../index.php');
+    exit;
 }
 
 $nombreUsuario = $_SESSION["nombreUsuario"];
