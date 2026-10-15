@@ -4,7 +4,7 @@ session_start();
 if (!isset($_SESSION['usuario'])) {
     header('Location:../index.php');
 } 
-if (!($_SESSION['Tipo_Usuario'] == "Administrador")) {
+if ($_SESSION['Tipo_Usuario'] != "Administrador") {
     header('Location:../index.php');
 }
 
