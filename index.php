@@ -46,7 +46,9 @@
             <a href="#" style="text-decoration: none;" onclick="document.getElementById('<?php echo $formId; ?>').submit();">
               <div class="cardLista">
                 <div class="cardProd">
-                  <img class="card-img-topProd w" src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>" alt="">
+                  <img class="card-img-topProd w lazy"
+                       data-src="./imgProductos/<?php echo htmlspecialchars($producto['Imagen_Producto']) ?>"
+                       alt="<?php echo htmlspecialchars($producto['Nombre_Producto'] ?? '') ?>">
                   <div class="card-bodyProd">
                     <h5 class="card-titleProd"><?php echo htmlspecialchars($producto['Nombre_Producto']) ?></h5>
                     <p class="text-infoProd text-success"><?php echo "$ " . htmlspecialchars($producto['Precio_Producto']) ?></p>
