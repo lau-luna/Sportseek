@@ -3,11 +3,13 @@ session_start();
 
 if (!isset($_SESSION['usuario'])) {
     header('Location:../index.php');
-} else {
-    if ($_SESSION['usuario'] == "ok") {
-        $nombreUsuario = $_SESSION["nombreUsuario"];
-    }
+} 
+if (!($_SESSION['Tipo_Usuario'] == "Administrador")) {
+    header('Location:../index.php');
 }
+
+$nombreUsuario = $_SESSION["nombreUsuario"];
+
 ?>
 
 <!doctype html>
